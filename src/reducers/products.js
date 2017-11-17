@@ -1,9 +1,16 @@
 const products = (
   state = {
     products: [],
-    modal: false,
+    isVisibleCreateProducts: false,
     productsFiltered: [],
-    selectedProduct: ''
+    product: {
+      name: '',
+      minimumUnit: '',
+      category: '',
+      picture: 'defaulPictureByNow'
+    },
+    minimumUnits: [],
+    categories: []
   },
   action
 ) => {
@@ -15,11 +22,10 @@ const products = (
         products: action.products,
         productsFiltered: action.products
       }
-    case 'SHOW_DETAIL_PRODUCT':
+    case 'SHOW_CREATE_PRODUCT':
       return {
         ...state,
-        modal: action.modal,
-        selectedProduct: action.selectedProduct
+        isVisibleCreateProducts: action.isVisibleCreateProducts
       }
     case 'FILTER_PRODUCTS':
       return {
@@ -27,6 +33,24 @@ const products = (
         productsFiltered: state.products.filter(e =>{
           return e.name.toLowerCase().indexOf(action.string.toLowerCase()) !== -1
         })
+      }
+    case 'LOAD_MINIMUN_UNITS':
+      return {
+        ...state,
+        minimumUnits: action.minimumUnits,
+        product: {
+          ...state.product,
+          minimumUnit: action.minimumUnits[0]
+        }
+      }
+    case 'LOAD_CATEGORIES':
+      return {
+        ...state,
+        categories: action.categories,
+        product: {
+          ...state.product,
+          category: action.categories[0]
+        }
       }
     default:
       return state
