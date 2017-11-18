@@ -8,12 +8,16 @@ import {
   FormControl
 } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { showCreateProduct } from '../actions/products'
+import { showCreateProduct, loadProducts, filterProducts } from '../actions/products'
 import CreateProduct from '../containers/CreateProduct'
 
 import 'font-awesome/css/font-awesome.min.css';
 
 class Products extends Component {
+
+  componentDidMount() {
+    this.props.loadProducts()
+  }
 
   render() {
     return (
@@ -24,6 +28,9 @@ class Products extends Component {
             <FormControl
               type = 'text'
               placeholder = 'Buscar producto'
+              onChange = { e =>
+                this.props.filterProducts(e.target.value)
+              }
             />
           </FormGroup>
           <RaisedButton
@@ -45,19 +52,25 @@ class Products extends Component {
               </tr>
             </thead>
             <tbody>
-              <tr key = {1}>
-                <td>2</td>
-                <td>Saco</td>
-                <td>Magia Blandca 333</td>
-                <td>23.2</td>
-                <td>46.4</td>
-                <td>
-                  <i className = 'fa fa-pencil'></i>
-                  <i className = 'fa fa-usd'></i>
-                  <i className = 'fa fa-cart-plus'></i>
-                  <i className = 'fa fa-trash'></i>
-                </td>
-              </tr>
+              {
+                this.props.productsFiltered.map(product => {
+                  return (
+                    <tr key = { product._id } >
+                      <td>{ product.quantity }</td>
+                      <td>{ product.minimumUnit }</td>
+                      <td>{ product.category }</td>
+                      <td>{ product.name }</td>
+                      <td>{ product.unitCost }</td>
+                      <td>
+                        <i className = 'fa fa-pencil'></i>
+                        <i className = 'fa fa-usd'></i>
+                        <i className = 'fa fa-cart-plus'></i>
+                        <i className = 'fa fa-trash'></i>
+                      </td>
+                    </tr>
+                  )
+                })
+              }
             </tbody>
           </Table>
           <CreateProduct />
@@ -69,11 +82,20 @@ class Products extends Component {
 }
 
 const mapStateToProps = state => {
-  return state
+  return {
+    products: state.products.products,
+    productsFiltered: state.products.productsFiltered
+  }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
+    filterProducts(string) {
+      dispatch(filterProducts(string))
+    },
+    loadProducts() {
+      dispatch(loadProducts())
+    },
     showCreateProduct(state) {
       dispatch(showCreateProduct(state))
     }

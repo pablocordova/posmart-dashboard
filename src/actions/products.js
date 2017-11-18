@@ -59,4 +59,18 @@ const loadCategories = () => {
   }
 }
 
-export { loadProducts, createProduct, showCreateProduct, loadMinimunUnits, loadCategories }
+const filterProducts = (string) => {
+  return ({
+    type: 'FILTER_PRODUCTS',
+    string: string
+  })
+}
+
+export {
+  loadProducts,
+  createProduct,
+  showCreateProduct,
+  loadMinimunUnits,
+  loadCategories,
+  filterProducts
+}
