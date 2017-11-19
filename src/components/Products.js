@@ -8,7 +8,7 @@ import {
   FormControl
 } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { showCreateProduct, loadProducts, filterProducts } from '../actions/products'
+import { showCreateProduct, loadProducts, filterProducts, modifyProduct } from '../actions/products'
 import CreateProduct from '../containers/CreateProduct'
 
 import 'font-awesome/css/font-awesome.min.css';
@@ -62,10 +62,18 @@ class Products extends Component {
                       <td>{ product.name }</td>
                       <td>{ product.unitCost }</td>
                       <td>
-                        <i className = 'fa fa-pencil'></i>
-                        <i className = 'fa fa-usd'></i>
-                        <i className = 'fa fa-cart-plus'></i>
-                        <i className = 'fa fa-trash'></i>
+                        <i className = 'fa fa-pencil' id = { product._id } onClick = { (e) =>
+                          this.props.modifyProduct(e.target.id)
+                        }></i>
+                        <i className = 'fa fa-usd' id = { product._id } onClick = { (e) =>
+                          this.props.createNewPrice(e.target.id)
+                        }></i>
+                        <i className = 'fa fa-cart-plus' id = { product._id } onClick = { (e) =>
+                          this.props.addInventory(e.target.id)
+                        }></i>
+                        <i className = 'fa fa-trash' id = { product._id } onClick = { (e) =>
+                          this.props.deleteProduct(e.target.id)
+                        }></i>
                       </td>
                     </tr>
                   )
@@ -90,6 +98,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    modifyProduct(idProduct) {
+      dispatch(modifyProduct(idProduct))
+    },
     filterProducts(string) {
       dispatch(filterProducts(string))
     },

@@ -4,13 +4,16 @@ const products = (
     isVisibleCreateProducts: false,
     productsFiltered: [],
     product: {
+      id: '',
       name: '',
       minimumUnit: '',
       category: '',
       picture: 'defaulPictureByNow'
     },
     minimumUnits: [],
-    categories: []
+    categories: [],
+    titleProduct: 'CREAR PRODUCTO',
+    buttonProduct: 'CREAR'
   },
   action
 ) => {
@@ -25,6 +28,16 @@ const products = (
     case 'SHOW_CREATE_PRODUCT':
       return {
         ...state,
+        titleProduct: 'CREAR PRODUCTO',
+        buttonProduct: 'CREAR',
+        product: {
+          ...state.product,
+          id: '',
+          name: '',
+          minimumUnit: state.minimumUnits[0],
+          category: state.categories[0],
+          picture: 'defaulPictureByNow'
+        },
         isVisibleCreateProducts: action.isVisibleCreateProducts
       }
     case 'FILTER_PRODUCTS':
@@ -50,6 +63,26 @@ const products = (
         product: {
           ...state.product,
           category: action.categories[0]
+        }
+      }
+    case 'SHOW_MODIFY_PRODUCT':
+      return {
+        ...state,
+        isVisibleCreateProducts: true,
+        titleProduct: 'MODIFICAR PRODUCTO',
+        buttonProduct: 'MODIFICAR',
+        product: {
+          ...state.product,
+          id: action.idProduct,
+          minimumUnit: state.products.filter( product =>
+            product._id === action.idProduct
+          ).pop().minimumUnit,
+          category: state.products.filter( product =>
+            product._id === action.idProduct
+          ).pop().category,
+          name: state.products.filter( product =>
+            product._id === action.idProduct
+          ).pop().name
         }
       }
     default:

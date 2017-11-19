@@ -6,7 +6,8 @@ import {
   showCreateProduct,
   createProduct,
   loadMinimunUnits,
-  loadCategories
+  loadCategories,
+  updateProduct
 } from '../actions/products'
 
 class CreateProduct extends Component {
@@ -22,13 +23,14 @@ class CreateProduct extends Component {
       <div>
         <Modal show = { this.props.isVisibleCreateProducts }>
           <Modal.Header>
-            <Modal.Title>CREAR PRODUCTO</Modal.Title>
+            <Modal.Title>{ this.props.titleProduct }</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <FormGroup>
               <ControlLabel>Nombre</ControlLabel>
               <FormControl
                 type = 'text'
+                defaultValue = { this.props.product.name }
                 onChange = { e =>
                   this.props.product.name = e.target.value
                 }
@@ -38,6 +40,7 @@ class CreateProduct extends Component {
               <ControlLabel>Minima unidad</ControlLabel>
               <FormControl
                 componentClass = 'select'
+                defaultValue = { this.props.product.minimumUnit }
                 onChange = { e =>
                   this.props.product.minimumUnit = e.target.value
                 }
@@ -55,6 +58,7 @@ class CreateProduct extends Component {
               <ControlLabel>Categoria</ControlLabel>
               <FormControl
                 componentClass = 'select'
+                defaultValue = { this.props.product.category }
                 onChange = { e =>
                   this.props.product.category = e.target.value
                 }
@@ -78,11 +82,17 @@ class CreateProduct extends Component {
               }
             />
             <RaisedButton
-              label = 'CREAR'
+              label = { this.props.buttonProduct }
               secondary = { true }
-              onClick = { () =>
-                this.props.createProduct(this.props.product)
-              }
+              onClick = { () => {
+                console.log('here taking decitions')
+                console.log(this.props.product.id)
+                if (this.props.product.id === '') {
+                  this.props.createProduct(this.props.product)
+                } else {
+                  this.props.updateProduct(this.props.product)
+                }
+              }}
             />
           </Modal.Footer>
         </Modal>
@@ -97,12 +107,17 @@ const mapStateToProps = state => {
     product: state.products.product,
     isVisibleCreateProducts: state.products.isVisibleCreateProducts,
     minimumUnits: state.products.minimumUnits,
-    categories: state.products.categories
+    categories: state.products.categories,
+    titleProduct: state.products.titleProduct,
+    buttonProduct: state.products.buttonProduct
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
+    updateProduct(product) {
+      dispatch(updateProduct(product))
+    },
     loadMinimunUnits() {
       dispatch(loadMinimunUnits())
     },

@@ -4,6 +4,7 @@ const GET_PRODUCTS_PATH = '/products'
 const POST_PRODUCTS_PATH = '/products'
 const GET_MIN_UNITS_PATH = '/products/all/min_units'
 const GET_CATEGORIES_PATH = '/products/all/categories'
+const PUT_PRODUCTS_PATH = '/products'
 
 axios.defaults.headers.common['Authorization'] = 'JWT ' + localStorage.getItem('token')
 
@@ -24,6 +25,17 @@ const createProduct = (product) => {
     return axios.post(process.env.REACT_APP_SERVER_PATH + POST_PRODUCTS_PATH, product)
       .then(response => {
         console.log(response.data)
+      })
+  }
+}
+
+const updateProduct = product => {
+  return () => {
+    return axios.put(
+      process.env.REACT_APP_SERVER_PATH + PUT_PRODUCTS_PATH + '/' + product.id, product
+    )
+      .then(response => {
+        console.log(response.date)
       })
   }
 }
@@ -66,11 +78,20 @@ const filterProducts = (string) => {
   })
 }
 
+const modifyProduct = (idProduct) => {
+  return ({
+    type: 'SHOW_MODIFY_PRODUCT',
+    idProduct
+  })
+}
+
 export {
   loadProducts,
   createProduct,
   showCreateProduct,
   loadMinimunUnits,
   loadCategories,
-  filterProducts
+  filterProducts,
+  modifyProduct,
+  updateProduct
 }
