@@ -7,6 +7,7 @@ import {
   createProduct,
   loadMinimunUnits,
   loadCategories,
+  loadProducts,
   updateProduct
 } from '../actions/products'
 
@@ -85,13 +86,13 @@ class CreateProduct extends Component {
               label = { this.props.buttonProduct }
               secondary = { true }
               onClick = { () => {
-                console.log('here taking decitions')
-                console.log(this.props.product.id)
                 if (this.props.product.id === '') {
                   this.props.createProduct(this.props.product)
                 } else {
                   this.props.updateProduct(this.props.product)
                 }
+                this.props.showCreateProduct(false)
+                this.props.loadProducts()
               }}
             />
           </Modal.Footer>
@@ -123,6 +124,9 @@ const mapDispatchToProps = dispatch => {
     },
     loadCategories() {
       dispatch(loadCategories())
+    },
+    loadProducts() {
+      dispatch(loadProducts())
     },
     showCreateProduct(state) {
       dispatch(showCreateProduct(state))

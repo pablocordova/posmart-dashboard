@@ -2,6 +2,7 @@ const products = (
   state = {
     products: [],
     isVisibleCreateProducts: false,
+    isVisibleCreatePrice: false,
     productsFiltered: [],
     product: {
       id: '',
@@ -13,12 +14,28 @@ const products = (
     minimumUnits: [],
     categories: [],
     titleProduct: 'CREAR PRODUCTO',
-    buttonProduct: 'CREAR'
+    buttonProduct: 'CREAR',
+    prices: [],
+    price: {
+      quantity: '',
+      name: '',
+      items: 0,
+      price: 0,
+      product: ''
+    },
+    productSelected: {
+      prices: []
+    }
   },
   action
 ) => {
 
   switch (action.type) {
+    case 'LOAD_PRICES':
+      return {
+        ...state,
+        prices: action.prices
+      }
     case 'LOAD_PRODUCTS':
       return {
         ...state,
@@ -65,7 +82,10 @@ const products = (
           category: action.categories[0]
         }
       }
-    case 'SHOW_MODIFY_PRODUCT':
+    case 'SHOW_MODIFY_PRODUCT': {
+      let selected = state.products.filter( product =>
+        product._id === action.idProduct
+      ).pop()
       return {
         ...state,
         isVisibleCreateProducts: true,
@@ -73,17 +93,42 @@ const products = (
         buttonProduct: 'MODIFICAR',
         product: {
           ...state.product,
-          id: action.idProduct,
-          minimumUnit: state.products.filter( product =>
-            product._id === action.idProduct
-          ).pop().minimumUnit,
-          category: state.products.filter( product =>
-            product._id === action.idProduct
-          ).pop().category,
-          name: state.products.filter( product =>
-            product._id === action.idProduct
-          ).pop().name
+          id: selected._id,
+          name: selected.name,
+          minimumUnit: selected.minimumUnit,
+          category: selected.category,
         }
+      }
+    }
+
+    case 'SHOW_CREATE_PRICES':
+      return {
+        ...state,
+        isVisibleCreatePrice: true,
+        price: {
+          ...state.price,
+          product: action.idProduct,
+          quantity: '1',
+          name: 'unidad',
+          items: 0,
+          price: 0,
+
+        },
+        productSelected: state.products.filter( product =>
+          product._id === action.idProduct
+        ).pop()
+      }
+    case 'HIDE_CREATE_PRICE':
+      return {
+        ...state,
+        isVisibleCreatePrice: false
+      }
+    case 'UPDATE_SELECTED_PRICES':
+      return {
+        ...state,
+        productSelected: state.products.filter( product =>
+          product._id === action.idProduct
+        ).pop()
       }
     default:
       return state

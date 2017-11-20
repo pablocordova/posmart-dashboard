@@ -8,8 +8,15 @@ import {
   FormControl
 } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { showCreateProduct, loadProducts, filterProducts, modifyProduct } from '../actions/products'
+import {
+  filterProducts,
+  loadProducts,
+  modifyProduct,
+  showCreateProduct,
+  showCreatePrice
+} from '../actions/products'
 import CreateProduct from '../containers/CreateProduct'
+import CreatePrice from '../containers/CreatePrice'
 
 import 'font-awesome/css/font-awesome.min.css';
 
@@ -66,7 +73,7 @@ class Products extends Component {
                           this.props.modifyProduct(e.target.id)
                         }></i>
                         <i className = 'fa fa-usd' id = { product._id } onClick = { (e) =>
-                          this.props.createNewPrice(e.target.id)
+                          this.props.showCreatePrice(e.target.id)
                         }></i>
                         <i className = 'fa fa-cart-plus' id = { product._id } onClick = { (e) =>
                           this.props.addInventory(e.target.id)
@@ -82,6 +89,7 @@ class Products extends Component {
             </tbody>
           </Table>
           <CreateProduct />
+          <CreatePrice />
         </div>
       </MuiThemeProvider>
     )
@@ -109,6 +117,9 @@ const mapDispatchToProps = dispatch => {
     },
     showCreateProduct(state) {
       dispatch(showCreateProduct(state))
+    },
+    showCreatePrice(idProduct) {
+      dispatch(showCreatePrice(idProduct))
     }
   }
 }
