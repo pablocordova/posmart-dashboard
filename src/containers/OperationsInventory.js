@@ -43,11 +43,9 @@ class OperationInventory extends Component {
             <RaisedButton
               label = 'AGREGAR'
               primary = { true }
-              onClick = { () => {
-                this.props.createInventory(this.props.inventory)
-                this.props.loadProducts()
-                this.props.updateSelectedPrices(this.props.productSelected._id)
-              }}
+              onClick = { () =>
+                this.props.createInventory(this.props.inventory, this.props.productSelected._id)
+              }
             />
 
             <Table responsive>
@@ -105,8 +103,11 @@ const mapDispatchToProps = dispatch => {
     hideInventory(state) {
       dispatch(hideInventory(state))
     },
-    createInventory(price) {
+    createInventory(price, idProduct) {
       dispatch(createInventory(price))
+        .then(() => dispatch(loadProducts())
+          .then(() =>dispatch(updateSelectedPrices(idProduct)))
+        )
     },
     loadProducts() {
       dispatch(loadProducts())

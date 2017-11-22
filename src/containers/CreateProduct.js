@@ -92,7 +92,6 @@ class CreateProduct extends Component {
                   this.props.updateProduct(this.props.product)
                 }
                 this.props.showCreateProduct(false)
-                this.props.loadProducts()
               }}
             />
           </Modal.Footer>
@@ -118,6 +117,7 @@ const mapDispatchToProps = dispatch => {
   return {
     updateProduct(product) {
       dispatch(updateProduct(product))
+        .then(() =>dispatch(loadProducts()))
     },
     loadMinimunUnits() {
       dispatch(loadMinimunUnits())
@@ -133,6 +133,7 @@ const mapDispatchToProps = dispatch => {
     },
     createProduct(product) {
       dispatch(createProduct(product))
+        .then(() =>dispatch(loadProducts()))
     }
   }
 }

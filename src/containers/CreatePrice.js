@@ -80,11 +80,9 @@ class CreatePrice extends Component {
             <RaisedButton
               label = 'CREAR'
               primary = { true }
-              onClick = { () => {
-                this.props.createPrice(this.props.price)
-                this.props.loadProducts()
-                this.props.updateSelectedPrices(this.props.productSelected._id)
-              }}
+              onClick = { () =>
+                this.props.createPrice(this.props.price, this.props.productSelected._id)
+              }
             />
 
             <Table responsive>
@@ -107,11 +105,9 @@ class CreatePrice extends Component {
                         <td>{ price.price }</td>
                         <td>{ price.items }</td>
                         <td>
-                          <i className = 'fa fa-trash' id = { index } onClick = { (e) => {
+                          <i className = 'fa fa-trash' id = { index } onClick = { (e) =>
                             this.props.deletePrice(this.props.productSelected._id, e.target.id)
-                            this.props.loadProducts()
-                            this.props.updateSelectedPrices(this.props.productSelected._id)
-                          }}
+                          }
                           ></i>
                         </td>
                       </tr>
@@ -152,12 +148,18 @@ const mapDispatchToProps = dispatch => {
   return {
     deletePrice(idProduct, indexPrice) {
       dispatch(deletePrice(idProduct, indexPrice))
+        .then(() => dispatch(loadProducts())
+          .then(() =>dispatch(updateSelectedPrices(idProduct)))
+        )
     },
     hideCreatePrice(state) {
       dispatch(hideCreatePrice(state))
     },
-    createPrice(price) {
+    createPrice(price, idProduct) {
       dispatch(createPrice(price))
+        .then(() => dispatch(loadProducts())
+          .then(() =>dispatch(updateSelectedPrices(idProduct)))
+        )
     },
     loadProducts() {
       dispatch(loadProducts())

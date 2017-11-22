@@ -8,7 +8,10 @@ import {
   FormControl
 } from 'react-bootstrap'
 import { connect } from 'react-redux'
+import swal from 'sweetalert2'
+
 import {
+  deleteProduct,
   filterProducts,
   loadProducts,
   modifyProduct,
@@ -80,9 +83,25 @@ class Products extends Component {
                         <i className = 'fa fa-cart-plus' id = { product._id } onClick = { (e) =>
                           this.props.showInventory(e.target.id)
                         }></i>
-                        <i className = 'fa fa-trash' id = { product._id } onClick = { (e) =>
-                          this.props.deleteProduct(e.target.id)
-                        }></i>
+                        <i className = 'fa fa-trash' id = { product._id } onClick = { (e) => {
+                          let deleteProductMethod = this.props.deleteProduct
+                          let idProduct = e.target.id
+                          swal({
+                            title: 'Esta seguro de eliminar el producto?',
+                            text: 'No será posible recuperarlo después!',
+                            type: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Si, borrarlo!',
+                            cancelButtonText: 'Cancelar'
+                          }).then(function (result) {
+                            if (result.value) {
+                              deleteProductMethod(idProduct)
+                            }
+                          })
+                        }}
+                        ></i>
                       </td>
                     </tr>
                   )
@@ -109,6 +128,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    deleteProduct(idProduct) {
+      dispatch(deleteProduct(idProduct))
+        .then(() =>dispatch(loadProducts()))
+    },
     modifyProduct(idProduct) {
       dispatch(modifyProduct(idProduct))
     },

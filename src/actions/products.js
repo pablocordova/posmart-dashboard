@@ -1,4 +1,5 @@
 import axios from 'axios'
+import swal from 'sweetalert2'
 
 const GET_PRODUCTS_PATH = '/products'
 const POST_PRODUCTS_PATH = '/products'
@@ -176,11 +177,33 @@ const deletePrice = (idProduct, indexPrice) => {
   }
 }
 
+const deleteProduct = (idProduct) => {
+  return () => {
+    return axios.delete(process.env.REACT_APP_SERVER_PATH + PRODUCTS_PATH + '/' + idProduct)
+      .then(response => {
+        if (response.status === 200) {
+          swal(
+            'Excelente!',
+            response.data.message,
+            'success'
+          )
+        } else {
+          swal(
+            'Oops...',
+            response.data.message,
+            'error'
+          )
+        }
+      })
+  }
+}
+
 export {
   createInventory,
   createPrice,
   createProduct,
   deletePrice,
+  deleteProduct,
   filterProducts,
   hideCreatePrice,
   hideInventory,
