@@ -7,6 +7,7 @@ const GET_CATEGORIES_PATH = '/products/all/categories'
 const PRODUCTS_PATH = '/products'
 const GET_PRICES_PATH_POST = '/prices'
 const POST_PRICE_PATH = '/price'
+const POST_INVENTORY_PATH = '/entry'
 
 axios.defaults.headers.common['Authorization'] = 'JWT ' + localStorage.getItem('token')
 
@@ -27,6 +28,17 @@ const loadPrices = (product) => {
 const createPrice = (price) => {
   return () => {
     return axios.post(process.env.REACT_APP_SERVER_PATH + PRODUCTS_PATH + POST_PRICE_PATH, price)
+      .then(response => {
+        console.log(response.data)
+      })
+  }
+}
+
+const createInventory = (inventory) => {
+  return () => {
+    return axios.post(
+      process.env.REACT_APP_SERVER_PATH + PRODUCTS_PATH + POST_INVENTORY_PATH, inventory
+    )
       .then(response => {
         console.log(response.data)
       })
@@ -79,9 +91,22 @@ const showCreatePrice = (idProduct) => {
   })
 }
 
+const showInventory= (idProduct) => {
+  return ({
+    type: 'SHOW_INVENTORY',
+    idProduct
+  })
+}
+
 const hideCreatePrice = () => {
   return ({
     type: 'HIDE_CREATE_PRICE'
+  })
+}
+
+const hideInventory = () => {
+  return ({
+    type: 'HIDE_INVENTORY'
   })
 }
 
@@ -152,11 +177,13 @@ const deletePrice = (idProduct, indexPrice) => {
 }
 
 export {
+  createInventory,
   createPrice,
   createProduct,
   deletePrice,
   filterProducts,
   hideCreatePrice,
+  hideInventory,
   loadCategories,
   loadMinimunUnits,
   loadPrices,
@@ -164,6 +191,7 @@ export {
   modifyProduct,
   showCreateProduct,
   showCreatePrice,
+  showInventory,
   updateProduct,
   updateSelectedPrices
 }

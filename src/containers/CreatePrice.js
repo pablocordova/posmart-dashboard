@@ -10,7 +10,7 @@ import {
   updateSelectedPrices
 } from '../actions/products'
 
-class CreateProduct extends Component {
+class CreatePrice extends Component {
 
   render() {
     return (
@@ -171,4 +171,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreateProduct)
+)(CreatePrice)
