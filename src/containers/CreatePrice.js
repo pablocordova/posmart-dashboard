@@ -48,6 +48,8 @@ class CreatePrice extends Component {
                 }
               >
                 <option value = 'unidad' key = 'unidad'>unidad</option>
+                <option value = 'kilo' key = 'kilo'>kilo</option>
+                <option value = 'litro' key = 'litro'>litro</option>
                 <option value = 'docena' key = 'docena'>docena</option>
                 <option value = 'caja' key = 'caja'>caja</option>
                 <option value = 'bolsa' key = 'bolsa'>bolsa</option>

@@ -53,6 +53,10 @@
         ],
         "react/jsx-uses-react": "error",
         "react/jsx-uses-vars": "error",
-        "prefer-destructuring": ["error", { "object": true, "array": true }]
+        "prefer-destructuring": ["error", { 
+            "object": true,
+            "array": true ,
+            "AssignmentExpression": [{ "arrays": true, "objects": false }]
+        }]
     }
 }

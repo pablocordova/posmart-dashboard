@@ -32,6 +32,18 @@ const createPrice = (price) => {
       .then(response => {
         console.log(response.data)
       })
+      .catch(() => {
+        const message = 'Ya existe precio con cantidad: ' +
+            price.quantity +
+            ' y nombre: ' +
+            price.name
+
+        swal(
+          'Oops...',
+          message,
+          'error'
+        )
+      })
   }
 }
 

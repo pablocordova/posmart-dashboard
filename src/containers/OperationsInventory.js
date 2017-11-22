@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Modal, FormGroup, FormControl, ControlLabel, Table } from 'react-bootstrap'
 import RaisedButton from 'material-ui/RaisedButton'
+import swal from 'sweetalert2'
+
 import {
   createInventory,
   hideInventory,
@@ -43,9 +45,31 @@ class OperationInventory extends Component {
             <RaisedButton
               label = 'AGREGAR'
               primary = { true }
-              onClick = { () =>
-                this.props.createInventory(this.props.inventory, this.props.productSelected._id)
-              }
+              onClick = { () => {
+                let createInventoryMethod = this.props.createInventory
+                let inventory = this.props.inventory;
+                let product = this.props.productSelected
+                swal({
+                  title: 'Crear ' + inventory.quantity + ' ' +
+                    product.minimumUnit +
+                    ' cuyo precio por cada ' +
+                    product.minimumUnit + ' es ' +
+                    inventory.unitCost,
+                  text: 'Una vez creado no podra borrar el inventario,' +
+                    'solo disminuirlo mediante ventas',
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Si, agregar!',
+                  cancelButtonText: 'Cancelar',
+                  allowOutsideClick: false
+                }).then(function (result) {
+                  if (result.value) {
+                    createInventoryMethod(inventory, product._id)
+                  }
+                })
+              }}
             />
 
             <Table responsive>
