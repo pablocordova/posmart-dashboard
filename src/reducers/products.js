@@ -126,7 +126,8 @@ const products = (
     case 'UPDATE_SELECTED_PRICES':
       return {
         ...state,
-        productSelected: state.products.filter( product =>
+        products: action.products,
+        productSelected: action.products.filter( product =>
           product._id === action.idProduct
         ).pop()
       }

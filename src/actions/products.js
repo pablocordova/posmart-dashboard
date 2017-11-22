@@ -136,10 +136,25 @@ const updateSelectedPrices = (idProduct) => {
   }
 }
 
+const deletePrice = (idProduct, indexPrice) => {
+  return () => {
+    return axios.delete(
+      process.env.REACT_APP_SERVER_PATH +
+      PRODUCTS_PATH + '/' +
+      idProduct +
+      GET_PRICES_PATH_POST + '/' +
+      indexPrice
+    )
+      .then(response => {
+        console.log(response)
+      })
+  }
+}
 
 export {
   createPrice,
   createProduct,
+  deletePrice,
   filterProducts,
   hideCreatePrice,
   loadCategories,

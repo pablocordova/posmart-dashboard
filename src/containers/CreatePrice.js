@@ -4,6 +4,7 @@ import { Modal, FormGroup, FormControl, ControlLabel, Table } from 'react-bootst
 import RaisedButton from 'material-ui/RaisedButton'
 import {
   createPrice,
+  deletePrice,
   hideCreatePrice,
   loadProducts,
   updateSelectedPrices
@@ -106,9 +107,12 @@ class CreateProduct extends Component {
                         <td>{ price.price }</td>
                         <td>{ price.items }</td>
                         <td>
-                          <i className = 'fa fa-trash' id = '0' onClick = { (e) =>
-                            this.props.deletePrice(e.target.id)
-                          }></i>
+                          <i className = 'fa fa-trash' id = { index } onClick = { (e) => {
+                            this.props.deletePrice(this.props.productSelected._id, e.target.id)
+                            this.props.loadProducts()
+                            this.props.updateSelectedPrices(this.props.productSelected._id)
+                          }}
+                          ></i>
                         </td>
                       </tr>
                     )
@@ -146,6 +150,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    deletePrice(idProduct, indexPrice) {
+      dispatch(deletePrice(idProduct, indexPrice))
+    },
     hideCreatePrice(state) {
       dispatch(hideCreatePrice(state))
     },
