@@ -54,6 +54,7 @@ class Users extends Component {
               <tr>
                 <th>Username</th>
                 <th>Email</th>
+                <th>Tipo</th>
                 <th></th>
               </tr>
             </thead>
@@ -64,6 +65,7 @@ class Users extends Component {
                     <tr key = { user._id } >
                       <td>{ user.username }</td>
                       <td>{ user.email }</td>
+                      <td>{ user.type }</td>
                       <td>
                         <i className = 'fa fa-pencil' id = { user._id } onClick = { (e) =>
                           this.props.showModifyUser(e.target.id)
