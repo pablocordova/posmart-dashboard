@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 
 import Products from '../components/Products'
 import Users from '../containers/Users'
-
+import Setting from '../containers/Setting'
 import Login from '../containers/Login'
 
 class App extends Component {
@@ -45,7 +45,10 @@ class App extends Component {
           <LinkContainer to = '/users'>
             <NavItem eventKey = {2}>Usuarios</NavItem>
           </LinkContainer>
-          <NavItem eventKey = {3} onClick = { this.logout }>Salir</NavItem>
+          <LinkContainer to = '/setting'>
+            <NavItem eventKey = {3}>Configuración</NavItem>
+          </LinkContainer>
+          <NavItem eventKey = {4} onClick = { this.logout }>Salir</NavItem>
         </Nav>
       )
     }
@@ -66,7 +69,7 @@ class App extends Component {
           </Navbar>
 
           <Route path = '/login' component = { Login } />
-
+          <Route path = '/setting' component = { Setting } />
           <Route path = '/products' component = { Products } />
           <Route path = '/users' component = { Users } />
         </div>
