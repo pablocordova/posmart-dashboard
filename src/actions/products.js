@@ -193,7 +193,7 @@ const deleteProduct = (idProduct) => {
   return () => {
     return axios.delete(process.env.REACT_APP_SERVER_PATH + PRODUCTS_PATH + '/' + idProduct)
       .then(response => {
-        if (response.status === 200) {
+        if (response.data.result !== 'ERROR') {
           swal(
             'Excelente!',
             response.data.message,
