@@ -3,9 +3,11 @@ import React, { Component } from 'react'
 import RaisedButton from 'material-ui/RaisedButton'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import {
-  Table,
+  FormControl,
   FormGroup,
-  FormControl
+  Grid,
+  Row,
+  Table
 } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import swal from 'sweetalert2'
@@ -24,6 +26,7 @@ import CreatePrice from '../containers/CreatePrice'
 import OperationsInventory from '../containers/OperationsInventory'
 
 import 'font-awesome/css/font-awesome.min.css';
+import '../styles/Products.css'
 
 class Products extends Component {
 
@@ -33,6 +36,8 @@ class Products extends Component {
 
   render() {
     return (
+      <Grid>
+        <Row>
       <MuiThemeProvider>
         <div>
           <h2>PRODUCTS</h2>
@@ -45,16 +50,18 @@ class Products extends Component {
               }
             />
           </FormGroup>
-          <RaisedButton
-            label = 'NUEVO'
-            primary = { true }
-            onClick = { () =>
-              this.props.showCreateProduct(true)
-            }
-          ></RaisedButton>
+          <FormGroup>
+            <RaisedButton
+              label = 'NUEVO'
+              primary = { true }
+              onClick = { () =>
+                this.props.showCreateProduct(true)
+              }
+            ></RaisedButton>
+          </FormGroup>
           <Table responsive>
             <thead>
-              <tr>
+              <tr className = 'center-text-head'>
                 <th>Cantidad</th>
                 <th>Paquete minimo</th>
                 <th>Categoria</th>
@@ -67,23 +74,28 @@ class Products extends Component {
               {
                 this.props.productsFiltered.map(product => {
                   return (
-                    <tr key = { product._id } >
+                    <tr key = { product._id } className = 'center-text'>
                       <td>{ product.quantity }</td>
                       <td>{ product.minimumUnit }</td>
                       <td>{ product.category }</td>
                       <td>{ product.name }</td>
                       <td>{ product.unitCost }</td>
-                      <td>
-                        <i className = 'fa fa-pencil' id = { product._id } onClick = { (e) =>
+                      <td className = 'spread-items'>
+                        <i className = 'fa fa-pencil fa-lg' id = { product._id } onClick = { (e) =>
                           this.props.modifyProduct(e.target.id)
                         }></i>
-                        <i className = 'fa fa-usd' id = { product._id } onClick = { (e) =>
+                        <i className = {
+                          'fa fa-usd fa-lg ' +
+                          (product.prices.length > 0 ? 'green-color' : 'red-color')
+                        } id = { product._id } onClick = { (e) =>
                           this.props.showCreatePrice(e.target.id)
                         }></i>
-                        <i className = 'fa fa-cart-plus' id = { product._id } onClick = { (e) =>
+                        <i className = 'fa fa-cart-plus fa-lg' id = {
+                          product._id
+                        } onClick = { (e) =>
                           this.props.showInventory(e.target.id)
                         }></i>
-                        <i className = 'fa fa-trash' id = { product._id } onClick = { (e) => {
+                        <i className = 'fa fa-trash fa-lg' id = { product._id } onClick = { (e) => {
                           let deleteProductMethod = this.props.deleteProduct
                           let idProduct = e.target.id
                           swal({
@@ -114,6 +126,8 @@ class Products extends Component {
           <OperationsInventory />
         </div>
       </MuiThemeProvider>
+        </Row>
+      </Grid>
     )
   }
 
