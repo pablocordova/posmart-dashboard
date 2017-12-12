@@ -54,6 +54,8 @@ class CreatePrice extends Component {
                 <option value = 'docena' key = 'docena'>docena</option>
                 <option value = 'caja' key = 'caja'>caja</option>
                 <option value = 'bolsa' key = 'bolsa'>bolsa</option>
+                <option value = 'display' key = 'display'>display</option>
+                <option value = 'tira' key = 'tira'>tira</option>
                 <option value = 'saco' key = 'saco'>saco</option>
                 <option value = 'litro' key = 'litro'>litro</option>
               </FormControl>
