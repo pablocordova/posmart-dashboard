@@ -5,9 +5,22 @@ const USERS_PATH = '/users'
 
 axios.defaults.headers.common['Authorization'] = 'JWT ' + localStorage.getItem('token')
 
+let SERVER_PATH = ''
+
+switch (process.env.REACT_APP_ENV) {
+  case 'production':
+    SERVER_PATH = process.env.REACT_APP_SERVER_PATH_PRODUCTION;
+    break;
+  case 'development':
+    SERVER_PATH = process.env.REACT_APP_SERVER_PATH_DEVELOPMENT;
+    break;
+  default:
+    break;
+}
+
 const createUser = (user) => {
   return () => {
-    return axios.post(process.env.REACT_APP_SERVER_PATH + USERS_PATH, user)
+    return axios.post(SERVER_PATH + USERS_PATH, user)
       .then(response => {
         console.log(response.data)
       })
@@ -16,7 +29,7 @@ const createUser = (user) => {
 
 const deleteUser = (idUser) => {
   return () => {
-    return axios.delete(process.env.REACT_APP_SERVER_PATH + USERS_PATH + '/' + idUser)
+    return axios.delete(SERVER_PATH + USERS_PATH + '/' + idUser)
       .then(response => {
         if (response.status === 200) {
           swal(
@@ -50,7 +63,7 @@ const hideCreateModifyUsers = () => {
 
 const loadUsers = () => {
   return dispatch => {
-    return axios.get(process.env.REACT_APP_SERVER_PATH + USERS_PATH)
+    return axios.get(SERVER_PATH + USERS_PATH)
       .then(response => {
         dispatch({
           type: 'LOAD_USERS',
@@ -76,7 +89,7 @@ const showModifyUser = (idUser) => {
 const updateUser= user => {
   return () => {
     return axios.put(
-      process.env.REACT_APP_SERVER_PATH + USERS_PATH + '/' + user.id, user
+      SERVER_PATH + USERS_PATH + '/' + user.id, user
     )
       .then(response => {
         console.log(response.date)

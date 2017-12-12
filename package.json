@@ -2,6 +2,7 @@
   "name": "pos-dashboard",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://18.216.24.110/dashboard",
   "dependencies": {
     "axios": "^0.17.1",
     "font-awesome": "^4.7.0",

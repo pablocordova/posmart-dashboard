@@ -12,10 +12,23 @@ const POST_INVENTORY_PATH = '/entry'
 
 axios.defaults.headers.common['Authorization'] = 'JWT ' + localStorage.getItem('token')
 
+let SERVER_PATH = ''
+
+switch (process.env.REACT_APP_ENV) {
+  case 'production':
+    SERVER_PATH = process.env.REACT_APP_SERVER_PATH_PRODUCTION;
+    break;
+  case 'development':
+    SERVER_PATH = process.env.REACT_APP_SERVER_PATH_DEVELOPMENT;
+    break;
+  default:
+    break;
+}
+
 const loadPrices = (product) => {
   return dispatch => {
     return axios.get(
-      process.env.REACT_APP_SERVER_PATH + PRODUCTS_PATH + '/' + product.id + GET_PRICES_PATH_POST
+      SERVER_PATH + PRODUCTS_PATH + '/' + product.id + GET_PRICES_PATH_POST
     )
       .then(response => {
         dispatch({
@@ -28,7 +41,7 @@ const loadPrices = (product) => {
 
 const createPrice = (price) => {
   return () => {
-    return axios.post(process.env.REACT_APP_SERVER_PATH + PRODUCTS_PATH + POST_PRICE_PATH, price)
+    return axios.post(SERVER_PATH + PRODUCTS_PATH + POST_PRICE_PATH, price)
       .then(response => {
         console.log(response.data)
       })
@@ -50,7 +63,7 @@ const createPrice = (price) => {
 const createInventory = (inventory) => {
   return () => {
     return axios.post(
-      process.env.REACT_APP_SERVER_PATH + PRODUCTS_PATH + POST_INVENTORY_PATH, inventory
+      SERVER_PATH + PRODUCTS_PATH + POST_INVENTORY_PATH, inventory
     )
       .then(response => {
         console.log(response.data)
@@ -60,7 +73,7 @@ const createInventory = (inventory) => {
 
 const loadProducts = () => {
   return dispatch => {
-    return axios.get(process.env.REACT_APP_SERVER_PATH + GET_PRODUCTS_PATH)
+    return axios.get(SERVER_PATH + GET_PRODUCTS_PATH)
       .then(response => {
         dispatch({
           type: 'LOAD_PRODUCTS',
@@ -72,7 +85,7 @@ const loadProducts = () => {
 
 const createProduct = (product) => {
   return () => {
-    return axios.post(process.env.REACT_APP_SERVER_PATH + POST_PRODUCTS_PATH, product)
+    return axios.post(SERVER_PATH + POST_PRODUCTS_PATH, product)
       .then(response => {
         console.log(response.data)
       })
@@ -82,7 +95,7 @@ const createProduct = (product) => {
 const updateProduct = product => {
   return () => {
     return axios.put(
-      process.env.REACT_APP_SERVER_PATH + PRODUCTS_PATH + '/' + product.id, product
+      SERVER_PATH + PRODUCTS_PATH + '/' + product.id, product
     )
       .then(response => {
         console.log(response.date)
@@ -125,7 +138,7 @@ const hideInventory = () => {
 
 const loadMinimunUnits = () => {
   return dispatch => {
-    return axios.get(process.env.REACT_APP_SERVER_PATH + GET_MIN_UNITS_PATH)
+    return axios.get(SERVER_PATH + GET_MIN_UNITS_PATH)
       .then(response => {
         dispatch({
           type: 'LOAD_MINIMUN_UNITS',
@@ -137,7 +150,7 @@ const loadMinimunUnits = () => {
 
 const loadCategories = () => {
   return dispatch => {
-    return axios.get(process.env.REACT_APP_SERVER_PATH + GET_CATEGORIES_PATH)
+    return axios.get(SERVER_PATH + GET_CATEGORIES_PATH)
       .then(response => {
         dispatch({
           type: 'LOAD_CATEGORIES',
@@ -163,7 +176,7 @@ const modifyProduct = (idProduct) => {
 
 const updateSelectedPrices = (idProduct) => {
   return dispatch => {
-    return axios.get(process.env.REACT_APP_SERVER_PATH + GET_PRODUCTS_PATH)
+    return axios.get(SERVER_PATH + GET_PRODUCTS_PATH)
       .then(response => {
         dispatch({
           type: 'UPDATE_SELECTED_PRICES',
@@ -177,7 +190,7 @@ const updateSelectedPrices = (idProduct) => {
 const deletePrice = (idProduct, indexPrice) => {
   return () => {
     return axios.delete(
-      process.env.REACT_APP_SERVER_PATH +
+      SERVER_PATH +
       PRODUCTS_PATH + '/' +
       idProduct +
       GET_PRICES_PATH_POST + '/' +
@@ -191,7 +204,7 @@ const deletePrice = (idProduct, indexPrice) => {
 
 const deleteProduct = (idProduct) => {
   return () => {
-    return axios.delete(process.env.REACT_APP_SERVER_PATH + PRODUCTS_PATH + '/' + idProduct)
+    return axios.delete(SERVER_PATH + PRODUCTS_PATH + '/' + idProduct)
       .then(response => {
         if (response.data.result !== 'ERROR') {
           swal(

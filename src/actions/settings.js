@@ -6,11 +6,24 @@ const GET_ACCESSTOKEN_PATH = '/googletoken'
 const GET_GOOGLE_URL_PATH = '/googleurl'
 const SETTINGS_PATH = '/settings'
 
+let SERVER_PATH = ''
+
+switch (process.env.REACT_APP_ENV) {
+  case 'production':
+    SERVER_PATH = process.env.REACT_APP_SERVER_PATH_PRODUCTION;
+    break;
+  case 'development':
+    SERVER_PATH = process.env.REACT_APP_SERVER_PATH_DEVELOPMENT;
+    break;
+  default:
+    break;
+}
+
 const getUrlGoogleToken = () => {
 
   return () => {
     return axios.get(
-      process.env.REACT_APP_SERVER_PATH + SETTINGS_PATH + GET_GOOGLE_URL_PATH,
+      SERVER_PATH + SETTINGS_PATH + GET_GOOGLE_URL_PATH,
       {
         headers: {
           'Authorization': 'JWT ' + localStorage.getItem('token')
@@ -36,7 +49,7 @@ const getTokenGoogle = () => {
       if (err) throw err;
 
       axios.post(
-        process.env.REACT_APP_SERVER_PATH + SETTINGS_PATH + GET_ACCESSTOKEN_PATH,
+        SERVER_PATH + SETTINGS_PATH + GET_ACCESSTOKEN_PATH,
         {
           code: data.code
         },
@@ -61,7 +74,7 @@ const getPrinterData = () => {
   return () => {
 
     return axios.get(
-      process.env.REACT_APP_SERVER_PATH + SETTINGS_PATH + GET_PRINTER_DATA_PATH,
+      SERVER_PATH + SETTINGS_PATH + GET_PRINTER_DATA_PATH,
       {
         headers: {
           'Authorization': 'JWT ' + localStorage.getItem('token')
