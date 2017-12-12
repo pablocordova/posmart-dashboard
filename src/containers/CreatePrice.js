@@ -49,12 +49,13 @@ class CreatePrice extends Component {
               >
                 <option value = 'unidad' key = 'unidad'>unidad</option>
                 <option value = 'kilo' key = 'kilo'>kilo</option>
-                <option value = 'litro' key = 'litro'>litro</option>
+                <option value = 'paquete' key = 'paquete'>saco</option>
+                <option value = 'plancha' key = 'plancha'>saco</option>
                 <option value = 'docena' key = 'docena'>docena</option>
                 <option value = 'caja' key = 'caja'>caja</option>
                 <option value = 'bolsa' key = 'bolsa'>bolsa</option>
                 <option value = 'saco' key = 'saco'>saco</option>
-
+                <option value = 'litro' key = 'litro'>litro</option>
               </FormControl>
             </FormGroup>
 
