@@ -8,6 +8,7 @@
     "font-awesome": "^4.7.0",
     "googleapis": "^23.0.0",
     "material-ui": "^0.19.4",
+    "moment": "^2.19.4",
     "oauth-open": "^1.0.3",
     "react": "^16.1.1",
     "react-bootstrap": "^0.31.5",

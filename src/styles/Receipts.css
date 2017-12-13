@@ -1,0 +1,19 @@
+.center-text {
+  text-align: center;
+}
+
+.center-text-head > th {
+  text-align: center;
+}
+
+.spread-items > i {
+  display: inline-block;
+  width: 50%;
+  text-align: center;
+}
+
+.form-control {
+  width: 50%;
+  display: inline-block;
+  margin-left: 20px;
+}

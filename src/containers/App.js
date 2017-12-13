@@ -5,6 +5,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { connect } from 'react-redux'
 
 import Products from '../components/Products'
+import Receipts from '../containers/Receipts'
 import Users from '../containers/Users'
 import Setting from '../containers/Setting'
 import Login from '../containers/Login'
@@ -55,6 +56,9 @@ class App extends Component {
           <LinkContainer to = '/products'>
             <NavItem eventKey = {1}>Products</NavItem>
           </LinkContainer>
+          <LinkContainer to = '/receipts'>
+            <NavItem eventKey = {2}>Recibos</NavItem>
+          </LinkContainer>
           <LinkContainer to = '/users'>
             <NavItem eventKey = {2}>Usuarios</NavItem>
           </LinkContainer>
@@ -84,6 +88,7 @@ class App extends Component {
           <Route path = '/login' component = { Login } />
           <Route path = '/setting' component = { Setting } />
           <Route path = '/products' component = { Products } />
+          <Route path = '/receipts' component = { Receipts } />
           <Route path = '/users' component = { Users } />
         </div>
       </BrowserRouter>
