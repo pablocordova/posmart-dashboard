@@ -6,13 +6,13 @@
   text-align: center;
 }
 
-.spread-items > i {
+.spread-items-search > i {
   display: inline-block;
   width: 50%;
   text-align: center;
 }
 
-.form-control {
+.form-control-search {
   width: 50%;
   display: inline-block;
   margin-left: 20px;

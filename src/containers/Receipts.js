@@ -38,6 +38,7 @@ class Receipts extends Component {
                 <ControlLabel>ID:</ControlLabel>
                 <FormControl
                   type = 'text'
+                  className = 'form-control-search'
                   placeholder = 'ticket id'
                   onChange = { e =>
                     this.props.searchData.id = e.target.value
@@ -48,6 +49,7 @@ class Receipts extends Component {
                 <ControlLabel>Dia:</ControlLabel>
                 <FormControl
                   type = 'date'
+                  className = 'form-control-search'
                   onChange = { e =>
                     this.props.searchData.day = e.target.value
                   }
@@ -57,6 +59,7 @@ class Receipts extends Component {
                 <ControlLabel>Cliente:</ControlLabel>
                 <FormControl
                   type = 'text'
+                  className = 'form-control-search'
                   placeholder = 'Nombre del cliente'
                   onChange = { e =>
                     this.props.searchData.client = e.target.value
@@ -67,6 +70,7 @@ class Receipts extends Component {
                 <ControlLabel>Vendedor:</ControlLabel>
                 <FormControl
                   type = 'text'
+                  className = 'form-control-search'
                   placeholder = 'Nombre del vendedor'
                   onChange = { e =>
                     this.props.searchData.seller = e.target.value
@@ -77,6 +81,7 @@ class Receipts extends Component {
                 <ControlLabel>Total:</ControlLabel>
                 <FormControl
                   type = 'number'
+                  className = 'form-control-search'
                   placeholder = 'Total venta'
                   onChange = { e =>
                     this.props.searchData.total = e.target.value
@@ -87,6 +92,7 @@ class Receipts extends Component {
                 <ControlLabel>Estado:</ControlLabel>
                 <FormControl
                   componentClass = 'select'
+                  className = 'form-control-search'
                   defaultValue = 'todos'
                   onChange = { e =>
                     this.props.searchData.state = e.target.value
@@ -130,7 +136,7 @@ class Receipts extends Component {
                           <td>{ sale.seller }</td>
                           <td>{ sale.total }</td>
                           <td>{ sale.state }</td>
-                          <td className = 'spread-items'>
+                          <td className = 'spread-items-search'>
                             <i className = 'fa fa-eye fa-lg' id = { sale._id } onClick = { (e) =>
                               this.props.showCompleteReceipt(e.target.id)
                             }></i>
