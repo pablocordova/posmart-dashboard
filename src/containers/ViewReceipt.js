@@ -6,6 +6,11 @@ import React, { Component } from 'react'
 // Other modules
 import { Modal, Table } from 'react-bootstrap'
 import { connect } from 'react-redux'
+import {
+  ControlLabel,
+  FormGroup,
+  FormControl
+} from 'react-bootstrap'
 
 import moment from 'moment'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -14,11 +19,26 @@ import _ from 'lodash'
 
 // -- Own Modules
 import {
+  addAdvancePay,
+  deleteCredit,
   hideCompleteReceipt,
-  printSale
+  loadCredits,
+  printSale,
+  updateStateSale,
+  visibleFormDebt
 } from '../actions/receipts'
 
+import '../styles/ViewReceipt.css'
+
 class ViewReceipt extends Component {
+
+  constructor() {
+    super()
+    this.state = {
+      datePay: '',
+      amountPay: ''
+    }
+  }
 
   render() {
     return (
@@ -44,6 +64,99 @@ class ViewReceipt extends Component {
               <div>Hora: { moment.utc(this.props.saleSelected.date).format('hh:mm:ss a') }</div>
               <div>Cliente: { this.props.saleSelected.client.name }</div>
               <h3>TOTAL: { this.props.saleSelected.total }</h3>
+              <FormGroup>
+                <ControlLabel>Estado:</ControlLabel>
+                <FormControl
+                  componentClass = 'select'
+                  value = { this.props.stateSale }
+                  className = 'select-state'
+                  onChange = { e => {
+                      let status = false
+                      if (e.target.value === 'Credito') {
+                        status = true
+                      }
+                      this.props.visibleFormDebt(status, e.target.value)
+                      this.props.updateStateSale(this.props.saleSelected._id, e.target.value)
+                    }
+                  }
+                >
+                  <option value = 'Pendiente' key = 'Pendiente'>Pendiente</option>
+                  <option value = 'Pagado' key = 'Pagado'>Pagado</option>
+                  <option value = 'Credito' key = 'Credito'>Credito</option>
+                </FormControl>
+              </FormGroup>
+              <div hidden = { !this.props.isVisibleFormDebt }>
+                <Table responsive>
+                  <thead>
+                    <tr className = 'center-text-head-debts'>
+                      <th>Fecha</th>
+                      <th>Monto</th>
+                      <th className = 'color-credit'>
+                        <h4>
+                          { 
+                            _.round(parseFloat(this.props.saleSelected.total) -
+                              this.props.sumCredits, 1)
+                          }
+                        </h4>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr key = { 1 }>
+                      <td>
+                        <FormControl
+                          type = 'date'
+                          onChange = { e =>
+                            this.setState({
+                              datePay: e.target.value
+                            })
+                          }
+                        />
+                      </td>
+                      <td>
+                        <FormControl
+                          type = 'number'
+                          placeholder = 'Adelanto'
+                          onChange = { e =>
+                            this.setState({
+                              amountPay: e.target.value
+                            })
+                          }
+                        />
+                      </td>
+                      <td>
+                        <RaisedButton
+                          label = 'Agregar'
+                          primary = { true }
+                          onClick = { () => {
+                            this.props.addAdvancePay(
+                              this.state.datePay,
+                              this.state.amountPay,
+                              this.props.saleSelected._id
+                            )
+                          }}
+                        ></RaisedButton>
+                      </td>
+                    </tr>
+                    {
+                      this.props.saleSelectedCredits.map((credit, index) => {
+                        return (
+                          <tr key = { index } className = 'center-text-credits'>
+                            <td>{ credit.date.split('T')[0] }</td>
+                            <td>{ credit.amount }</td>
+                            <td>
+                              <i className = 'fa fa-trash fa-lg' id = { index } onClick = { e =>
+                                this.props.deleteCredit(this.props.saleSelected._id, e.target.id)
+                              }
+                              ></i>
+                            </td>
+                          </tr>
+                        )
+                      })
+                    }
+                  </tbody>
+                </Table>
+              </div>
               <Table responsive>
                 <thead>
                   <tr>
@@ -91,19 +204,38 @@ class ViewReceipt extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state.receipts.saleSelected)
   return {
     isVisibleCompleteReceipt: state.receipts.isVisibleCompleteReceipt,
-    saleSelected: state.receipts.saleSelected
+    saleSelected: state.receipts.saleSelected,
+    saleSelectedCredits: state.receipts.saleSelectedCredits,
+    isVisibleFormDebt: state.receipts.isVisibleFormDebt,
+    stateSale: state.receipts.stateSale,
+    sumCredits: state.receipts.sumCredits
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
+    addAdvancePay(date, amount, idSale) {
+      dispatch(addAdvancePay(date, amount, idSale))
+        .then(() => dispatch(loadCredits(idSale)))
+    },
+    deleteCredit(idSale, index) {
+      dispatch(deleteCredit(idSale, index))
+        .then(() => dispatch(loadCredits(idSale)))
+    },
     hideCompleteReceipt() {
       dispatch(hideCompleteReceipt())
     },
     printSale(idReceipt) {
       dispatch(printSale(idReceipt))
+    },
+    updateStateSale(idSale, state) {
+      dispatch(updateStateSale(idSale, state))
+    },
+    visibleFormDebt(state, option) {
+      dispatch(visibleFormDebt(state, option))
     }
   }
 }

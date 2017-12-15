@@ -2,10 +2,12 @@ const receipts = ( state = {
   sales: [],
   saleSelected: {
     products: [],
+    state: 'Pendiente',
     client: {
       name: ''
     }
   },
+  saleSelectedCredits: [],
   searchData: {
     id: '',
     day: '',
@@ -14,7 +16,10 @@ const receipts = ( state = {
     total: '',
     state: ''
   },
-  isVisibleCompleteReceipt: false
+  isVisibleCompleteReceipt: false,
+  isVisibleFormDebt: false,
+  stateSale: '',
+  sumCredits: 0
 }, action) => {
 
   switch (action.type) {
@@ -28,12 +33,41 @@ const receipts = ( state = {
         ...state,
         sales: action.receipts
       }
-    case 'SHOW_COMPLETE_RECEIPT':
+    case 'LOAD_CREDITS': {
+      let credits = []
+      let sumCredits = 0
+      if (action.credits) {
+        credits = action.credits
+      }
+      for (let credit of credits) {
+        sumCredits += parseFloat(credit.amount)
+      }
+      return {
+        ...state,
+        saleSelectedCredits: credits,
+        sumCredits: sumCredits
+      }
+    }
+    case 'SHOW_COMPLETE_RECEIPT': {
+      let showFormDebt = false
+      if (action.saleSelected.state === 'Credito') {
+        showFormDebt = true
+      }
       return {
         ...state,
         isVisibleCompleteReceipt: true,
-        saleSelected: action.saleSelected
+        saleSelected: action.saleSelected,
+        stateSale: action.saleSelected.state,
+        isVisibleFormDebt: showFormDebt
       }
+    }
+    case 'VISIBLE_FORM_DEBT': {
+    return {
+        ...state,
+        isVisibleFormDebt: action.isVisibleFormDebt,
+        stateSale: action.optionState
+      }
+    }
     default:
       return state
   }

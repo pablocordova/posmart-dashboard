@@ -19,6 +19,7 @@ import 'font-awesome/css/font-awesome.min.css';
 // -- Own Modules
 import {
   getReceipts,
+  loadCredits,
   showCompleteReceipt
 } from '../actions/receipts'
 
@@ -98,10 +99,10 @@ class Receipts extends Component {
                     this.props.searchData.state = e.target.value
                   }
                 >
-                  <option value = 'all' key = 'all'>todos</option>
-                  <option value = 'pending' key = 'pending'>pendiente</option>
-                  <option value = 'paid' key = 'paid'>pagado</option>
-                  <option value = 'debt' key = 'debt'>deuda</option>
+                  <option value = 'all' key = 'all'>Todos</option>
+                  <option value = 'Pendiente' key = 'Pendiente'>Pendiente</option>
+                  <option value = 'Pagado' key = 'Pagado'>Pagado</option>
+                  <option value = 'Credito' key = 'Credito'>Credito</option>
                 </FormControl>
               </FormGroup>
               <RaisedButton
@@ -135,7 +136,10 @@ class Receipts extends Component {
                           <td>{ sale.client }</td>
                           <td>{ sale.seller }</td>
                           <td>{ sale.total }</td>
-                          <td>{ sale.state }</td>
+                          <td className = {
+                            (sale.state === 'Pagado' ? 'green-color-state' : (sale.state === 'Credito' ? 'red-color-state' : '') )
+                          }>
+                            { sale.state }</td>
                           <td className = 'spread-items-search'>
                             <i className = 'fa fa-eye fa-lg' id = { sale._id } onClick = { (e) =>
                               this.props.showCompleteReceipt(e.target.id)
@@ -171,6 +175,7 @@ const mapDispatchToProps = dispatch => {
     },
     showCompleteReceipt(idReceipt) {
       dispatch(showCompleteReceipt(idReceipt))
+        .then(() => dispatch(loadCredits(idReceipt)))
     }
   }
 }

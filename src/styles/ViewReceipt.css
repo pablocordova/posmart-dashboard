@@ -1,0 +1,17 @@
+.select-state {
+  width: 25%;
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.center-text-head-debts > th {
+  text-align: center;
+}
+
+.center-text-credits {
+  text-align: center;
+}
+
+.color-credit {
+  color: red;
+}
