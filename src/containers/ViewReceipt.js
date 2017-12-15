@@ -170,8 +170,7 @@ class ViewReceipt extends Component {
                 <tbody>
                   {
                     this.props.saleSelected.products.map(product => {
-                      let priceChosen = product.prices[product.indexPrice];
-                      let unitPrice = product.total / (priceChosen.items * product.quantity);
+                      let unitPrice = product.total / (product.unitsInPrice * product.quantity);
                       return (
                         <tr key = { product.id } >
                           <td>{ product.quantity }</td>
