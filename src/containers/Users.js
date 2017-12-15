@@ -58,7 +58,7 @@ class Users extends Component {
                 <th></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className = 'row-table-selected'>
               {
                 this.props.usersFiltered.map(user => {
                   return (

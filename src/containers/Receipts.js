@@ -125,7 +125,7 @@ class Receipts extends Component {
                     <th></th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className = 'row-table-selected'>
                   {
                     this.props.sales.map(sale => {
                       return (

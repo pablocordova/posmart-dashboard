@@ -70,7 +70,7 @@ class Products extends Component {
                 <th></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className = 'row-table-selected'>
               {
                 this.props.productsFiltered.map(product => {
                   return (
