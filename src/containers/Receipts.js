@@ -24,7 +24,12 @@ import {
 } from '../actions/receipts'
 
 import ViewReceipt from './ViewReceipt'
-import '../styles/Receipts.css'
+
+const formControlSearchStyle = {
+  width: '50%',
+  display: 'inline-block',
+  marginLeft: '20px'
+}
 
 class Receipts extends Component {
 
@@ -39,7 +44,7 @@ class Receipts extends Component {
                 <ControlLabel>ID:</ControlLabel>
                 <FormControl
                   type = 'text'
-                  className = 'form-control-search'
+                  style = { formControlSearchStyle }
                   placeholder = 'ticket id'
                   onChange = { e =>
                     this.props.searchData.id = e.target.value
@@ -50,7 +55,7 @@ class Receipts extends Component {
                 <ControlLabel>Dia:</ControlLabel>
                 <FormControl
                   type = 'date'
-                  className = 'form-control-search'
+                  style = { formControlSearchStyle }
                   onChange = { e =>
                     this.props.searchData.day = e.target.value
                   }
@@ -60,7 +65,7 @@ class Receipts extends Component {
                 <ControlLabel>Cliente:</ControlLabel>
                 <FormControl
                   type = 'text'
-                  className = 'form-control-search'
+                  style = { formControlSearchStyle }
                   placeholder = 'Nombre del cliente'
                   onChange = { e =>
                     this.props.searchData.client = e.target.value
@@ -71,7 +76,7 @@ class Receipts extends Component {
                 <ControlLabel>Vendedor:</ControlLabel>
                 <FormControl
                   type = 'text'
-                  className = 'form-control-search'
+                  style = { formControlSearchStyle }
                   placeholder = 'Nombre del vendedor'
                   onChange = { e =>
                     this.props.searchData.seller = e.target.value
@@ -82,7 +87,7 @@ class Receipts extends Component {
                 <ControlLabel>Total:</ControlLabel>
                 <FormControl
                   type = 'number'
-                  className = 'form-control-search'
+                  style = { formControlSearchStyle }
                   placeholder = 'Total venta'
                   onChange = { e =>
                     this.props.searchData.total = e.target.value
@@ -93,7 +98,7 @@ class Receipts extends Component {
                 <ControlLabel>Estado:</ControlLabel>
                 <FormControl
                   componentClass = 'select'
-                  className = 'form-control-search'
+                  style = { formControlSearchStyle }
                   defaultValue = 'todos'
                   onChange = { e =>
                     this.props.searchData.state = e.target.value
@@ -114,7 +119,7 @@ class Receipts extends Component {
               ></RaisedButton>
               <Table responsive>
                 <thead>
-                  <tr className = 'center-text-head'>
+                  <tr className = 'text-center-header-table'>
                     <th>ID</th>
                     <th>Fecha</th>
                     <th>Hora</th>
@@ -129,7 +134,7 @@ class Receipts extends Component {
                   {
                     this.props.sales.map(sale => {
                       return (
-                        <tr key = { sale._id } className = 'center-text'>
+                        <tr key = { sale._id } className = 'text-center'>
                           <td>{ String(sale._id).substring(0, 8) }</td>
                           <td>{ moment.utc(sale.date).format('DD/MM/YY') }</td>
                           <td>{ moment.utc(sale.date).format('hh:mm:ss a') }</td>
@@ -137,10 +142,14 @@ class Receipts extends Component {
                           <td>{ sale.seller }</td>
                           <td>{ sale.total }</td>
                           <td className = {
-                            (sale.state === 'Pagado' ? 'green-color-state' : (sale.state === 'Credito' ? 'red-color-state' : '') )
+                            (
+                              sale.state === 'Pagado' ?
+                              'green-color-bold' :
+                              (sale.state === 'Credito' ? 'red-color-bold' : '')
+                            )
                           }>
                             { sale.state }</td>
-                          <td className = 'spread-items-search'>
+                          <td className = 'spread-two-icons'>
                             <i className = 'fa fa-eye fa-lg' id = { sale._id } onClick = { (e) =>
                               this.props.showCompleteReceipt(e.target.id)
                             }></i>

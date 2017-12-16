@@ -28,7 +28,11 @@ import {
   visibleFormDebt
 } from '../actions/receipts'
 
-import '../styles/ViewReceipt.css'
+const selectStateStyle = {
+  width: '25%',
+  display: 'inline-block',
+  marginLeft: '20px'
+}
 
 class ViewReceipt extends Component {
 
@@ -69,7 +73,7 @@ class ViewReceipt extends Component {
                 <FormControl
                   componentClass = 'select'
                   value = { this.props.stateSale }
-                  className = 'select-state'
+                  style = { selectStateStyle }
                   onChange = { e => {
                       let status = false
                       if (e.target.value === 'Credito') {
@@ -88,10 +92,10 @@ class ViewReceipt extends Component {
               <div hidden = { !this.props.isVisibleFormDebt }>
                 <Table responsive>
                   <thead>
-                    <tr className = 'center-text-head-debts'>
+                    <tr className = 'text-center-header-table'>
                       <th>Fecha</th>
                       <th>Monto</th>
-                      <th className = 'color-credit'>
+                      <th className = 'red-color'>
                         <h4>
                           { 
                             _.round(parseFloat(this.props.saleSelected.total) -
@@ -141,7 +145,7 @@ class ViewReceipt extends Component {
                     {
                       this.props.saleSelectedCredits.map((credit, index) => {
                         return (
-                          <tr key = { index } className = 'center-text-credits'>
+                          <tr key = { index } className = 'text-center'>
                             <td>{ credit.date.split('T')[0] }</td>
                             <td>{ credit.amount }</td>
                             <td>

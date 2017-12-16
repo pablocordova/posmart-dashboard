@@ -5,7 +5,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import {
   Table,
   FormGroup,
-  FormControl
+  FormControl,
+  Grid,
+  Row
 } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import swal from 'sweetalert2'
@@ -31,72 +33,76 @@ class Users extends Component {
   render() {
     return (
       <MuiThemeProvider>
-        <div>
-          <h2>USUARIOS</h2>
-          <FormGroup>
-            <FormControl
-              type = 'text'
-              placeholder = 'Buscar usuario'
-              onChange = { e =>
-                this.props.filterUsers(e.target.value)
+      <Grid>
+        <Row>
+          <div>
+            <h2>USUARIOS</h2>
+            <FormGroup>
+              <FormControl
+                type = 'text'
+                placeholder = 'Buscar usuario'
+                onChange = { e =>
+                  this.props.filterUsers(e.target.value)
+                }
+              />
+            </FormGroup>
+            <RaisedButton
+              label = 'NUEVO'
+              primary = { true }
+              onClick = { () =>
+                this.props.showCreateUser(true)
               }
-            />
-          </FormGroup>
-          <RaisedButton
-            label = 'NUEVO'
-            primary = { true }
-            onClick = { () =>
-              this.props.showCreateUser(true)
-            }
-          ></RaisedButton>
-          <Table responsive>
-            <thead>
-              <tr>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Tipo</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody className = 'row-table-selected'>
-              {
-                this.props.usersFiltered.map(user => {
-                  return (
-                    <tr key = { user._id } >
-                      <td>{ user.username }</td>
-                      <td>{ user.email }</td>
-                      <td>{ user.type }</td>
-                      <td>
-                        <i className = 'fa fa-pencil' id = { user._id } onClick = { (e) =>
-                          this.props.showModifyUser(e.target.id)
-                        }></i>
-                        <i className = 'fa fa-trash' id = { user._id } onClick = { (e) => {
-                          let deleteUserMethod = this.props.deleteUser
-                          let idUser = e.target.id
-                          swal({
-                            title: 'Esta seguro de eliminar el usuario?',
-                            type: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Si, borrarlo!',
-                            cancelButtonText: 'Cancelar'
-                          }).then(function (result) {
-                            if (result.value) {
-                              deleteUserMethod(idUser)
-                            }
-                          })
-                        }}
-                        ></i>
-                      </td>
-                    </tr>
-                  )
-                })
-              }
-            </tbody>
-          </Table>
-          <CreateUser />
-        </div>
+            ></RaisedButton>
+            <Table responsive>
+              <thead>
+                <tr className = 'text-center-header-table'>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Tipo</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody className = 'row-table-selected'>
+                {
+                  this.props.usersFiltered.map(user => {
+                    return (
+                      <tr key = { user._id } className = 'text-center'>
+                        <td>{ user.username }</td>
+                        <td>{ user.email }</td>
+                        <td>{ user.type }</td>
+                        <td className = 'spread-two-icons'>
+                          <i className = 'fa fa-pencil fa-lg' id = { user._id } onClick = { (e) =>
+                            this.props.showModifyUser(e.target.id)
+                          }></i>
+                          <i className = 'fa fa-trash fa-lg' id = { user._id } onClick = { (e) => {
+                            let deleteUserMethod = this.props.deleteUser
+                            let idUser = e.target.id
+                            swal({
+                              title: 'Esta seguro de eliminar el usuario?',
+                              type: 'warning',
+                              showCancelButton: true,
+                              confirmButtonColor: '#3085d6',
+                              cancelButtonColor: '#d33',
+                              confirmButtonText: 'Si, borrarlo!',
+                              cancelButtonText: 'Cancelar'
+                            }).then(function (result) {
+                              if (result.value) {
+                                deleteUserMethod(idUser)
+                              }
+                            })
+                          }}
+                          ></i>
+                        </td>
+                      </tr>
+                    )
+                  })
+                }
+              </tbody>
+            </Table>
+            <CreateUser />
+          </div>
+        </Row>
+      </Grid>
       </MuiThemeProvider>
     )
   }

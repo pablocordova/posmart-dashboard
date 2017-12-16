@@ -4,11 +4,11 @@ import { Nav, Navbar, NavItem } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { connect } from 'react-redux'
 
-import Products from '../components/Products'
-import Receipts from '../containers/Receipts'
-import Users from '../containers/Users'
-import Setting from '../containers/Setting'
-import Login from '../containers/Login'
+import Products from './Products'
+import Receipts from './Receipts'
+import Users from './Users'
+import Setting from './Setting'
+import Login from './Login'
 
 let BASE_URL = ''
 

@@ -26,7 +26,6 @@ import CreatePrice from '../containers/CreatePrice'
 import OperationsInventory from '../containers/OperationsInventory'
 
 import 'font-awesome/css/font-awesome.min.css';
-import '../styles/Products.css'
 
 class Products extends Component {
 
@@ -61,7 +60,7 @@ class Products extends Component {
           </FormGroup>
           <Table responsive>
             <thead>
-              <tr className = 'center-text-head'>
+              <tr className = 'text-center-header-table'>
                 <th>Cantidad</th>
                 <th>Paquete minimo</th>
                 <th>Categoria</th>
@@ -74,13 +73,13 @@ class Products extends Component {
               {
                 this.props.productsFiltered.map(product => {
                   return (
-                    <tr key = { product._id } className = 'center-text'>
+                    <tr key = { product._id } className = 'text-center'>
                       <td>{ product.quantity }</td>
                       <td>{ product.minimumUnit }</td>
                       <td>{ product.category }</td>
                       <td>{ product.name }</td>
                       <td>{ product.unitCost }</td>
-                      <td className = 'spread-items'>
+                      <td className = 'spread-four-icons'>
                         <i className = 'fa fa-pencil fa-lg' id = { product._id } onClick = { (e) =>
                           this.props.modifyProduct(e.target.id)
                         }></i>

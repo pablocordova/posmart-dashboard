@@ -1,5 +1,44 @@
+.green-color {
+  color: green;
+}
+
+.green-color-bold {
+  color: green;
+  font-weight: bold;
+}
+
+.red-color {
+  color: red;
+}
+
+.red-color-bold {
+  color: red;
+  font-weight: bold;
+}
+
 .row-table-selected tr:hover{
   background-color: #757575;
   cursor: pointer;
   color: white !important;
 }
+
+.spread-two-icons > i {
+  display: inline-block;
+  width: 50%;
+  text-align: center;
+}
+
+.spread-four-icons > i {
+  display: inline-block;
+  width: 25%;
+  text-align: center;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-center-header-table > th {
+  text-align: center !important;
+}
+
