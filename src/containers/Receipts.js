@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import RaisedButton from 'material-ui/RaisedButton'
 import moment from 'moment'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import swal from 'sweetalert2'
 
 import {
   ControlLabel,
@@ -18,6 +19,7 @@ import 'font-awesome/css/font-awesome.min.css';
 
 // -- Own Modules
 import {
+  deleteReceipt,
   getReceipts,
   loadCredits,
   showCompleteReceipt
@@ -153,6 +155,26 @@ class Receipts extends Component {
                             <i className = 'fa fa-eye fa-lg' id = { sale._id } onClick = { (e) =>
                               this.props.showCompleteReceipt(e.target.id)
                             }></i>
+                            <i className = 'fa fa-trash fa-lg' id = { sale._id } onClick = { (e) => {
+                              let deleteReceiptMethod = this.props.deleteReceipt
+                              let idSale = e.target.id
+                              let searchAfterDelete = this.props.searchData
+                              swal({
+                                title: 'Esta seguro de eliminar esta venta?',
+                                text: 'No será posible recuperarlo después!',
+                                type: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Si, borrarlo!',
+                                cancelButtonText: 'Cancelar'
+                              }).then(function (result) {
+                                if (result.value) {
+                                  deleteReceiptMethod(idSale, searchAfterDelete)
+                                }
+                              })
+                            }}
+                            ></i>
                           </td>
                         </tr>
                       )
@@ -179,6 +201,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    deleteReceipt(idReceipt, searchAfterDelete) {
+      dispatch(deleteReceipt(idReceipt))
+        .then(() => dispatch(getReceipts(searchAfterDelete)))
+    },
     getReceipts(data) {
       dispatch(getReceipts(data))
     },

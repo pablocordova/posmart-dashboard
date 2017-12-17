@@ -67,6 +67,27 @@ const deleteCredit = (idSale, index) => {
 
 }
 
+const deleteReceipt = (idSale) => {
+
+  return dispatch => {
+    return axios.delete(
+      SERVER_PATH + SALES_PATH + '/' + idSale,
+      {
+        headers: {
+          'Authorization': 'JWT ' + localStorage.getItem('token')
+        }
+      }
+    )
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err=> {
+        console.log(err)
+      })
+  }
+
+}
+
 const hideCompleteReceipt = () => {
   return ({
     type: 'HIDE_COMPLETE_RECEIPT'
@@ -203,6 +224,7 @@ const visibleFormDebt = (state, option) => {
 export {
   addAdvancePay,
   deleteCredit,
+  deleteReceipt,
   hideCompleteReceipt,
   getReceipts,
   loadCredits,
