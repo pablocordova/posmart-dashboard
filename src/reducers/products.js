@@ -65,11 +65,16 @@ const products = (
         isVisibleCreateProducts: action.isVisibleCreateProducts
       }
     case 'FILTER_PRODUCTS':
+      let productsCopy = state.products
+      let wordsToSearch = action.string.toLowerCase().split(' ')
+      for (let word of wordsToSearch) {
+        productsCopy = productsCopy.filter(e =>{
+          return e.name.toLowerCase().indexOf(word) !== -1
+        })
+      }
       return {
         ...state,
-        productsFiltered: state.products.filter(e =>{
-          return e.name.toLowerCase().indexOf(action.string.toLowerCase()) !== -1
-        })
+        productsFiltered: productsCopy
       }
     case 'LOAD_MINIMUN_UNITS':
       return {
