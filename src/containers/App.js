@@ -26,16 +26,9 @@ switch (process.env.REACT_APP_ENV) {
 
 class App extends Component {
 
-  constructor(){
-    super()
-    this.state = {
-      token: '',
-      username: ''
-    }
-  }
-
   logout() {
     localStorage.removeItem('token')
+    localStorage.removeItem('businessNameDashboard')
     window.location = '/'
   }
 
@@ -80,7 +73,7 @@ class App extends Component {
           <Navbar inverse collapseOnSelect>
             <Navbar.Header>
               <Navbar.Brand>
-                <a href='/'>POSMART</a>
+                <a href=''>{ localStorage.getItem('businessNameDashboard') }</a>
               </Navbar.Brand>
               <Navbar.Toggle />
             </Navbar.Header>
@@ -104,10 +97,7 @@ class App extends Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    username: state.login.username,
-    token: state.login.token
-  }
+  return state
 }
 
 export default connect(
