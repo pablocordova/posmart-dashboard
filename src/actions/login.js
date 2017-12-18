@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const LOGIN_PATH = '/login'
+const LOGIN_PATH = '/login/business'
 
 let SERVER_PATH = ''
 let BASE_URL = ''
@@ -23,8 +23,7 @@ const login = (email, pass) => {
   return () => {
     return axios.post(SERVER_PATH + LOGIN_PATH, {
       email: email,
-      password: pass,
-      type: 'DASHBOARD'
+      password: pass
     })
       .then(response => {
         if (typeof response.data.token !== 'undefined') {

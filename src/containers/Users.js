@@ -58,7 +58,6 @@ class Users extends Component {
                 <tr className = 'text-center-header-table'>
                   <th>Username</th>
                   <th>Email</th>
-                  <th>Tipo</th>
                   <th></th>
                 </tr>
               </thead>
@@ -69,7 +68,6 @@ class Users extends Component {
                       <tr key = { user._id } className = 'text-center'>
                         <td>{ user.username }</td>
                         <td>{ user.email }</td>
-                        <td>{ user.type }</td>
                         <td className = 'spread-two-icons'>
                           <i className = 'fa fa-pencil fa-lg' id = { user._id } onClick = { (e) =>
                             this.props.showModifyUser(e.target.id)

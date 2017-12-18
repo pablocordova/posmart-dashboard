@@ -9,6 +9,7 @@ import Receipts from './Receipts'
 import Users from './Users'
 import Setting from './Setting'
 import Login from './Login'
+import Register from './Register'
 
 let BASE_URL = ''
 
@@ -48,6 +49,9 @@ class App extends Component {
           <LinkContainer to = '/login'>
             <NavItem eventKey = {1}>Login</NavItem>
           </LinkContainer>
+          <LinkContainer to = '/register'>
+            <NavItem eventKey = {1}>Register</NavItem>
+          </LinkContainer>
         </Nav>
       )
     } else {
@@ -86,6 +90,7 @@ class App extends Component {
           </Navbar>
 
           <Route path = '/login' component = { Login } />
+          <Route path = '/register' component = { Register } />
           <Route path = '/setting' component = { Setting } />
           <Route path = '/products' component = { Products } />
           <Route path = '/receipts' component = { Receipts } />

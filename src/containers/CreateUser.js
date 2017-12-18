@@ -117,19 +117,6 @@ class CreateUser extends Component {
                 </Checkbox>
               </div>
             </FormGroup>
-            <FormGroup>
-              <ControlLabel>Tipo de usuario</ControlLabel>
-              <FormControl
-                componentClass = 'select'
-                defaultValue = 'APP'
-                onChange = { e =>
-                  this.props.user.type = e.target.value
-                }
-              >
-                <option value = 'APP' key = 'APP'>APP</option>
-                <option value = 'DASHBOARD' key = 'DASHBOARD'>DASHBOARD</option>
-              </FormControl>
-            </FormGroup>
           </Modal.Body>
           <Modal.Footer>
             <RaisedButton

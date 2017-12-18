@@ -15,7 +15,6 @@ const users = (
         settings: true,
         users: false
       },
-      type: '',
       username: ''
     },
     users: [],
@@ -60,8 +59,7 @@ const users = (
             sales: true,
             settings: true,
             users: false
-          },
-          type: 'APP',
+          }
         },
         titleUser: 'CREAR USUARIO'
       }
@@ -86,8 +84,7 @@ const users = (
             sales: selected.permissions.sales,
             settings: selected.permissions.settings,
             users: selected.permissions.users
-          },
-          type: selected.type
+          }
         }
       }
     }
