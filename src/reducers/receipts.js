@@ -1,4 +1,6 @@
 const receipts = ( state = {
+  numSaleDebts: 0,
+  totalSaleDebts: 0,
   sales: [],
   saleSelected: {
     products: [],
@@ -29,9 +31,20 @@ const receipts = ( state = {
         isVisibleCompleteReceipt: false
       }
     case 'LOAD_RECEIPTS':
+      // Calculate more info, TODO
+      let numSaleDebts = 0
+      let totalSaleDebts =  0
+      for (let receipt of action.receipts) {
+        if (receipt.state === 'Credito') {
+          numSaleDebts += 1
+          totalSaleDebts += receipt.restDebt
+        }
+      }
       return {
         ...state,
-        sales: action.receipts
+        sales: action.receipts,
+        numSaleDebts: numSaleDebts,
+        totalSaleDebts: totalSaleDebts
       }
     case 'LOAD_CREDITS': {
       let credits = []

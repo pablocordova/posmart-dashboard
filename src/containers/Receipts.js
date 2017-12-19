@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 import RaisedButton from 'material-ui/RaisedButton'
+import Checkbox from 'material-ui/Checkbox';
 import moment from 'moment'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import swal from 'sweetalert2'
@@ -33,7 +34,18 @@ const formControlSearchStyle = {
   marginLeft: '20px'
 }
 
+const detailsButtonStyle =  {
+  marginTop: '10px'
+}
+
 class Receipts extends Component {
+
+  constructor() {
+    super()
+    this.state = {
+      showMoreDetails: false
+    }
+  }
 
   render() {
     return (
@@ -119,6 +131,31 @@ class Receipts extends Component {
                   this.props.getReceipts(this.props.searchData)
                 }
               ></RaisedButton>
+              <div>
+                <Checkbox
+                  style = { detailsButtonStyle }
+                  label = 'Mas detalles'
+                  onCheck = { e => {
+                    this.setState({
+                      showMoreDetails: e.target.checked
+                    })
+                  }}
+                />
+              </div>
+              <div hidden = { !this.state.showMoreDetails }>
+                <div>
+                  Nro. Ventas con deudas:
+                  {
+                    this.props.numSaleDebts
+                  }
+                </div>
+                <div>
+                  Total Ventas con deudas:
+                  {
+                    this.props.totalSaleDebts
+                  }
+                </div>
+              </div>
               <Table responsive>
                 <thead>
                   <tr className = 'text-center-header-table'>
@@ -129,6 +166,8 @@ class Receipts extends Component {
                     <th>Vendedor</th>
                     <th>Total</th>
                     <th>Estado</th>
+                    <th hidden = { !this.state.showMoreDetails }>Saldo</th>
+                    <th hidden = { !this.state.showMoreDetails }>Deuda</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -151,6 +190,8 @@ class Receipts extends Component {
                             )
                           }>
                             { sale.state }</td>
+                          <td hidden = { !this.state.showMoreDetails }>{ sale.paidDebt }</td>
+                          <td hidden = { !this.state.showMoreDetails }>{ sale.restDebt }</td>
                           <td className = 'spread-two-icons'>
                             <i className = 'fa fa-eye fa-lg' id = { sale._id } onClick = { (e) =>
                               this.props.showCompleteReceipt(e.target.id)
@@ -193,7 +234,10 @@ class Receipts extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state.receipts.sales)
   return {
+    numSaleDebts: state.receipts.numSaleDebts,
+    totalSaleDebts: state.receipts.totalSaleDebts,
     sales: state.receipts.sales,
     searchData: state.receipts.searchData
   }
