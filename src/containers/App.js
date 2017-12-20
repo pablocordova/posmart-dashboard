@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 
 import Products from './Products'
 import Receipts from './Receipts'
+import Buys from './Buys'
 import Users from './Users'
 import Setting from './Setting'
 import Login from './Login'
@@ -43,7 +44,7 @@ class App extends Component {
             <NavItem eventKey = {1}>Login</NavItem>
           </LinkContainer>
           <LinkContainer to = '/register'>
-            <NavItem eventKey = {1}>Register</NavItem>
+            <NavItem eventKey = {2}>Register</NavItem>
           </LinkContainer>
         </Nav>
       )
@@ -56,13 +57,16 @@ class App extends Component {
           <LinkContainer to = '/receipts'>
             <NavItem eventKey = {2}>Recibos</NavItem>
           </LinkContainer>
+          <LinkContainer to = '/buys'>
+            <NavItem eventKey = {3}>Compras</NavItem>
+          </LinkContainer>
           <LinkContainer to = '/users'>
-            <NavItem eventKey = {2}>Usuarios</NavItem>
+            <NavItem eventKey = {4}>Usuarios</NavItem>
           </LinkContainer>
           <LinkContainer to = '/setting'>
-            <NavItem eventKey = {3}>Configuración</NavItem>
+            <NavItem eventKey = {5}>Configuración</NavItem>
           </LinkContainer>
-          <NavItem eventKey = {4} onClick = { this.logout }>Salir</NavItem>
+          <NavItem eventKey = {6} onClick = { this.logout }>Salir</NavItem>
         </Nav>
       )
     }
@@ -87,6 +91,7 @@ class App extends Component {
           <Route path = '/setting' component = { Setting } />
           <Route path = '/products' component = { Products } />
           <Route path = '/receipts' component = { Receipts } />
+          <Route path = '/buys' component = { Buys } />
           <Route path = '/users' component = { Users } />
         </div>
       </BrowserRouter>
