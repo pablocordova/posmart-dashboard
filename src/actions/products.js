@@ -117,9 +117,9 @@ const showCreatePrice = (idProduct) => {
   })
 }
 
-const showInventory= (idProduct) => {
+const showCosts= (idProduct) => {
   return ({
-    type: 'SHOW_INVENTORY',
+    type: 'SHOW_COSTS',
     idProduct
   })
 }
@@ -130,9 +130,9 @@ const hideCreatePrice = () => {
   })
 }
 
-const hideInventory = () => {
+const hideCosts = () => {
   return ({
-    type: 'HIDE_INVENTORY'
+    type: 'HIDE_COSTS'
   })
 }
 
@@ -231,7 +231,7 @@ export {
   deleteProduct,
   filterProducts,
   hideCreatePrice,
-  hideInventory,
+  hideCosts,
   loadCategories,
   loadMinimunUnits,
   loadPrices,
@@ -239,7 +239,7 @@ export {
   modifyProduct,
   showCreateProduct,
   showCreatePrice,
-  showInventory,
+  showCosts,
   updateProduct,
   updateSelectedPrices
 }

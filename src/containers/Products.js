@@ -19,11 +19,11 @@ import {
   modifyProduct,
   showCreateProduct,
   showCreatePrice,
-  showInventory
+  showCosts
 } from '../actions/products'
 import CreateProduct from '../containers/CreateProduct'
 import CreatePrice from '../containers/CreatePrice'
-import OperationsInventory from '../containers/OperationsInventory'
+import ViewCosts from '../containers/ViewCosts'
 
 import 'font-awesome/css/font-awesome.min.css';
 
@@ -92,7 +92,7 @@ class Products extends Component {
                         <i className = 'fa fa-cart-plus fa-lg' id = {
                           product._id
                         } onClick = { (e) =>
-                          this.props.showInventory(e.target.id)
+                          this.props.showCosts(e.target.id)
                         }></i>
                         <i className = 'fa fa-trash fa-lg' id = { product._id } onClick = { (e) => {
                           let deleteProductMethod = this.props.deleteProduct
@@ -122,7 +122,7 @@ class Products extends Component {
           </Table>
           <CreateProduct />
           <CreatePrice />
-          <OperationsInventory />
+          <ViewCosts />
         </div>
       </MuiThemeProvider>
         </Row>
@@ -160,8 +160,8 @@ const mapDispatchToProps = dispatch => {
     showCreatePrice(idProduct) {
       dispatch(showCreatePrice(idProduct))
     },
-    showInventory(idProduct) {
-      dispatch(showInventory(idProduct))
+    showCosts(idProduct) {
+      dispatch(showCosts(idProduct))
     }
   }
 }

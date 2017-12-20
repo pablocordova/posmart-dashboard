@@ -3,7 +3,7 @@ const products = (
     products: [],
     isVisibleCreateProducts: false,
     isVisibleCreatePrice: false,
-    isVisibleOperationsInventory: false,
+    isVisibleViewCosts: false,
     productsFiltered: [],
     product: {
       id: '',
@@ -130,16 +130,10 @@ const products = (
           product._id === action.idProduct
         ).pop()
       }
-    case 'SHOW_INVENTORY':
+    case 'SHOW_COSTS':
       return {
         ...state,
-        isVisibleOperationsInventory: true,
-        inventory: {
-          ...state.price,
-          product: action.idProduct,
-          quantity: 0,
-          unitCost: 0
-        },
+        isVisibleViewCosts: true,
         productSelected: state.products.filter( product =>
           product._id === action.idProduct
         ).pop()
@@ -149,10 +143,10 @@ const products = (
         ...state,
         isVisibleCreatePrice: false
       }
-    case 'HIDE_INVENTORY':
+    case 'HIDE_COSTS':
       return {
         ...state,
-        isVisibleOperationsInventory: false
+        isVisibleViewCosts: false
       }
     case 'UPDATE_SELECTED_PRICES':
       return {
