@@ -111,7 +111,7 @@ const receipts = ( state = {
           ...state.formChoseProduct,
           itemsPricesChosen: action.allProducts[0].prices[0].items,
           pricesProductChosen: action.allProducts[0].prices,
-          idProductChosen: action.allProducts._id,
+          idProductChosen: action.allProducts[0]._id,
           quantity: 0,
           measure: action.allProducts[0].prices[0].name,
           description: action.allProducts[0].name,

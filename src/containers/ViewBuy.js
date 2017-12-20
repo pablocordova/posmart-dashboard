@@ -29,14 +29,12 @@ import {
   updatePrices
 } from '../actions/buys'
 
+import swal from 'sweetalert2'
+
 const mesureStyle = {
   width: '130px'
 }
-/*
-const descriptionStyle = {
-  width: '1px'
-}
-*/
+
 class ViewBuy extends Component {
 
   constructor() {
@@ -226,6 +224,36 @@ class ViewBuy extends Component {
                   label = 'GUARDAR'
                   primary = { true }
                   onClick = { () => {
+                    let saveBuyMethod = this.props.saveBuy
+                    let hideCompleteBuyMethod = this.props.hideCompleteBuy
+                    //--------------------------
+                    let id = this.props.idViewBuy
+                    let date = this.props.dateViewBuy
+                    let company = this.props.companyViewBuy
+                    let total = this.props.totalViewBuy
+                    let product = this.props.productsBuy
+                    swal({
+                      title: 'Ha revizado que todo este correcto?',
+                      text: 'No será posible borralo después',
+                      type: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#3085d6',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Si, Guardarlo!',
+                      cancelButtonText: 'Cancelar'
+                    }).then(function (result) {
+                      if (result.value) {
+                        saveBuyMethod(
+                          id,
+                          date,
+                          company,
+                          total,
+                          product
+                        )
+                        hideCompleteBuyMethod()
+                      }
+                    })
+                    /*
                     this.props.saveBuy(
                       this.props.idViewBuy,
                       this.props.dateViewBuy,
@@ -234,6 +262,7 @@ class ViewBuy extends Component {
                       this.props.productsBuy
                     )
                     this.props.hideCompleteBuy()
+                    */
                   }}
                 />
               </label>
