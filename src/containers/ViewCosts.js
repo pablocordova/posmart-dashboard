@@ -4,15 +4,9 @@
 // Main module
 import React, { Component } from 'react'
 // Other modules
-import { Modal, Table } from 'react-bootstrap'
+import { Modal } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import {
-  ControlLabel,
-  FormGroup,
-  FormControl
-} from 'react-bootstrap'
 
-import moment from 'moment'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import RaisedButton from 'material-ui/RaisedButton'
 
