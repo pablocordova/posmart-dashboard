@@ -9,10 +9,17 @@ import { connect } from 'react-redux'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import RaisedButton from 'material-ui/RaisedButton'
+import _ from 'lodash'
+
+import {
+  FormControl
+} from 'react-bootstrap'
 
 // -- Own Modules
 import {
-  hideCosts
+  changeViewCost,
+  hideCosts,
+  updateUnitCost
 } from '../actions/products'
 
 class ViewCosts extends Component {
@@ -23,18 +30,41 @@ class ViewCosts extends Component {
         <div>
           <Modal show = { this.props.isVisibleViewCosts }>
             <Modal.Header>
-              <Modal.Title>COSTOS </Modal.Title>
+              <Modal.Title>COSTOS - { this.props.productSelected.name } </Modal.Title>
             </Modal.Header>
             <Modal.Body>
               {
-                this.props.productSelected.prices.map( (price, index) => {
-                  let cost = price.items * this.props.productSelected.unitCost
-                  let name = price.name
+                this.props.pricesViewCost.map( (price, index) => {
                   return(
-                    <div key = { index }>{ name } : { cost }</div>
+                    <div id = { index } key = { index }>
+                      { this.props.productSelected.prices.length > 0 ?
+                        this.props.productSelected.prices[index].name : ''
+                      } :
+                      <FormControl
+                        type = 'number'
+                        value = { price }
+                        onChange = { e => {
+                          this.props.changeViewCost(e.target.parentNode.id, e.target.value)
+                        }}
+                      />
+                    </div>
                   )
                 })
               }
+            <RaisedButton
+              label = 'GRABAR'
+              primary = { true }
+              onClick = { () => {
+                let unitCost = _.round(
+                  this.props.pricesViewCost[0] / this.props.productSelected.prices[0].items,
+                  10
+                )
+                this.props.updateUnitCost(
+                  unitCost,
+                  this.props.productSelected._id
+                )
+              }}
+            />
             </Modal.Body>
             <Modal.Footer>
               <RaisedButton
@@ -55,15 +85,23 @@ class ViewCosts extends Component {
 
 const mapStateToProps = state => {
   return {
-    productSelected: state.products.productSelected,
-    isVisibleViewCosts: state.products.isVisibleViewCosts
+    pricesViewCost: state.products.pricesViewCost,
+    isVisibleViewCosts: state.products.isVisibleViewCosts,
+    pricesViewCosts: state.products.pricesViewCosts,
+    productSelected: state.products.productSelected
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
+    changeViewCost(index, value) {
+      dispatch(changeViewCost(index, value))
+    },
     hideCosts() {
       dispatch(hideCosts())
+    },
+    updateUnitCost(unitCost, idProduct) {
+      dispatch(updateUnitCost(unitCost, idProduct))
     }
   }
 }

@@ -9,6 +9,7 @@ const PRODUCTS_PATH = '/products'
 const GET_PRICES_PATH_POST = '/prices'
 const POST_PRICE_PATH = '/price'
 const POST_INVENTORY_PATH = '/entry'
+const UNIT_COST_PATH = '/cost'
 
 axios.defaults.headers.common['Authorization'] = 'JWT ' + localStorage.getItem('token')
 
@@ -37,6 +38,14 @@ const loadPrices = (product) => {
         })
       })
   }
+}
+
+const changeViewCost = (index, value) => {
+  return ({
+    type: 'CHANGE_VIEW_COST',
+    indexViewCost: index,
+    valueViewCost: value
+  })
 }
 
 const createPrice = (price) => {
@@ -187,6 +196,30 @@ const updateSelectedPrices = (idProduct) => {
   }
 }
 
+const updateUnitCost = (unitCost, idProduct) => {
+
+  return dispatch => {
+    return axios.put(
+      SERVER_PATH + PRODUCTS_PATH + '/' + idProduct + UNIT_COST_PATH,
+      {
+        unitCost: unitCost
+      },
+      {
+        headers: {
+          'Authorization': 'JWT ' + localStorage.getItem('token')
+        }
+      }
+    )
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err=> {
+        console.log(err)
+      })
+  }
+
+}
+
 const deletePrice = (idProduct, indexPrice) => {
   return () => {
     return axios.delete(
@@ -224,6 +257,7 @@ const deleteProduct = (idProduct) => {
 }
 
 export {
+  changeViewCost,
   createInventory,
   createPrice,
   createProduct,
@@ -241,5 +275,6 @@ export {
   showCreatePrice,
   showCosts,
   updateProduct,
-  updateSelectedPrices
+  updateSelectedPrices,
+  updateUnitCost
 }

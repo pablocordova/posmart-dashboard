@@ -25,6 +25,8 @@ import CreateProduct from '../containers/CreateProduct'
 import CreatePrice from '../containers/CreatePrice'
 import ViewCosts from '../containers/ViewCosts'
 
+import _ from 'lodash'
+
 import 'font-awesome/css/font-awesome.min.css';
 
 class Products extends Component {
@@ -78,7 +80,7 @@ class Products extends Component {
                       <td>{ product.minimumUnit }</td>
                       <td>{ product.category }</td>
                       <td>{ product.name }</td>
-                      <td>{ product.unitCost }</td>
+                      <td>{ _.round(product.unitCost, 2) }</td>
                       <td className = 'spread-four-icons'>
                         <i className = 'fa fa-pencil fa-lg' id = { product._id } onClick = { (e) =>
                           this.props.modifyProduct(e.target.id)
@@ -91,9 +93,11 @@ class Products extends Component {
                         }></i>
                         <i className = 'fa fa-cart-plus fa-lg' id = {
                           product._id
-                        } onClick = { (e) =>
-                          this.props.showCosts(e.target.id)
-                        }></i>
+                        } onClick = { (e) => {
+                          if (product.prices.length > 0) {
+                            this.props.showCosts(e.target.id)
+                          }
+                        }}></i>
                         <i className = 'fa fa-trash fa-lg' id = { product._id } onClick = { (e) => {
                           let deleteProductMethod = this.props.deleteProduct
                           let idProduct = e.target.id

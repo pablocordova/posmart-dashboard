@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 const products = (
   state = {
     products: [],
@@ -32,12 +34,27 @@ const products = (
       quantity: 0,
       unitCost: 0,
       product: ''
-    }
+    },
+    pricesViewCost: []
   },
   action
 ) => {
 
   switch (action.type) {
+    case 'CHANGE_VIEW_COST':
+      let cost = ''
+      if (action.valueViewCost) {
+        cost = parseFloat(action.valueViewCost)
+      }
+      return {
+        ...state,
+        pricesViewCost: state.pricesViewCost.map((price, index) => {
+          return index === parseInt(action.indexViewCost, 10) ?
+          cost : cost !== '' ?
+          _.round((parseFloat(state.productSelected.prices[index].items) * cost) /
+          parseFloat(state.productSelected.prices[action.indexViewCost].items), 10) : cost
+        })
+      }
     case 'LOAD_PRICES':
       return {
         ...state,
@@ -131,12 +148,17 @@ const products = (
         ).pop()
       }
     case 'SHOW_COSTS':
+      let product = state.products.filter( product =>
+        product._id === action.idProduct
+      ).pop()
+      let prices = product.prices.map( price => {
+        return _.round(price.items * product.unitCost, 10)
+      })
       return {
         ...state,
         isVisibleViewCosts: true,
-        productSelected: state.products.filter( product =>
-          product._id === action.idProduct
-        ).pop()
+        pricesViewCost: prices,
+        productSelected: product
       }
     case 'HIDE_CREATE_PRICE':
       return {
