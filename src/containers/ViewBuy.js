@@ -13,7 +13,6 @@ import {
 } from 'react-bootstrap'
 
 //import moment from 'moment'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import RaisedButton from 'material-ui/RaisedButton'
 //import _ from 'lodash'
 
@@ -35,6 +34,14 @@ const mesureStyle = {
   width: '130px'
 }
 
+const headerModalStyle = {
+  textAlign: 'center',
+  background: '#000000',
+  color: 'white',
+  paddingBottom: '10px',
+  paddingTop: '15px'
+}
+
 class ViewBuy extends Component {
 
   constructor() {
@@ -46,237 +53,224 @@ class ViewBuy extends Component {
 
   render() {
     return (
-      <MuiThemeProvider>
-        <div>
-          <Modal show = { this.props.isVisibleFormBuy }>
-            <Modal.Header>
-              <Modal.Title>COMPRA
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-            <FormGroup>
-              <ControlLabel>ID:</ControlLabel>
-              <label hidden = { !this.props.onlyShowBuy }>{ this.props.buySelected.id }</label>
-              <label hidden = { this.props.onlyShowBuy }>
-                <FormControl
-                  type = 'text'
-                  value = { this.props.idViewBuy }
-                  onChange = { e =>
-                    this.props.changeIdViewBuy(e.target.value)
-                  }
-                />
-              </label>
-            </FormGroup>
-            <FormGroup>
-              <ControlLabel>Dia:</ControlLabel>
-              <label hidden = { !this.props.onlyShowBuy }>{ this.props.buySelected.date }</label>
-              <label hidden = { this.props.onlyShowBuy }>
-                <FormControl
-                  type = 'date'
-                  value = { this.props.dateViewBuy }
-                  onChange = { e =>
-                    this.props.changeDateViewBuy(e.target.value)
-                  }
-                />
-              </label>
-            </FormGroup>
-            <FormGroup>
-              <ControlLabel>Empresa:</ControlLabel>
-              <label hidden = { !this.props.onlyShowBuy }>{ this.props.buySelected.company }</label>
-              <label hidden = { this.props.onlyShowBuy }>
-                <FormControl
-                  type = 'text'
-                  value = { this.props.companyViewBuy }
-                  onChange = { e =>
-                    this.props.changeCompanyViewBuy(e.target.value)
-                  }
-                />
-              </label>
-            </FormGroup>
-            <Table responsive>
-              <thead>
-                <tr className = 'text-center-header-table'>
-                  <th>Descripcion</th>
-                  <th>Cantidad</th>
-                  <th style = { mesureStyle }>Medida</th>
-                  <th>Total</th>
-                  <th hidden = { this.props.onlyShowBuy } ></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr key = { 1 } hidden = { this.props.onlyShowBuy } >
-                  <td>
-                    <FormControl
-                      componentClass = 'select'
-                      onChange = { e => {
-                        this.setState({
-                          MeasureRealIndex: 0
-                        })
-                        this.props.formChoseProduct.itemsPricesChosen =
-                          this.props.allProducts[e.target.value].prices[0].items
-                        this.props.formChoseProduct.measure =
-                          this.props.allProducts[e.target.value].prices[0].name
-                        this.props.formChoseProduct.pricesProductChosen =
-                          this.props.allProducts[e.target.value].prices
-                        this.props.formChoseProduct.idProductChosen =
-                          this.props.allProducts[e.target.value]._id
-                        this.props.formChoseProduct.description =
-                          this.props.allProducts[e.target.value].name
-
-                        this.props.updatePrices(this.props.allProducts[e.target.value].prices)
-                      }}
-                    >
-                      {
-                        this.props.allProducts.map((product, index) => {
-                          return (
-                            <option
-                              value = { index } key = { index }
-                            >
-                            { product.name }
-                            </option>
-                          )
-                        })
-                      }
-                    </FormControl>
-                  </td>
-                  <td>
-                    <FormControl
-                      type = 'number'
-                      onChange = { e =>
-                        this.props.formChoseProduct.quantity = e.target.value
-                      }
-                    />
-                  </td>
-                  <td>
-                    <FormControl
-                      componentClass = 'select'
-                      value = { this.state.MeasureRealIndex }
-                      onChange = { e => {
-                        this.setState({
-                          MeasureRealIndex: e.target.value
-                        })
-                        this.props.formChoseProduct.itemsPricesChosen =
-                          this.props.formChoseProduct.pricesProductChosen[e.target.value].items
-                        this.props.formChoseProduct.measure =
-                          this.props.formChoseProduct.pricesProductChosen[e.target.value].name
-                      }}
-                    >
-                      {
-                        this.props.formChoseProduct.pricesProductChosen.map((price, index) => {
-                          return (
-                            <option
-                              value = { index } key = { index }
-                            >
-                            { price.name }
-                            </option>
-                          )
-                        })
-                      }
-                    </FormControl>
-                  </td>
-                  <td>
-                    <FormControl
-                      type = 'number'
-                      onChange = { e =>
-                        this.props.formChoseProduct.total = e.target.value
-                      }
-                    />
-                  </td>
-                  <td hidden = { this.props.onlyShowBuy } >
-                    <RaisedButton
-                      label = '+'
-                      primary = { true }
-                      onClick = { () => {
-                        this.props.addProductBuy(
-                          this.props.formChoseProduct
-                        )
-                      }}
-                    ></RaisedButton>
-                  </td>
-                </tr>
-                {
-                  this.props.productsBuy.map((product, index) => {
-                    return (
-                      <tr key = { index } className = 'text-center'>
-                        <td>{ product.description }</td>
-                        <td>{ product.quantity }</td>
-                        <td>{ product.measure }</td>
-                        <td>{ product.total }</td>
-                        <td hidden = { this.props.onlyShowBuy } >
-                          <i className = 'fa fa-trash fa-lg' id = { index } onClick = { e =>
-                            this.props.deleteProductItem(e.target.id)
-                          }
-                          ></i>
-                        </td>
-                      </tr>
-                    )
-                  })
-                }
-              </tbody>
-            </Table>
-            <div className = 'pull-right'>
-              <label>TOTAL: { this.props.totalViewBuy }</label>
-            </div>
-            </Modal.Body>
-            <Modal.Footer>
-              <label hidden = { this.props.onlyShowBuy }>
-                <RaisedButton
-                  label = 'GUARDAR'
-                  primary = { true }
-                  onClick = { () => {
-                    let saveBuyMethod = this.props.saveBuy
-                    let hideCompleteBuyMethod = this.props.hideCompleteBuy
-                    //--------------------------
-                    let id = this.props.idViewBuy
-                    let date = this.props.dateViewBuy
-                    let company = this.props.companyViewBuy
-                    let total = this.props.totalViewBuy
-                    let product = this.props.productsBuy
-                    swal({
-                      title: 'Ha revizado que todo este correcto?',
-                      text: 'No será posible borralo después',
-                      type: 'warning',
-                      showCancelButton: true,
-                      confirmButtonColor: '#3085d6',
-                      cancelButtonColor: '#d33',
-                      confirmButtonText: 'Si, Guardarlo!',
-                      cancelButtonText: 'Cancelar'
-                    }).then(function (result) {
-                      if (result.value) {
-                        saveBuyMethod(
-                          id,
-                          date,
-                          company,
-                          total,
-                          product
-                        )
-                        hideCompleteBuyMethod()
-                      }
-                    })
-                    /*
-                    this.props.saveBuy(
-                      this.props.idViewBuy,
-                      this.props.dateViewBuy,
-                      this.props.companyViewBuy,
-                      this.props.totalViewBuy,
-                      this.props.productsBuy
-                    )
-                    this.props.hideCompleteBuy()
-                    */
-                  }}
-                />
-              </label>
-              <RaisedButton
-                label = 'CANCELAR'
-                primary = { true }
-                onClick = { () =>
-                  this.props.hideCompleteBuy()
+      <div>
+        <Modal show = { this.props.isVisibleFormBuy }>
+          <Modal.Header style = { headerModalStyle}>
+            <Modal.Title>COMPRA
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+          <FormGroup>
+            <ControlLabel>ID:</ControlLabel>
+            <label hidden = { !this.props.onlyShowBuy }>{ this.props.buySelected.id }</label>
+            <label hidden = { this.props.onlyShowBuy }>
+              <FormControl
+                type = 'text'
+                value = { this.props.idViewBuy }
+                onChange = { e =>
+                  this.props.changeIdViewBuy(e.target.value)
                 }
               />
-            </Modal.Footer>
-          </Modal>
-        </div>
-      </MuiThemeProvider>
+            </label>
+          </FormGroup>
+          <FormGroup>
+            <ControlLabel>Dia:</ControlLabel>
+            <label hidden = { !this.props.onlyShowBuy }>{ this.props.buySelected.date }</label>
+            <label hidden = { this.props.onlyShowBuy }>
+              <FormControl
+                type = 'date'
+                value = { this.props.dateViewBuy }
+                onChange = { e =>
+                  this.props.changeDateViewBuy(e.target.value)
+                }
+              />
+            </label>
+          </FormGroup>
+          <FormGroup>
+            <ControlLabel>Empresa:</ControlLabel>
+            <label hidden = { !this.props.onlyShowBuy }>{ this.props.buySelected.company }</label>
+            <label hidden = { this.props.onlyShowBuy }>
+              <FormControl
+                type = 'text'
+                value = { this.props.companyViewBuy }
+                onChange = { e =>
+                  this.props.changeCompanyViewBuy(e.target.value)
+                }
+              />
+            </label>
+          </FormGroup>
+          <Table responsive>
+            <thead>
+              <tr className = 'text-center-header-table'>
+                <th>Descripcion</th>
+                <th>Cantidad</th>
+                <th style = { mesureStyle }>Medida</th>
+                <th>Total</th>
+                <th hidden = { this.props.onlyShowBuy } ></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr key = { 1 } hidden = { this.props.onlyShowBuy } >
+                <td>
+                  <FormControl
+                    componentClass = 'select'
+                    onChange = { e => {
+                      this.setState({
+                        MeasureRealIndex: 0
+                      })
+                      this.props.formChoseProduct.itemsPricesChosen =
+                        this.props.allProducts[e.target.value].prices[0].items
+                      this.props.formChoseProduct.measure =
+                        this.props.allProducts[e.target.value].prices[0].name
+                      this.props.formChoseProduct.pricesProductChosen =
+                        this.props.allProducts[e.target.value].prices
+                      this.props.formChoseProduct.idProductChosen =
+                        this.props.allProducts[e.target.value]._id
+                      this.props.formChoseProduct.description =
+                        this.props.allProducts[e.target.value].name
+
+                      this.props.updatePrices(this.props.allProducts[e.target.value].prices)
+                    }}
+                  >
+                    {
+                      this.props.allProducts.map((product, index) => {
+                        return (
+                          <option
+                            value = { index } key = { index }
+                          >
+                          { product.name }
+                          </option>
+                        )
+                      })
+                    }
+                  </FormControl>
+                </td>
+                <td>
+                  <FormControl
+                    type = 'number'
+                    onChange = { e =>
+                      this.props.formChoseProduct.quantity = e.target.value
+                    }
+                  />
+                </td>
+                <td>
+                  <FormControl
+                    componentClass = 'select'
+                    value = { this.state.MeasureRealIndex }
+                    onChange = { e => {
+                      this.setState({
+                        MeasureRealIndex: e.target.value
+                      })
+                      this.props.formChoseProduct.itemsPricesChosen =
+                        this.props.formChoseProduct.pricesProductChosen[e.target.value].items
+                      this.props.formChoseProduct.measure =
+                        this.props.formChoseProduct.pricesProductChosen[e.target.value].name
+                    }}
+                  >
+                    {
+                      this.props.formChoseProduct.pricesProductChosen.map((price, index) => {
+                        return (
+                          <option
+                            value = { index } key = { index }
+                          >
+                          { price.name }
+                          </option>
+                        )
+                      })
+                    }
+                  </FormControl>
+                </td>
+                <td>
+                  <FormControl
+                    type = 'number'
+                    onChange = { e =>
+                      this.props.formChoseProduct.total = e.target.value
+                    }
+                  />
+                </td>
+                <td hidden = { this.props.onlyShowBuy } >
+                  <RaisedButton
+                    label = '+'
+                    primary = { true }
+                    onClick = { () => {
+                      this.props.addProductBuy(
+                        this.props.formChoseProduct
+                      )
+                    }}
+                  ></RaisedButton>
+                </td>
+              </tr>
+              {
+                this.props.productsBuy.map((product, index) => {
+                  return (
+                    <tr key = { index } className = 'text-center'>
+                      <td>{ product.description }</td>
+                      <td>{ product.quantity }</td>
+                      <td>{ product.measure }</td>
+                      <td>{ product.total }</td>
+                      <td hidden = { this.props.onlyShowBuy } >
+                        <i className = 'fa fa-trash fa-lg' id = { index } onClick = { e =>
+                          this.props.deleteProductItem(e.target.id)
+                        }
+                        ></i>
+                      </td>
+                    </tr>
+                  )
+                })
+              }
+            </tbody>
+          </Table>
+          <div className = 'pull-right'>
+            <label>TOTAL: { this.props.totalViewBuy }</label>
+          </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <label hidden = { this.props.onlyShowBuy }>
+              <RaisedButton
+                label = 'GUARDAR'
+                primary = { true }
+                onClick = { () => {
+                  let saveBuyMethod = this.props.saveBuy
+                  let hideCompleteBuyMethod = this.props.hideCompleteBuy
+                  //--------------------------
+                  let id = this.props.idViewBuy
+                  let date = this.props.dateViewBuy
+                  let company = this.props.companyViewBuy
+                  let total = this.props.totalViewBuy
+                  let product = this.props.productsBuy
+                  swal({
+                    title: 'Ha revizado que todo este correcto?',
+                    text: 'No será posible borralo después',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, Guardarlo!',
+                    cancelButtonText: 'Cancelar'
+                  }).then(function (result) {
+                    if (result.value) {
+                      saveBuyMethod(
+                        id,
+                        date,
+                        company,
+                        total,
+                        product
+                      )
+                      hideCompleteBuyMethod()
+                    }
+                  })
+                }}
+              />
+            </label>
+            <RaisedButton
+              label = 'CANCELAR'
+              onClick = { () =>
+                this.props.hideCompleteBuy()
+              }
+            />
+          </Modal.Footer>
+        </Modal>
+      </div>
     )
   }
 

@@ -13,7 +13,6 @@ import {
 } from 'react-bootstrap'
 
 import moment from 'moment'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import RaisedButton from 'material-ui/RaisedButton'
 import _ from 'lodash'
 
@@ -34,6 +33,14 @@ const selectStateStyle = {
   marginLeft: '20px'
 }
 
+const headerModalStyle = {
+  textAlign: 'center',
+  background: '#000000',
+  color: 'white',
+  paddingBottom: '10px',
+  paddingTop: '15px'
+}
+
 class ViewReceipt extends Component {
 
   constructor() {
@@ -46,161 +53,158 @@ class ViewReceipt extends Component {
 
   render() {
     return (
-      <MuiThemeProvider>
-        <div>
-          <Modal show = { this.props.isVisibleCompleteReceipt }>
-            <Modal.Header>
-              <Modal.Title>NOTA DE VENTA
-                <RaisedButton
-                  label = 'IMPRIMIR'
-                  className = 'pull-right'
-                  primary = { true }
-                  onClick = { () => {
-                    this.props.printSale(this.props.saleSelected._id)
-                    this.props.hideCompleteReceipt()
-                  }}
-                ></RaisedButton>
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <div>Vendedor: { this.props.saleSelected.seller }</div>
-              <div>Fecha: { moment.utc(this.props.saleSelected.date).format('DD/MM/YY') }</div>
-              <div>Hora: { moment.utc(this.props.saleSelected.date).format('hh:mm:ss a') }</div>
-              <div>Cliente: { this.props.saleSelected.client.name }</div>
-              <h3>TOTAL: { this.props.saleSelected.total }</h3>
-              <FormGroup>
-                <ControlLabel>Estado:</ControlLabel>
-                <FormControl
-                  componentClass = 'select'
-                  value = { this.props.stateSale }
-                  style = { selectStateStyle }
-                  onChange = { e => {
-                      let status = false
-                      if (e.target.value === 'Credito') {
-                        status = true
-                      }
-                      this.props.visibleFormDebt(status, e.target.value)
-                      this.props.updateStateSale(this.props.saleSelected._id, e.target.value)
+      <div>
+        <Modal show = { this.props.isVisibleCompleteReceipt }>
+          <Modal.Header style = { headerModalStyle}>
+            <Modal.Title>NOTA DE VENTA
+              <RaisedButton
+                label = 'IMPRIMIR'
+                className = 'pull-right'
+                onClick = { () => {
+                  this.props.printSale(this.props.saleSelected._id)
+                  this.props.hideCompleteReceipt()
+                }}
+              ></RaisedButton>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div>Vendedor: { this.props.saleSelected.seller }</div>
+            <div>Fecha: { moment.utc(this.props.saleSelected.date).format('DD/MM/YY') }</div>
+            <div>Hora: { moment.utc(this.props.saleSelected.date).format('hh:mm:ss a') }</div>
+            <div>Cliente: { this.props.saleSelected.client.name }</div>
+            <h3>TOTAL: { this.props.saleSelected.total }</h3>
+            <FormGroup>
+              <ControlLabel>Estado:</ControlLabel>
+              <FormControl
+                componentClass = 'select'
+                value = { this.props.stateSale }
+                style = { selectStateStyle }
+                onChange = { e => {
+                    let status = false
+                    if (e.target.value === 'Credito') {
+                      status = true
                     }
+                    this.props.visibleFormDebt(status, e.target.value)
+                    this.props.updateStateSale(this.props.saleSelected._id, e.target.value)
                   }
-                >
-                  <option value = 'Pendiente' key = 'Pendiente'>Pendiente</option>
-                  <option value = 'Pagado' key = 'Pagado'>Pagado</option>
-                  <option value = 'Credito' key = 'Credito'>Credito</option>
-                </FormControl>
-              </FormGroup>
-              <div hidden = { !this.props.isVisibleFormDebt }>
-                <Table responsive>
-                  <thead>
-                    <tr className = 'text-center-header-table'>
-                      <th>Fecha</th>
-                      <th>Monto</th>
-                      <th className = 'red-color'>
-                        <h4>
-                          { 
-                            _.round(parseFloat(this.props.saleSelected.total) -
-                              this.props.sumCredits, 1)
-                          }
-                        </h4>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr key = { 1 }>
-                      <td>
-                        <FormControl
-                          type = 'date'
-                          onChange = { e =>
-                            this.setState({
-                              datePay: e.target.value
-                            })
-                          }
-                        />
-                      </td>
-                      <td>
-                        <FormControl
-                          type = 'number'
-                          placeholder = 'Adelanto'
-                          onChange = { e =>
-                            this.setState({
-                              amountPay: e.target.value
-                            })
-                          }
-                        />
-                      </td>
-                      <td>
-                        <RaisedButton
-                          label = 'Agregar'
-                          primary = { true }
-                          onClick = { () => {
-                            this.props.addAdvancePay(
-                              this.state.datePay,
-                              this.state.amountPay,
-                              this.props.saleSelected._id
-                            )
-                          }}
-                        ></RaisedButton>
-                      </td>
-                    </tr>
-                    {
-                      this.props.saleSelectedCredits.map((credit, index) => {
-                        return (
-                          <tr key = { index } className = 'text-center'>
-                            <td>{ credit.date.split('T')[0] }</td>
-                            <td>{ credit.amount }</td>
-                            <td>
-                              <i className = 'fa fa-trash fa-lg' id = { index } onClick = { e =>
-                                this.props.deleteCredit(this.props.saleSelected._id, e.target.id)
-                              }
-                              ></i>
-                            </td>
-                          </tr>
-                        )
-                      })
-                    }
-                  </tbody>
-                </Table>
-              </div>
+                }
+              >
+                <option value = 'Pendiente' key = 'Pendiente'>Pendiente</option>
+                <option value = 'Pagado' key = 'Pagado'>Pagado</option>
+                <option value = 'Credito' key = 'Credito'>Credito</option>
+              </FormControl>
+            </FormGroup>
+            <div hidden = { !this.props.isVisibleFormDebt }>
               <Table responsive>
                 <thead>
-                  <tr>
-                    <th>Cant.</th>
-                    <th>Med.</th>
-                    <th>Descripcion</th>
-                    <th>P.Unit</th>
-                    <th>Total</th>
+                  <tr className = 'text-center-header-table'>
+                    <th>Fecha</th>
+                    <th>Monto</th>
+                    <th className = 'red-color'>
+                      <h4>
+                        { 
+                          _.round(parseFloat(this.props.saleSelected.total) -
+                            this.props.sumCredits, 1)
+                        }
+                      </h4>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
+                  <tr key = { 1 }>
+                    <td>
+                      <FormControl
+                        type = 'date'
+                        onChange = { e =>
+                          this.setState({
+                            datePay: e.target.value
+                          })
+                        }
+                      />
+                    </td>
+                    <td>
+                      <FormControl
+                        type = 'number'
+                        placeholder = 'Adelanto'
+                        onChange = { e =>
+                          this.setState({
+                            amountPay: e.target.value
+                          })
+                        }
+                      />
+                    </td>
+                    <td>
+                      <RaisedButton
+                        label = 'Agregar'
+                        secondary = { true }
+                        onClick = { () => {
+                          this.props.addAdvancePay(
+                            this.state.datePay,
+                            this.state.amountPay,
+                            this.props.saleSelected._id
+                          )
+                        }}
+                      ></RaisedButton>
+                    </td>
+                  </tr>
                   {
-                    this.props.saleSelected.products.map(product => {
-                      let unitPrice = product.total / (product.unitsInPrice * product.quantity);
+                    this.props.saleSelectedCredits.map((credit, index) => {
                       return (
-                        <tr key = { product.id } >
-                          <td>{ product.quantity }</td>
-                          <td>{ product.measure }</td>
-                          <td>{ product.name }</td>
-                          <td>{ _.round(unitPrice, 2) }</td>
-                          <td>{ product.total }</td>
+                        <tr key = { index } className = 'text-center'>
+                          <td>{ credit.date.split('T')[0] }</td>
+                          <td>{ credit.amount }</td>
+                          <td>
+                            <i className = 'fa fa-trash fa-lg' id = { index } onClick = { e =>
+                              this.props.deleteCredit(this.props.saleSelected._id, e.target.id)
+                            }
+                            ></i>
+                          </td>
                         </tr>
                       )
                     })
                   }
                 </tbody>
               </Table>
-            </Modal.Body>
-            <Modal.Footer>
-              <RaisedButton
-                label = 'OK'
-                primary = { true }
-                onClick = { () =>
-                  this.props.hideCompleteReceipt()
+            </div>
+            <Table responsive>
+              <thead>
+                <tr>
+                  <th>Cant.</th>
+                  <th>Med.</th>
+                  <th>Descripcion</th>
+                  <th>P.Unit</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  this.props.saleSelected.products.map(product => {
+                    let unitPrice = product.total / (product.unitsInPrice * product.quantity);
+                    return (
+                      <tr key = { product.id } >
+                        <td>{ product.quantity }</td>
+                        <td>{ product.measure }</td>
+                        <td>{ product.name }</td>
+                        <td>{ _.round(unitPrice, 2) }</td>
+                        <td>{ product.total }</td>
+                      </tr>
+                    )
+                  })
                 }
-              />
-            </Modal.Footer>
-          </Modal>
-        </div>
-      </MuiThemeProvider>
+              </tbody>
+            </Table>
+          </Modal.Body>
+          <Modal.Footer>
+            <RaisedButton
+              label = 'CERRAR'
+              secondary = { true }
+              onClick = { () =>
+                this.props.hideCompleteReceipt()
+              }
+            />
+          </Modal.Footer>
+        </Modal>
+      </div>
     )
   }
 

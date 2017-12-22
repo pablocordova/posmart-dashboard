@@ -61,7 +61,7 @@ const users = (
             users: false
           }
         },
-        titleUser: 'CREAR USUARIO'
+        titleUser: 'CREAR'
       }
     case 'SHOW_MODIFY_USER': {
       let selected = state.users.filter(user =>
@@ -72,7 +72,7 @@ const users = (
         buttonUser: 'MODIFICAR',
         
         isVisibleCreateModifyUsers: true,
-        titleUser: 'MODIFICAR USUARIO',
+        titleUser: 'MODIFICAR',
         user: {
           ...state.user,
           email: selected.email,

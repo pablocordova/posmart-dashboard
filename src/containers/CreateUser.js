@@ -11,13 +11,21 @@ import {
   updateUser
 } from '../actions/users'
 
+const headerModalStyle = {
+  textAlign: 'center',
+  background: '#000000',
+  color: 'white',
+  paddingBottom: '10px',
+  paddingTop: '15px'
+}
+
 class CreateUser extends Component {
 
   render() {
     return (
       <div>
         <Modal show = { this.props.isVisibleCreateModifyUsers }>
-          <Modal.Header>
+          <Modal.Header style = { headerModalStyle}>
             <Modal.Title>{ this.props.titleUser }</Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -121,7 +129,6 @@ class CreateUser extends Component {
           <Modal.Footer>
             <RaisedButton
               label = 'CANCELAR'
-              primary = { true }
               onClick = { () =>
                 this.props.hideCreateModifyUsers(false)
               }

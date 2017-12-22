@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import RaisedButton from 'material-ui/RaisedButton'
 import moment from 'moment'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { green500, black } from 'material-ui/styles/colors';
 //import swal from 'sweetalert2'
 
 import {
@@ -26,23 +28,37 @@ import {
 
 import ViewBuy from './ViewBuy'
 
+const muiTheme = getMuiTheme({
+  palette: {
+    primary1Color: black,
+    accent1Color: green500
+  }
+});
+
 const formControlSearchStyle = {
   width: '50%',
   display: 'inline-block',
   marginLeft: '20px'
 }
 
+const labelSearchStyle = {
+  width: '5%'
+}
+
+const buttonNewStyle = {
+  marginLeft: '15px'
+}
+
 class Buys extends Component {
 
   render() {
     return (
-      <MuiThemeProvider>
+      <MuiThemeProvider muiTheme={ muiTheme }>
         <Grid>
           <Row>
             <div>
-              <h2>COMPRAS</h2>
               <FormGroup>
-                <ControlLabel>ID:</ControlLabel>
+                <ControlLabel style = { labelSearchStyle }>ID:</ControlLabel>
                 <FormControl
                   type = 'text'
                   style = { formControlSearchStyle }
@@ -53,7 +69,7 @@ class Buys extends Component {
                 />
               </FormGroup>
               <FormGroup>
-                <ControlLabel>Dia:</ControlLabel>
+                <ControlLabel style = { labelSearchStyle }>Dia:</ControlLabel>
                 <FormControl
                   type = 'date'
                   style = { formControlSearchStyle }
@@ -63,7 +79,7 @@ class Buys extends Component {
                 />
               </FormGroup>
               <FormGroup>
-                <ControlLabel>Empresa:</ControlLabel>
+                <ControlLabel style = { labelSearchStyle }>Empresa:</ControlLabel>
                 <FormControl
                   type = 'text'
                   style = { formControlSearchStyle }
@@ -75,14 +91,15 @@ class Buys extends Component {
               </FormGroup>
               <RaisedButton
                 label = 'Buscar'
-                primary = { true }
+                secondary = { true }
                 onClick = { () =>
                   this.props.getBuys(this.props.searchData)
                 }
               ></RaisedButton>
               <RaisedButton
                 label = 'Nuevo'
-                primary = { true }
+                style = { buttonNewStyle }
+                secondary = { true }
                 onClick = { () =>
                   this.props.showCreateBuy()
                 }

@@ -10,13 +10,21 @@ import {
   updateSelectedPrices
 } from '../actions/products'
 
+const headerModalStyle = {
+  textAlign: 'center',
+  background: '#000000',
+  color: 'white',
+  paddingBottom: '10px',
+  paddingTop: '15px'
+}
+
 class CreatePrice extends Component {
 
   render() {
     return (
       <div>
         <Modal show = { this.props.isVisibleCreatePrice }>
-          <Modal.Header>
+          <Modal.Header style = { headerModalStyle}>
             <Modal.Title>CREAR PRECIO - { this.props.productSelected.name }</Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -84,7 +92,7 @@ class CreatePrice extends Component {
 
             <RaisedButton
               label = 'CREAR'
-              primary = { true }
+              secondary = { true }
               onClick = { () =>
                 this.props.createPrice(this.props.price, this.props.productSelected._id)
               }
@@ -126,8 +134,7 @@ class CreatePrice extends Component {
           <Modal.Footer>
 
             <RaisedButton
-              label = 'OK'
-              primary = { true }
+              label = 'CERRAR'
               onClick = { () =>
                 this.props.hideCreatePrice()
               }

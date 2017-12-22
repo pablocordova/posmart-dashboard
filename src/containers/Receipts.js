@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 
 import RaisedButton from 'material-ui/RaisedButton'
-import Checkbox from 'material-ui/Checkbox';
 import moment from 'moment'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { green500, black } from 'material-ui/styles/colors';
+import Toggle from 'material-ui/Toggle';
 import swal from 'sweetalert2'
 
 import {
@@ -28,10 +30,21 @@ import {
 
 import ViewReceipt from './ViewReceipt'
 
+const muiTheme = getMuiTheme({
+  palette: {
+    primary1Color: black,
+    accent1Color: green500
+  }
+});
+
 const formControlSearchStyle = {
   width: '50%',
   display: 'inline-block',
   marginLeft: '20px'
+}
+
+const labelSearchStyle = {
+  width: '5%'
 }
 
 const detailsButtonStyle =  {
@@ -49,13 +62,12 @@ class Receipts extends Component {
 
   render() {
     return (
-      <MuiThemeProvider>
+      <MuiThemeProvider muiTheme={ muiTheme }>
         <Grid>
           <Row>
             <div>
-              <h2>RECIBOS</h2>
               <FormGroup>
-                <ControlLabel>ID:</ControlLabel>
+                <ControlLabel style = { labelSearchStyle }>ID:</ControlLabel>
                 <FormControl
                   type = 'text'
                   style = { formControlSearchStyle }
@@ -66,7 +78,7 @@ class Receipts extends Component {
                 />
               </FormGroup>
               <FormGroup>
-                <ControlLabel>Dia:</ControlLabel>
+                <ControlLabel style = { labelSearchStyle }>Dia:</ControlLabel>
                 <FormControl
                   type = 'date'
                   style = { formControlSearchStyle }
@@ -76,7 +88,7 @@ class Receipts extends Component {
                 />
               </FormGroup>
               <FormGroup>
-                <ControlLabel>Cliente:</ControlLabel>
+                <ControlLabel style = { labelSearchStyle }>Cliente:</ControlLabel>
                 <FormControl
                   type = 'text'
                   style = { formControlSearchStyle }
@@ -87,7 +99,7 @@ class Receipts extends Component {
                 />
               </FormGroup>
               <FormGroup>
-                <ControlLabel>Vendedor:</ControlLabel>
+                <ControlLabel style = { labelSearchStyle }>Vendedor:</ControlLabel>
                 <FormControl
                   type = 'text'
                   style = { formControlSearchStyle }
@@ -98,7 +110,7 @@ class Receipts extends Component {
                 />
               </FormGroup>
               <FormGroup>
-                <ControlLabel>Total:</ControlLabel>
+                <ControlLabel style = { labelSearchStyle }>Total:</ControlLabel>
                 <FormControl
                   type = 'number'
                   style = { formControlSearchStyle }
@@ -109,7 +121,7 @@ class Receipts extends Component {
                 />
               </FormGroup>
               <FormGroup>
-                <ControlLabel>Estado:</ControlLabel>
+                <ControlLabel style = { labelSearchStyle }>Estado:</ControlLabel>
                 <FormControl
                   componentClass = 'select'
                   style = { formControlSearchStyle }
@@ -126,22 +138,23 @@ class Receipts extends Component {
               </FormGroup>
               <RaisedButton
                 label = 'Buscar'
-                primary = { true }
+                secondary = { true }
                 onClick = { () =>
                   this.props.getReceipts(this.props.searchData)
                 }
               ></RaisedButton>
               <div>
-                <Checkbox
-                  style = { detailsButtonStyle }
+                <Toggle
                   label = 'Mas detalles'
-                  onCheck = { e => {
+                  style = { detailsButtonStyle }
+                  labelPosition = 'right'
+                  onToggle = { (event, isInputChecked) => {
                     this.setState({
-                      showMoreDetails: e.target.checked
+                      showMoreDetails: isInputChecked
                     })
                   }}
                 />
-              </div>
+               </div>
               <div hidden = { !this.state.showMoreDetails }>
                 <div>
                   Nro. Ventas con deudas:

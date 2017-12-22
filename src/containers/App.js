@@ -25,6 +25,11 @@ switch (process.env.REACT_APP_ENV) {
     break;
 }
 
+const backgroundNavbarStyle = {
+  background: '#000000',
+  color: 'white'
+}
+
 class App extends Component {
 
   logout() {
@@ -52,21 +57,33 @@ class App extends Component {
       navbarOptions = (
         <Nav pullRight>
           <LinkContainer to = '/products'>
-            <NavItem eventKey = {1}>Products</NavItem>
+            <NavItem eventKey = {1}>
+              <i className = 'fa fa-cubes'></i>&ensp; Products
+            </NavItem>
           </LinkContainer>
           <LinkContainer to = '/receipts'>
-            <NavItem eventKey = {2}>Recibos</NavItem>
+            <NavItem eventKey = {2}>
+              <i className = 'fa fa-list'></i>&ensp; Recibos
+            </NavItem>
           </LinkContainer>
           <LinkContainer to = '/buys'>
-            <NavItem eventKey = {3}>Compras</NavItem>
+            <NavItem eventKey = {3}>
+              <i className = 'fa fa-shopping-cart'></i>&ensp; Compras
+            </NavItem>
           </LinkContainer>
           <LinkContainer to = '/users'>
-            <NavItem eventKey = {4}>Usuarios</NavItem>
+            <NavItem eventKey = {4}>
+              <i className = 'fa fa-users'></i>&ensp; Usuarios
+            </NavItem>
           </LinkContainer>
           <LinkContainer to = '/setting'>
-            <NavItem eventKey = {5}>Configuración</NavItem>
+            <NavItem eventKey = {5}>
+              <i className = 'fa fa-cogs'></i>&ensp; Configuracion
+            </NavItem>
           </LinkContainer>
-          <NavItem eventKey = {6} onClick = { this.logout }>Salir</NavItem>
+          <NavItem eventKey = {6} onClick = { this.logout }>
+            <i className = 'fa fa-sign-out'></i>&ensp; Salir
+          </NavItem>
         </Nav>
       )
     }
@@ -74,7 +91,7 @@ class App extends Component {
     return (
       <BrowserRouter basename = { BASE_URL }>
         <div>
-          <Navbar inverse collapseOnSelect>
+          <Navbar collapseOnSelect style = { backgroundNavbarStyle }>
             <Navbar.Header>
               <Navbar.Brand>
                 <a href=''>{ localStorage.getItem('businessNameDashboard') }</a>

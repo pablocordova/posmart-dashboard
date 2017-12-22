@@ -7,7 +7,6 @@ import React, { Component } from 'react'
 import { Modal } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import RaisedButton from 'material-ui/RaisedButton'
 import _ from 'lodash'
 
@@ -22,62 +21,67 @@ import {
   updateUnitCost
 } from '../actions/products'
 
+const headerModalStyle = {
+  textAlign: 'center',
+  background: '#000000',
+  color: 'white',
+  paddingBottom: '10px',
+  paddingTop: '15px'
+}
+
 class ViewCosts extends Component {
 
   render() {
     return (
-      <MuiThemeProvider>
-        <div>
-          <Modal show = { this.props.isVisibleViewCosts }>
-            <Modal.Header>
-              <Modal.Title>COSTOS - { this.props.productSelected.name } </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              {
-                this.props.pricesViewCost.map( (price, index) => {
-                  return(
-                    <div id = { index } key = { index }>
-                      { this.props.productSelected.prices.length > 0 ?
-                        this.props.productSelected.prices[index].name : ''
-                      } :
-                      <FormControl
-                        type = 'number'
-                        value = { price }
-                        onChange = { e => {
-                          this.props.changeViewCost(e.target.parentNode.id, e.target.value)
-                        }}
-                      />
-                    </div>
-                  )
-                })
-              }
+      <div>
+        <Modal show = { this.props.isVisibleViewCosts }>
+          <Modal.Header style = { headerModalStyle}>
+            <Modal.Title>COSTOS - { this.props.productSelected.name } </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {
+              this.props.pricesViewCost.map( (price, index) => {
+                return(
+                  <div id = { index } key = { index }>
+                    { this.props.productSelected.prices.length > 0 ?
+                      this.props.productSelected.prices[index].name : ''
+                    } :
+                    <FormControl
+                      type = 'number'
+                      value = { price }
+                      onChange = { e => {
+                        this.props.changeViewCost(e.target.parentNode.id, e.target.value)
+                      }}
+                    />
+                  </div>
+                )
+              })
+            }
+          <RaisedButton
+            label = 'GRABAR'
+            secondary = { true }
+            onClick = { () => {
+              let unitCost = _.round(
+                this.props.pricesViewCost[0] / this.props.productSelected.prices[0].items,
+                10
+              )
+              this.props.updateUnitCost(
+                unitCost,
+                this.props.productSelected._id
+              )
+            }}
+          />
+          </Modal.Body>
+          <Modal.Footer>
             <RaisedButton
-              label = 'GRABAR'
-              primary = { true }
-              onClick = { () => {
-                let unitCost = _.round(
-                  this.props.pricesViewCost[0] / this.props.productSelected.prices[0].items,
-                  10
-                )
-                this.props.updateUnitCost(
-                  unitCost,
-                  this.props.productSelected._id
-                )
-              }}
+              label = 'CERRAR'
+              onClick = { () =>
+                this.props.hideCosts()
+              }
             />
-            </Modal.Body>
-            <Modal.Footer>
-              <RaisedButton
-                label = 'OK'
-                primary = { true }
-                onClick = { () =>
-                  this.props.hideCosts()
-                }
-              />
-            </Modal.Footer>
-          </Modal>
-        </div>
-      </MuiThemeProvider>
+          </Modal.Footer>
+        </Modal>
+      </div>
     )
   }
 

@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 
 import RaisedButton from 'material-ui/RaisedButton'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { green500, black } from 'material-ui/styles/colors';
+import TextField from 'material-ui/TextField';
 import {
   Table,
-  FormGroup,
-  FormControl,
   Grid,
   Row
 } from 'react-bootstrap'
@@ -24,6 +25,21 @@ import CreateUser from '../containers/CreateUser'
 
 import 'font-awesome/css/font-awesome.min.css';
 
+const muiTheme = getMuiTheme({
+  palette: {
+    primary1Color: black,
+    accent1Color: green500
+  }
+});
+
+const underlineStyle =  {
+  borderColor: green500
+}
+
+const floatingLabelStyle = {
+  color: black
+}
+
 class Users extends Component {
 
   componentDidMount() {
@@ -32,23 +48,22 @@ class Users extends Component {
 
   render() {
     return (
-      <MuiThemeProvider>
+      <MuiThemeProvider muiTheme={ muiTheme }>
       <Grid>
         <Row>
           <div>
-            <h2>USUARIOS</h2>
-            <FormGroup>
-              <FormControl
-                type = 'text'
-                placeholder = 'Buscar usuario'
-                onChange = { e =>
-                  this.props.filterUsers(e.target.value)
-                }
+            <div>
+              <TextField
+                hintText="Nombre del usuario"
+                floatingLabelText="FILTRAR USUARIO"
+                underlineFocusStyle = { underlineStyle }
+                floatingLabelStyle = { floatingLabelStyle }
+                onChange = { e => this.props.filterUsers(e.target.value) }
               />
-            </FormGroup>
+            </div>
             <RaisedButton
               label = 'NUEVO'
-              primary = { true }
+              secondary = { true }
               onClick = { () =>
                 this.props.showCreateUser(true)
               }

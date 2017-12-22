@@ -11,6 +11,14 @@ import {
   updateProduct
 } from '../actions/products'
 
+const headerModalStyle = {
+  textAlign: 'center',
+  background: '#000000',
+  color: 'white',
+  paddingBottom: '10px',
+  paddingTop: '15px'
+}
+
 class CreateProduct extends Component {
 
   componentDidMount() {
@@ -23,7 +31,7 @@ class CreateProduct extends Component {
     return (
       <div>
         <Modal show = { this.props.isVisibleCreateProducts }>
-          <Modal.Header>
+          <Modal.Header style = { headerModalStyle}>
             <Modal.Title>{ this.props.titleProduct }</Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -77,7 +85,6 @@ class CreateProduct extends Component {
           <Modal.Footer>
             <RaisedButton
               label = 'CANCELAR'
-              primary = { true }
               onClick = { () =>
                 this.props.showCreateProduct(false)
               }

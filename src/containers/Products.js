@@ -2,15 +2,16 @@ import React, { Component } from 'react'
 
 import RaisedButton from 'material-ui/RaisedButton'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { green500, black } from 'material-ui/styles/colors';
 import {
-  FormControl,
-  FormGroup,
   Grid,
   Row,
   Table
 } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import swal from 'sweetalert2'
+import TextField from 'material-ui/TextField';
 
 import {
   deleteProduct,
@@ -29,6 +30,25 @@ import _ from 'lodash'
 
 import 'font-awesome/css/font-awesome.min.css';
 
+const muiTheme = getMuiTheme({
+  palette: {
+    primary1Color: black,
+    accent1Color: green500
+  }
+});
+
+const underlineStyle =  {
+  borderColor: green500
+}
+
+const floatingLabelStyle = {
+  color: black
+}
+
+const buttonNewStyle = {
+  marginLeft: '15px'
+}
+
 class Products extends Component {
 
   componentDidMount() {
@@ -39,27 +59,23 @@ class Products extends Component {
     return (
       <Grid>
         <Row>
-      <MuiThemeProvider>
+      <MuiThemeProvider muiTheme={ muiTheme }>
         <div>
-          <h2>PRODUCTS</h2>
-          <FormGroup>
-            <FormControl
-              type = 'text'
-              placeholder = 'Buscar producto'
-              onChange = { e =>
-                this.props.filterProducts(e.target.value)
-              }
-            />
-          </FormGroup>
-          <FormGroup>
-            <RaisedButton
-              label = 'NUEVO'
-              primary = { true }
-              onClick = { () =>
-                this.props.showCreateProduct(true)
-              }
-            ></RaisedButton>
-          </FormGroup>
+          <TextField
+            hintText="Descripcion del producto"
+            floatingLabelText="FILTRAR PRODUCTO"
+            underlineFocusStyle = { underlineStyle }
+            floatingLabelStyle = { floatingLabelStyle }
+            onChange = { e => this.props.filterProducts(e.target.value) }
+          />
+          <RaisedButton
+            label = 'NUEVO'
+            secondary = { true }
+            style = { buttonNewStyle }
+            onClick = { () =>
+              this.props.showCreateProduct(true)
+            }
+          ></RaisedButton>
           <Table responsive>
             <thead>
               <tr className = 'text-center-header-table'>

@@ -7,6 +7,24 @@
   font-weight: bold;
 }
 
+.navbar-header > a {
+  color: white !important;
+}
+
+.navbar-nav > li > a {
+  color: white !important;
+}
+
+.navbar-nav > .active > a {
+  color: white !important;
+  background-color: #4caf50 !important;
+}
+
+.navbar-nav > .active > a:focus {
+  color: white !important;
+  background-color: #4caf50 !important;
+}
+
 .red-color {
   color: red;
 }
