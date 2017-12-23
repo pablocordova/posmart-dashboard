@@ -247,7 +247,6 @@ class Receipts extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state.receipts.sales)
   return {
     numSaleDebts: state.receipts.numSaleDebts,
     totalSaleDebts: state.receipts.totalSaleDebts,

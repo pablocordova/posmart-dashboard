@@ -20,6 +20,26 @@ const headerModalStyle = {
 
 class CreatePrice extends Component {
 
+  constructor() {
+    super()
+    this.state = {
+      validation: {
+        price: null,
+        unit: null
+      }
+    }
+  }
+
+  cleanValidations() {
+    this.setState(prevState  => ({
+      validation: {
+        ...prevState.validation,
+        price: null,
+        unit: null
+      }
+    }))
+  }
+
   render() {
     return (
       <div>
@@ -69,23 +89,45 @@ class CreatePrice extends Component {
               </FormControl>
             </FormGroup>
 
-            <FormGroup>
+            <FormGroup validationState = { this.state.validation.price }>
               <ControlLabel>Precio</ControlLabel>
               <FormControl
                 type = 'number'
-                onChange = { e =>
+                onChange = { e => {
                   this.props.price.price = e.target.value
-                }
+                  // Validations
+                  let statePrice= null
+                  if (e.target.value <= 0) {
+                    statePrice = 'error'
+                  }
+                  this.setState(prevState  => ({
+                    validation: {
+                      ...prevState.validation,
+                      price: statePrice
+                    }
+                  }))
+                }}
               />
             </FormGroup>
 
-            <FormGroup>
+            <FormGroup validationState = { this.state.validation.unit }>
               <ControlLabel>Equivale a:</ControlLabel>
               <FormControl
                 type = 'number'
-                onChange = { e =>
+                onChange = { e => {
                   this.props.price.items = e.target.value
-                }
+                  // Validations
+                  let stateUnit= null
+                  if (e.target.value <= 0) {
+                    stateUnit = 'error'
+                  }
+                  this.setState(prevState  => ({
+                    validation: {
+                      ...prevState.validation,
+                      unit: stateUnit
+                    }
+                  }))
+                }}
               />
               <label>{ this.props.productSelected.minimumUnit }</label>
             </FormGroup>
@@ -93,9 +135,35 @@ class CreatePrice extends Component {
             <RaisedButton
               label = 'CREAR'
               secondary = { true }
-              onClick = { () =>
-                this.props.createPrice(this.props.price, this.props.productSelected._id)
-              }
+              onClick = { () => {
+
+                const unit = this.state.validation.unit
+                const price = this.state.validation.price
+                const itemsForm = parseFloat(this.props.price.items)
+                const priceForm = parseFloat(this.props.price.price)
+
+                if (priceForm === 0) {
+                  this.setState(prevState  => ({
+                    validation: {
+                      ...prevState.validation,
+                      price: 'error'
+                    }
+                  }))
+                }
+
+                if (itemsForm === 0) {
+                  this.setState(prevState  => ({
+                    validation: {
+                      ...prevState.validation,
+                      unit: 'error'
+                    }
+                  }))
+                }
+
+                if (unit !== 'error' && price !== 'error' && priceForm !== 0 && itemsForm !== 0) {
+                  this.props.createPrice(this.props.price, this.props.productSelected._id)
+                }
+              }}
             />
 
             <Table responsive>
@@ -135,9 +203,10 @@ class CreatePrice extends Component {
 
             <RaisedButton
               label = 'CERRAR'
-              onClick = { () =>
+              onClick = { () => {
                 this.props.hideCreatePrice()
-              }
+                this.cleanValidations()
+              }}
             />
 
           </Modal.Footer>

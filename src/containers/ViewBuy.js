@@ -47,8 +47,22 @@ class ViewBuy extends Component {
   constructor() {
     super()
     this.state = {
-      MeasureRealIndex: 0
+      MeasureRealIndex: 0,
+      validation: {
+        quantity: null,
+        total: null
+      }
     }
+  }
+
+  cleanValidations() {
+    this.setState(prevState  => ({
+      validation: {
+        ...prevState.validation,
+        quantity: null,
+        total: null
+      }
+    }))
   }
 
   render() {
@@ -61,7 +75,7 @@ class ViewBuy extends Component {
           </Modal.Header>
           <Modal.Body>
           <FormGroup>
-            <ControlLabel>ID:</ControlLabel>
+            <ControlLabel>ID:&ensp;</ControlLabel>
             <label hidden = { !this.props.onlyShowBuy }>{ this.props.buySelected.id }</label>
             <label hidden = { this.props.onlyShowBuy }>
               <FormControl
@@ -74,7 +88,7 @@ class ViewBuy extends Component {
             </label>
           </FormGroup>
           <FormGroup>
-            <ControlLabel>Dia:</ControlLabel>
+            <ControlLabel>Dia:&ensp;</ControlLabel>
             <label hidden = { !this.props.onlyShowBuy }>{ this.props.buySelected.date }</label>
             <label hidden = { this.props.onlyShowBuy }>
               <FormControl
@@ -87,7 +101,7 @@ class ViewBuy extends Component {
             </label>
           </FormGroup>
           <FormGroup>
-            <ControlLabel>Empresa:</ControlLabel>
+            <ControlLabel>Empresa:&ensp;</ControlLabel>
             <label hidden = { !this.props.onlyShowBuy }>{ this.props.buySelected.company }</label>
             <label hidden = { this.props.onlyShowBuy }>
               <FormControl
@@ -146,12 +160,26 @@ class ViewBuy extends Component {
                   </FormControl>
                 </td>
                 <td>
-                  <FormControl
-                    type = 'number'
-                    onChange = { e =>
-                      this.props.formChoseProduct.quantity = e.target.value
-                    }
-                  />
+                  <FormGroup validationState = { this.state.validation.quantity }>
+                    <FormControl
+                      type = 'number'
+                      onChange = { e => {
+                        // Validations
+                        let stateQuantity = null
+                        if (e.target.value <= 0) {
+                          stateQuantity = 'error'
+                        }
+                        this.setState(prevState  => ({
+                          validation: {
+                            ...prevState.validation,
+                            quantity: stateQuantity
+                          }
+                        }))
+                        //
+                        this.props.formChoseProduct.quantity = e.target.value
+                      }}
+                    />
+                  </FormGroup>
                 </td>
                 <td>
                   <FormControl
@@ -181,21 +209,64 @@ class ViewBuy extends Component {
                   </FormControl>
                 </td>
                 <td>
-                  <FormControl
-                    type = 'number'
-                    onChange = { e =>
-                      this.props.formChoseProduct.total = e.target.value
-                    }
-                  />
+                  <FormGroup validationState = { this.state.validation.total }>
+                    <FormControl
+                      type = 'number'
+                      onChange = { e => {
+                        //
+                        let stateTotal = null
+                        if (e.target.value <= 0) {
+                          stateTotal = 'error'
+                        }
+                        this.setState(prevState  => ({
+                          validation: {
+                            ...prevState.validation,
+                            total: stateTotal
+                          }
+                        }))
+                        //
+                        this.props.formChoseProduct.total = e.target.value
+                      }}
+                    />
+                  </FormGroup>
                 </td>
                 <td hidden = { this.props.onlyShowBuy } >
                   <RaisedButton
                     label = '+'
-                    primary = { true }
+                    secondary = { true }
                     onClick = { () => {
-                      this.props.addProductBuy(
-                        this.props.formChoseProduct
-                      )
+
+                      const quantity = this.state.validation.quantity
+                      const total = this.state.validation.total
+                      const quantityForm = this.props.formChoseProduct.quantity
+                      const totalForm = this.props.formChoseProduct.total
+                      // Only if there are not error in forms
+                      if (quantityForm <= 0) {
+                        this.setState(prevState  => ({
+                          validation: {
+                            ...prevState.validation,
+                            quantity: 'error'
+                          }
+                        }))
+                      }
+
+                      if (totalForm <= 0) {
+                        this.setState(prevState  => ({
+                          validation: {
+                            ...prevState.validation,
+                            total: 'error'
+                          }
+                        }))
+                      }
+
+                      if (quantityForm > 0 && totalForm > 0 &&quantity !== 'error' &&
+                        total !== 'error')
+                      {
+                        this.props.addProductBuy(
+                          this.props.formChoseProduct
+                        )
+                      }
+
                     }}
                   ></RaisedButton>
                 </td>
@@ -228,10 +299,20 @@ class ViewBuy extends Component {
             <label hidden = { this.props.onlyShowBuy }>
               <RaisedButton
                 label = 'GUARDAR'
-                primary = { true }
+                secondary = { true }
+                disabled = { this.props.productsBuy.length === 0 }
                 onClick = { () => {
                   let saveBuyMethod = this.props.saveBuy
                   let hideCompleteBuyMethod = this.props.hideCompleteBuy
+                  this.cleanValidations()
+                  // Reset
+                  this.setState({
+                    MeasureRealIndex: 0
+                  })
+                  this.props.formChoseProduct.itemsPricesChosen =
+                    this.props.formChoseProduct.pricesProductChosen[0].items
+                  this.props.formChoseProduct.measure =
+                    this.props.formChoseProduct.pricesProductChosen[0].name
                   //--------------------------
                   let id = this.props.idViewBuy
                   let date = this.props.dateViewBuy
@@ -264,9 +345,13 @@ class ViewBuy extends Component {
             </label>
             <RaisedButton
               label = 'CANCELAR'
-              onClick = { () =>
+              onClick = { () => {
                 this.props.hideCompleteBuy()
-              }
+                this.cleanValidations()
+                this.setState({
+                  MeasureRealIndex: 0
+                })
+              }}
             />
           </Modal.Footer>
         </Modal>

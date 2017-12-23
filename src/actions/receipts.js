@@ -95,7 +95,6 @@ const hideCompleteReceipt = () => {
 }
 
 const getReceipts = (data) => {
-  console.log(data)
   return dispatch => {
     return axios.post(
       SERVER_PATH + SALES_PATH + ADVANCED_SEARCH,

@@ -46,8 +46,8 @@ class ViewReceipt extends Component {
   constructor() {
     super()
     this.state = {
-      datePay: '',
-      amountPay: ''
+      datePay: moment().format('YYYY-MM-DD'),
+      amountPay: 0
     }
   }
 
@@ -115,11 +115,13 @@ class ViewReceipt extends Component {
                     <td>
                       <FormControl
                         type = 'date'
-                        onChange = { e =>
+                        defaultValue = { moment().format('YYYY-MM-DD') }
+                        onChange = { e => {
+                          console.log(e.target.value)
                           this.setState({
                             datePay: e.target.value
                           })
-                        }
+                        }}
                       />
                     </td>
                     <td>
@@ -198,9 +200,13 @@ class ViewReceipt extends Component {
             <RaisedButton
               label = 'CERRAR'
               secondary = { true }
-              onClick = { () =>
+              onClick = { () => {
                 this.props.hideCompleteReceipt()
-              }
+                this.setState({
+                  datePay: moment().format('YYYY-MM-DD'),
+                  amountPay: 0
+                })
+              }}
             />
           </Modal.Footer>
         </Modal>
@@ -211,7 +217,6 @@ class ViewReceipt extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state.receipts.saleSelected)
   return {
     isVisibleCompleteReceipt: state.receipts.isVisibleCompleteReceipt,
     saleSelected: state.receipts.saleSelected,

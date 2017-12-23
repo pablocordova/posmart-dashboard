@@ -21,6 +21,30 @@ const headerModalStyle = {
 
 class CreateUser extends Component {
 
+  constructor() {
+    super()
+    this.state = {
+      validation: {
+        username: null,
+        email: null,
+        pass: null,
+        passRepeat: null
+      }
+    }
+  }
+
+  cleanValidations() {
+    this.setState(prevState  => ({
+      validation: {
+        ...prevState.validation,
+        username: null,
+        email: null,
+        pass: null,
+        passRepeat: null
+      }
+    }))
+  }
+
   render() {
     return (
       <div>
@@ -29,46 +53,94 @@ class CreateUser extends Component {
             <Modal.Title>{ this.props.titleUser }</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <FormGroup>
+            <FormGroup validationState = { this.state.validation.username }>
               <ControlLabel>Username</ControlLabel>
               <FormControl
                 type = 'text'
                 defaultValue = { this.props.user.username }
-                onChange = { e =>
-                  this.props.user.username = e.target.value
-                }
+                onChange = { e => {
+                  let username = e.target.value.trim()
+                  this.props.user.username = username
+                  // Validations
+                  let stateUsername = null
+                  if (username === '' || username.length < 2) {
+                    stateUsername = 'error'
+                  }
+                  this.setState(prevState  => ({
+                    validation: {
+                      ...prevState.validation,
+                      username: stateUsername
+                    }
+                  }))
+                }}
               />
             </FormGroup>
-            <FormGroup>
+            <FormGroup validationState = { this.state.validation.email }>
               <ControlLabel>Email</ControlLabel>
               <FormControl
                 type = 'text'
                 defaultValue = { this.props.user.email }
-                onChange = { e =>
-                  this.props.user.email = e.target.value
-                }
+                onChange = { e => {
+                  let email = e.target.value.trim()
+                  this.props.user.email = email
+                  // Validations
+                  let stateEmail = null
+                  if (email === '') {
+                    stateEmail = 'error'
+                  }
+                  this.setState(prevState  => ({
+                    validation: {
+                      ...prevState.validation,
+                      name: stateEmail
+                    }
+                  }))
+                }}
               />
             </FormGroup>
-            <FormGroup>
+            <FormGroup validationState = { this.state.validation.pass }>
               <ControlLabel>Contraseña</ControlLabel>
               <FormControl
                 type = 'password'
                 defaultValue = { this.props.user.password }
                 disabled = { this.props.user.id !== '' }
-                onChange = { e =>
-                  this.props.user.password = e.target.value
-                }
+                onChange = { e => {
+                  let pass = e.target.value
+                  this.props.user.password = pass
+                  // Validations
+                  let statePass = null
+                  if (pass === '' || pass.length < 8) {
+                    statePass = 'error'
+                  }
+                  this.setState(prevState  => ({
+                    validation: {
+                      ...prevState.validation,
+                      pass: statePass
+                    }
+                  }))
+                }}
               />
             </FormGroup>
-            <FormGroup>
+            <FormGroup  validationState = { this.state.validation.passRepeat }>
               <ControlLabel>Repetir contraseña</ControlLabel>
               <FormControl
                 type = 'password'
                 defaultValue = { this.props.user.repeatPassword }
                 disabled = { this.props.user.id !== '' }
-                onChange = { e =>
-                  this.props.user.repeatPassword = e.target.value
-                }
+                onChange = { e => {
+                  let passRepeat = e.target.value
+                  this.props.user.repeatPassword  = passRepeat
+                  // Validations
+                  let statePassRepeat = null
+                  if (passRepeat === '' || passRepeat.length < 8) {
+                    statePassRepeat = 'error'
+                  }
+                  this.setState(prevState  => ({
+                    validation: {
+                      ...prevState.validation,
+                      passRepeat: statePassRepeat
+                    }
+                  }))
+                }}
               />
             </FormGroup>
             <FormGroup>
@@ -129,31 +201,39 @@ class CreateUser extends Component {
           <Modal.Footer>
             <RaisedButton
               label = 'CANCELAR'
-              onClick = { () =>
+              onClick = { () => {
                 this.props.hideCreateModifyUsers(false)
-              }
+                this.cleanValidations()
+              }}
             />
             <RaisedButton
               label = { this.props.buttonUser }
               secondary = { true }
               onClick = { () => {
+                const username = this.state.validation.username
+                const email = this.state.validation.email
+                const pass = this.state.validation.pass
+                const passRepeat = this.state.validation.passRepeat
                 // validation, TODO: find a better validation focus on UX
-                if (this.props.user.id === '') {
-                  if (this.props.user.password !== this.props.user.repeatPassword) {
-                    swal(
-                      'Oops...',
-                      'Las contraseñas deben coincidir',
-                      'error'
-                    )
+                if (username !== 'error' && email !== 'error' && pass !== 'error' &&
+                  passRepeat !== 'error')
+                {
+                  if (this.props.user.id === '') {
+                    if (this.props.user.password !== this.props.user.repeatPassword) {
+                      swal(
+                        'Oops...',
+                        'Las contraseñas deben coincidir',
+                        'error'
+                      )
+                    } else {
+                      this.props.createUser(this.props.user)
+                      this.props.hideCreateModifyUsers(false)
+                    }
                   } else {
-                    this.props.createUser(this.props.user)
+                    this.props.updateUser(this.props.user)
                     this.props.hideCreateModifyUsers(false)
                   }
-                } else {
-                  this.props.updateUser(this.props.user)
-                  this.props.hideCreateModifyUsers(false)
                 }
-                
               }}
             />
           </Modal.Footer>

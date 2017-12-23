@@ -21,6 +21,24 @@ const headerModalStyle = {
 
 class CreateProduct extends Component {
 
+  constructor() {
+    super()
+    this.state = {
+      validation: {
+        name: null
+      }
+    }
+  }
+
+  cleanValidations() {
+    this.setState(prevState  => ({
+      validation: {
+        ...prevState.validation,
+        name: null
+      }
+    }))
+  }
+
   componentDidMount() {
     // Load all Minimum Units
     this.props.loadMinimunUnits()
@@ -35,14 +53,25 @@ class CreateProduct extends Component {
             <Modal.Title>{ this.props.titleProduct }</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <FormGroup>
+            <FormGroup validationState = { this.state.validation.name }>
               <ControlLabel>Nombre</ControlLabel>
               <FormControl
                 type = 'text'
                 defaultValue = { this.props.product.name }
-                onChange = { e =>
+                onChange = { e => {
                   this.props.product.name = e.target.value
-                }
+                  // Validations
+                  let stateName = null
+                  if (e.target.value.trim() === '') {
+                    stateName = 'error'
+                  }
+                  this.setState(prevState  => ({
+                    validation: {
+                      ...prevState.validation,
+                      name: stateName
+                    }
+                  }))
+                }}
               />
             </FormGroup>
             <FormGroup>
@@ -85,20 +114,31 @@ class CreateProduct extends Component {
           <Modal.Footer>
             <RaisedButton
               label = 'CANCELAR'
-              onClick = { () =>
+              onClick = { () => {
                 this.props.showCreateProduct(false)
-              }
+                this.cleanValidations()
+              }}
             />
             <RaisedButton
               label = { this.props.buttonProduct }
               secondary = { true }
               onClick = { () => {
-                if (this.props.product.id === '') {
-                  this.props.createProduct(this.props.product)
+                const name = this.state.validation.name
+                if (name !== 'error' && this.props.product.name.trim() !== '') {
+                  if (this.props.product.id === '') {
+                    this.props.createProduct(this.props.product)
+                  } else {
+                    this.props.updateProduct(this.props.product)
+                  }
+                  this.props.showCreateProduct(false)
                 } else {
-                  this.props.updateProduct(this.props.product)
+                  this.setState(prevState  => ({
+                    validation: {
+                      ...prevState.validation,
+                      name: 'error'
+                    }
+                  }))
                 }
-                this.props.showCreateProduct(false)
               }}
             />
           </Modal.Footer>

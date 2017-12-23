@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 const receipts = ( state = {
   allProducts: [],
   buys: [],
@@ -32,8 +34,6 @@ const receipts = ( state = {
 
   switch (action.type) {
     case 'ADD_PRODUCT_BUY':
-      console.log('herererer')
-      console.log(action.allForm)
       let product = {
         quantity: action.allForm.quantity,
         measure: action.allForm.measure,
@@ -82,9 +82,13 @@ const receipts = ( state = {
         buys: action.buys
       }
     case 'SHOW_COMPLETE_BUY': {
+      let date = ''
+      if (state.buys[action.indexBuy].date) {
+        date = state.buys[action.indexBuy].date.split('T')[0]
+      }
       let buySelected = {
         id: state.buys[action.indexBuy].id,
-        date: state.buys[action.indexBuy].date,
+        date: date,
         company: state.buys[action.indexBuy].company
       }
       return {
@@ -105,7 +109,7 @@ const receipts = ( state = {
         onlyShowBuy: false,
         totalViewBuy: 0,
         idViewBuy:  '',
-        dateViewBuy: '',
+        dateViewBuy: moment().format('YYYY-MM-DD'),
         companyViewBuy: '',
         formChoseProduct: {
           ...state.formChoseProduct,
