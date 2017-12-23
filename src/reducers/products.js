@@ -35,7 +35,8 @@ const products = (
       unitCost: 0,
       product: ''
     },
-    pricesViewCost: []
+    pricesViewCost: [],
+    stateLoader: true
   },
   action
 ) => {
@@ -64,7 +65,8 @@ const products = (
       return {
         ...state,
         products: action.products,
-        productsFiltered: action.products
+        productsFiltered: action.products,
+        stateLoader: false
       }
     case 'SHOW_CREATE_PRODUCT':
       return {

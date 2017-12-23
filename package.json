@@ -13,6 +13,7 @@
     "react": "16.1.1",
     "react-bootstrap": "0.31.5",
     "react-dom": "16.1.1",
+    "react-overlay-loading": "^1.0.3",
     "react-redux": "5.0.6",
     "react-responsive": "3.0.0",
     "react-router": "4.2.0",

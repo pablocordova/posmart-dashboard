@@ -12,6 +12,7 @@ import {
 import { connect } from 'react-redux'
 import swal from 'sweetalert2'
 import TextField from 'material-ui/TextField';
+import OverlayLoader from 'react-overlay-loading/lib/OverlayLoader'
 
 import {
   deleteProduct,
@@ -76,70 +77,79 @@ class Products extends Component {
               this.props.showCreateProduct(true)
             }
           ></RaisedButton>
-          <Table responsive>
-            <thead>
-              <tr className = 'text-center-header-table'>
-                <th>Cantidad</th>
-                <th>Paquete minimo</th>
-                <th>Categoria</th>
-                <th>Descripción</th>
-                <th>Costo unitario</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody className = 'row-table-selected'>
-              {
-                this.props.productsFiltered.map(product => {
-                  return (
-                    <tr key = { product._id } className = 'text-center'>
-                      <td>{ product.quantity }</td>
-                      <td>{ product.minimumUnit }</td>
-                      <td>{ product.category }</td>
-                      <td>{ product.name }</td>
-                      <td>{ _.round(product.unitCost, 2) }</td>
-                      <td className = 'spread-four-icons'>
-                        <i className = 'fa fa-pencil fa-lg' id = { product._id } onClick = { (e) =>
-                          this.props.modifyProduct(e.target.id)
-                        }></i>
-                        <i className = {
-                          'fa fa-usd fa-lg ' +
-                          (product.prices.length > 0 ? 'green-color' : 'red-color')
-                        } id = { product._id } onClick = { (e) =>
-                          this.props.showCreatePrice(e.target.id)
-                        }></i>
-                        <i className = 'fa fa-cart-plus fa-lg' id = {
-                          product._id
-                        } onClick = { (e) => {
-                          if (product.prices.length > 0) {
-                            this.props.showCosts(e.target.id)
-                          }
-                        }}></i>
-                        <i className = 'fa fa-trash fa-lg' id = { product._id } onClick = { (e) => {
-                          let deleteProductMethod = this.props.deleteProduct
-                          let idProduct = e.target.id
-                          swal({
-                            title: 'Esta seguro de eliminar el producto?',
-                            text: 'No será posible recuperarlo después!',
-                            type: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Si, borrarlo!',
-                            cancelButtonText: 'Cancelar'
-                          }).then(function (result) {
-                            if (result.value) {
-                              deleteProductMethod(idProduct)
+          <OverlayLoader
+            color = { 'green' }
+            loader = 'ScaleLoader'
+            text = 'Cargando...'
+            active = { this.props.stateLoader }
+            backgroundColor = {'black'}
+            opacity = '.4'
+          >
+            <Table responsive>
+              <thead>
+                <tr className = 'text-center-header-table'>
+                  <th>Cantidad</th>
+                  <th>Paquete minimo</th>
+                  <th>Categoria</th>
+                  <th>Descripción</th>
+                  <th>Costo unitario</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody className = 'row-table-selected'>
+                {
+                  this.props.productsFiltered.map(product => {
+                    return (
+                      <tr key = { product._id } className = 'text-center'>
+                        <td>{ product.quantity }</td>
+                        <td>{ product.minimumUnit }</td>
+                        <td>{ product.category }</td>
+                        <td>{ product.name }</td>
+                        <td>{ _.round(product.unitCost, 2) }</td>
+                        <td className = 'spread-four-icons'>
+                          <i className = 'fa fa-pencil fa-lg' id = { product._id } onClick = { (e) =>
+                            this.props.modifyProduct(e.target.id)
+                          }></i>
+                          <i className = {
+                            'fa fa-usd fa-lg ' +
+                            (product.prices.length > 0 ? 'green-color' : 'red-color')
+                          } id = { product._id } onClick = { (e) =>
+                            this.props.showCreatePrice(e.target.id)
+                          }></i>
+                          <i className = 'fa fa-cart-plus fa-lg' id = {
+                            product._id
+                          } onClick = { (e) => {
+                            if (product.prices.length > 0) {
+                              this.props.showCosts(e.target.id)
                             }
-                          })
-                        }}
-                        ></i>
-                      </td>
-                    </tr>
-                  )
-                })
-              }
-            </tbody>
-          </Table>
+                          }}></i>
+                          <i className = 'fa fa-trash fa-lg' id = { product._id } onClick = { (e) => {
+                            let deleteProductMethod = this.props.deleteProduct
+                            let idProduct = e.target.id
+                            swal({
+                              title: 'Esta seguro de eliminar el producto?',
+                              text: 'No será posible recuperarlo después!',
+                              type: 'warning',
+                              showCancelButton: true,
+                              confirmButtonColor: '#3085d6',
+                              cancelButtonColor: '#d33',
+                              confirmButtonText: 'Si, borrarlo!',
+                              cancelButtonText: 'Cancelar'
+                            }).then(function (result) {
+                              if (result.value) {
+                                deleteProductMethod(idProduct)
+                              }
+                            })
+                          }}
+                          ></i>
+                        </td>
+                      </tr>
+                    )
+                  })
+                }
+              </tbody>
+            </Table>
+          </OverlayLoader>
           <CreateProduct />
           <CreatePrice />
           <ViewCosts />
@@ -155,7 +165,8 @@ class Products extends Component {
 const mapStateToProps = state => {
   return {
     products: state.products.products,
-    productsFiltered: state.products.productsFiltered
+    productsFiltered: state.products.productsFiltered,
+    stateLoader: state.products.stateLoader
   }
 }
 
