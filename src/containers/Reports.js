@@ -11,7 +11,13 @@ import Assignment from 'material-ui/svg-icons/action/assignment';
 import ShoppingCart from 'material-ui/svg-icons/action/shopping-cart';
 import GridOn from 'material-ui/svg-icons/image/grid-on';
 
-//import { Row, Grid, Col } from 'react-bootstrap'
+import {
+  Table
+} from 'react-bootstrap'
+
+import {
+  getEarningByClients
+} from '../actions/reports'
 
 const paperStyle = {
   display: 'inline-block',
@@ -30,7 +36,9 @@ class Reports extends Component {
               <MenuItem
                 primaryText = 'Ganancias'
                 leftIcon = { <MonetizationOn /> }
-                onClick = { e => console.log('hehehehe')}
+                onClick = { e =>
+                  this.props.getEarningByClients()
+                }
               />
               <MenuItem
                 primaryText = 'Ventas'
@@ -51,7 +59,27 @@ class Reports extends Component {
             </Menu>
           </Paper>
           <div className = 'display-inline-block'>
-            <h1>Hello world</h1>
+            <div>{ this.props.totalEarnByClient }</div>
+            <Table responsive>
+                <thead>
+                  <tr className = 'text-center-header-table'>
+                    <th>Cliente</th>
+                    <th>Ganancia</th>
+                  </tr>
+                </thead>
+                <tbody className = 'row-table-selected'>
+                  {
+                    this.props.earningsByClient.map((earningByClient, index) => {
+                      return (
+                        <tr key = { index } className = 'text-center'>
+                          <td>{ earningByClient.name }</td>
+                          <td>{ earningByClient.total }</td>
+                        </tr>
+                      )
+                    })
+                  }
+                </tbody>
+              </Table>
           </div>
         </div>
       </MuiThemeProvider>
@@ -62,12 +90,16 @@ class Reports extends Component {
 
 const mapStateToProps = state => {
   return {
-    state
+    earningsByClient: state.reports.earningsByClient,
+    totalEarnByClient: state.reports.totalEarnByClient
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
+    getEarningByClients() {
+      dispatch(getEarningByClients())
+    }
   }
 }
 
