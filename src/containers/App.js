@@ -5,6 +5,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { connect } from 'react-redux'
 
 import Products from './Products'
+import Reports from './Reports'
 import Receipts from './Receipts'
 import Buys from './Buys'
 import Users from './Users'
@@ -56,9 +57,14 @@ class App extends Component {
     } else {
       navbarOptions = (
         <Nav pullRight>
+          <LinkContainer to = '/reports'>
+            <NavItem eventKey = {0}>
+              <i className = 'fa fa-area-chart'></i>&ensp; Reportes
+            </NavItem>
+          </LinkContainer>
           <LinkContainer to = '/products'>
             <NavItem eventKey = {1}>
-              <i className = 'fa fa-cubes'></i>&ensp; Products
+              <i className = 'fa fa-cubes'></i>&ensp; Productos
             </NavItem>
           </LinkContainer>
           <LinkContainer to = '/receipts'>
@@ -106,6 +112,7 @@ class App extends Component {
           <Route path = '/login' component = { Login } />
           <Route path = '/register' component = { Register } />
           <Route path = '/setting' component = { Setting } />
+          <Route path = '/reports' component = { Reports } />
           <Route path = '/products' component = { Products } />
           <Route path = '/receipts' component = { Receipts } />
           <Route path = '/buys' component = { Buys } />
