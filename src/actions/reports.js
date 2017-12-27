@@ -2,7 +2,6 @@ import axios from 'axios'
 
 const REPORTS_PATH = '/reports'
 const EARNINGS_PATH = '/earnings'
-const BYCLIENTS_PATH = '/byclient'
 let SERVER_PATH = ''
 
 switch (process.env.REACT_APP_ENV) {
@@ -16,10 +15,14 @@ switch (process.env.REACT_APP_ENV) {
     break;
 }
 
-const getEarningByClients = () => {
+const getAnalizeEarning = (dateFrom, dateTo, type) => {
   return dispatch => {
-    return axios.get(
-      SERVER_PATH + REPORTS_PATH + EARNINGS_PATH + BYCLIENTS_PATH,
+    return axios.post(
+      SERVER_PATH + REPORTS_PATH + EARNINGS_PATH + '/' + type,
+      {
+        from: dateFrom,
+        to: dateTo
+      },
       {
         headers: {
           'Authorization': 'JWT ' + localStorage.getItem('token')
@@ -28,13 +31,14 @@ const getEarningByClients = () => {
     )
       .then(response => {
         dispatch({
-          type: 'LOAD_EARNINGS_BY_CLIENT',
-          earningsByClient: response.data.result,
+          type: 'LOAD_EARNINGS_BY',
+          earningsBy: response.data.result,
+          typeBy: type
         })
       })
   }
 }
 
 export {
-  getEarningByClients
+  getAnalizeEarning
 }

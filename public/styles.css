@@ -2,6 +2,11 @@
   display: inline-block;
 }
 
+.display-inline-block-top {
+  display: inline-block;
+  vertical-align: top;
+}
+
 .green-color {
   color: green;
 }

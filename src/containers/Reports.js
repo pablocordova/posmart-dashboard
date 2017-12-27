@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Route } from 'react-router-dom'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import Paper from 'material-ui/Paper';
@@ -12,12 +13,10 @@ import ShoppingCart from 'material-ui/svg-icons/action/shopping-cart';
 import GridOn from 'material-ui/svg-icons/image/grid-on';
 
 import {
-  Table
-} from 'react-bootstrap'
+  LinkContainer
+} from 'react-router-bootstrap'
 
-import {
-  getEarningByClients
-} from '../actions/reports'
+import Earnings from './Earnings'
 
 const paperStyle = {
   display: 'inline-block',
@@ -33,13 +32,12 @@ class Reports extends Component {
         <div>
           <Paper style = { paperStyle }>
             <Menu>
-              <MenuItem
-                primaryText = 'Ganancias'
-                leftIcon = { <MonetizationOn /> }
-                onClick = { e =>
-                  this.props.getEarningByClients()
-                }
-              />
+              <LinkContainer to = '/reports/earnings'>
+                <MenuItem
+                  primaryText = 'Ganancias'
+                  leftIcon = { <MonetizationOn /> }
+                />
+              </LinkContainer>
               <MenuItem
                 primaryText = 'Ventas'
                 leftIcon = { <Assignment /> }
@@ -58,28 +56,8 @@ class Reports extends Component {
               />
             </Menu>
           </Paper>
-          <div className = 'display-inline-block'>
-            <div>{ this.props.totalEarnByClient }</div>
-            <Table responsive>
-                <thead>
-                  <tr className = 'text-center-header-table'>
-                    <th>Cliente</th>
-                    <th>Ganancia</th>
-                  </tr>
-                </thead>
-                <tbody className = 'row-table-selected'>
-                  {
-                    this.props.earningsByClient.map((earningByClient, index) => {
-                      return (
-                        <tr key = { index } className = 'text-center'>
-                          <td>{ earningByClient.name }</td>
-                          <td>{ earningByClient.total }</td>
-                        </tr>
-                      )
-                    })
-                  }
-                </tbody>
-              </Table>
+          <div className = 'display-inline-block-top'>
+            <Route path = '/reports/earnings' component = { Earnings } />
           </div>
         </div>
       </MuiThemeProvider>
@@ -90,16 +68,12 @@ class Reports extends Component {
 
 const mapStateToProps = state => {
   return {
-    earningsByClient: state.reports.earningsByClient,
-    totalEarnByClient: state.reports.totalEarnByClient
+    state
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    getEarningByClients() {
-      dispatch(getEarningByClients())
-    }
   }
 }
 
