@@ -1,7 +1,6 @@
 import axios from 'axios'
 import open from 'oauth-open'
 
-const GET_PRINTER_DATA_PATH = '/printerinfo'
 const GET_ACCESSTOKEN_PATH = '/googletoken'
 const GET_GOOGLE_URL_PATH = '/googleurl'
 const SETTINGS_PATH = '/settings'
@@ -69,24 +68,4 @@ const getTokenGoogle = () => {
   }
 }
 
-const getPrinterData = () => {
-
-  return () => {
-
-    return axios.get(
-      SERVER_PATH + SETTINGS_PATH + GET_PRINTER_DATA_PATH,
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
-      }
-    )
-      .then(response => {
-        console.log('Printer info')
-        console.log(response.data.result)
-      })
-  }
-
-}
-
-export { getPrinterData, getTokenGoogle, getUrlGoogleToken }
+export { getTokenGoogle, getUrlGoogleToken }
