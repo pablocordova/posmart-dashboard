@@ -91,7 +91,7 @@ class Earnings extends Component {
               <RaisedButton
                 label = 'ANALIZAR'
                 secondary = { true }
-                onClick = { e => {
+                onClick = { () => {
                   this.props.getAnalizeEarning(this.state.from, this.state.to, this.state.type)
                 }}
               />
@@ -107,39 +107,39 @@ class Earnings extends Component {
             }}
           />
           <Table responsive>
-              <thead>
-                <tr className = 'text-center-header-table'>
-                  <th>Nro.</th>  
-                  <th hidden = { this.props.typeBy !== 'sale' } >Fecha</th>
-                  <th hidden = { this.props.typeBy !== 'sale' }>Estado</th>
-                  <th>Cliente</th>
-                  <th>Ganancia</th>
-                </tr>
-              </thead>
-              <tbody className = 'row-table-selected'>
-                {
-                  this.props.earningsBy.map((earningBy, index) => {
-                    return (
-                      <tr key = { index } className = 'text-center'>
-                        <td>{ index + 1 }</td>
-                        <td
-                          hidden = { this.props.typeBy !== 'sale' }
-                        >
-                          { moment(earningBy.date).format('DD/MM/YY') }
-                        </td>
-                        <td
-                          hidden = { this.props.typeBy !== 'sale' }
-                        >
-                          { earningBy.state }
-                        </td>
-                        <td>{ earningBy.client }</td>
-                        <td>{ earningBy.total }</td>
-                      </tr>
-                    )
-                  })
-                }
-              </tbody>
-            </Table>
+            <thead>
+              <tr className = 'text-center-header-table'>
+                <th>Nro.</th>
+                <th hidden = { this.props.typeBy !== 'sale' } >Fecha</th>
+                <th hidden = { this.props.typeBy !== 'sale' }>Estado</th>
+                <th>Cliente</th>
+                <th>Ganancia</th>
+              </tr>
+            </thead>
+            <tbody className = 'row-table-selected'>
+              {
+                this.props.earningsBy.map((earningBy, index) => {
+                  return (
+                    <tr key = { index } className = 'text-center'>
+                      <td>{ index + 1 }</td>
+                      <td
+                        hidden = { this.props.typeBy !== 'sale' }
+                      >
+                        { moment(earningBy.date).format('DD/MM/YY') }
+                      </td>
+                      <td
+                        hidden = { this.props.typeBy !== 'sale' }
+                      >
+                        { earningBy.state }
+                      </td>
+                      <td>{ earningBy.client }</td>
+                      <td>{ earningBy.total }</td>
+                    </tr>
+                  )
+                })
+              }
+            </tbody>
+          </Table>
         </div>
       </MuiThemeProvider>
     )

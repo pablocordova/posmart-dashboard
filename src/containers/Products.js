@@ -107,9 +107,13 @@ class Products extends Component {
                             <td>{ product.name }</td>
                             <td>{ _.round(product.unitCost, 2) }</td>
                             <td className = 'spread-four-icons'>
-                              <i className = 'fa fa-pencil fa-lg' id = { product._id } onClick = { (e) =>
-                                this.props.modifyProduct(e.target.id)
-                              }></i>
+                              <i
+                                className = 'fa fa-pencil fa-lg'
+                                id = { product._id }
+                                onClick = { (e) =>
+                                  this.props.modifyProduct(e.target.id)
+                                }
+                              ></i>
                               <i className = {
                                 'fa fa-usd fa-lg ' +
                                 (product.prices.length > 0 ? 'green-color' : 'red-color')
@@ -123,25 +127,29 @@ class Products extends Component {
                                   this.props.showCosts(e.target.id)
                                 }
                               }}></i>
-                              <i className = 'fa fa-trash fa-lg' id = { product._id } onClick = { (e) => {
-                                let deleteProductMethod = this.props.deleteProduct
-                                let idProduct = e.target.id
-                                swal({
-                                  title: 'Esta seguro de eliminar el producto?',
-                                  text: 'No será posible recuperarlo después!',
-                                  type: 'warning',
-                                  showCancelButton: true,
-                                  confirmButtonColor: '#3085d6',
-                                  cancelButtonColor: '#d33',
-                                  confirmButtonText: 'Si, borrarlo!',
-                                  cancelButtonText: 'Cancelar'
-                                }).then(function (result) {
-                                  if (result.value) {
-                                    deleteProductMethod(idProduct)
-                                  }
-                                })
-                              }}
-                              ></i>
+                              <i
+                                className = 'fa fa-trash fa-lg'
+                                id = { product._id }
+                                onClick = { (e) => {
+                                  let deleteProductMethod = this.props.deleteProduct
+                                  let idProduct = e.target.id
+                                  swal({
+                                    title: 'Esta seguro de eliminar el producto?',
+                                    text: 'No será posible recuperarlo después!',
+                                    type: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Si, borrarlo!',
+                                    cancelButtonText: 'Cancelar'
+                                  }).then(function (result) {
+                                    if (result.value) {
+                                      deleteProductMethod(idProduct)
+                                    }
+                                  })
+                                }}
+                              >
+                              </i>
                             </td>
                           </tr>
                         )

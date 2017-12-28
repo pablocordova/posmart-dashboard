@@ -47,7 +47,7 @@ const users = (
         ...state,
         buttonUser: 'CREAR',
         isVisibleCreateModifyUsers: true,
-        
+
         user: {
           ...state.user,
           email: '',
@@ -70,7 +70,7 @@ const users = (
       return {
         ...state,
         buttonUser: 'MODIFICAR',
-        
+
         isVisibleCreateModifyUsers: true,
         titleUser: 'MODIFICAR',
         user: {

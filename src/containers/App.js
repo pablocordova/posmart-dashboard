@@ -5,7 +5,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { connect } from 'react-redux'
 
 import Products from './Products'
-import Reports from './Reports'
+import Reports from '../components/Reports'
 import Receipts from './Receipts'
 import Buys from './Buys'
 import Users from './Users'

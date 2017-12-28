@@ -198,7 +198,7 @@ const updateSelectedPrices = (idProduct) => {
 
 const updateUnitCost = (unitCost, idProduct) => {
 
-  return dispatch => {
+  return () => {
     return axios.put(
       SERVER_PATH + PRODUCTS_PATH + '/' + idProduct + UNIT_COST_PATH,
       {

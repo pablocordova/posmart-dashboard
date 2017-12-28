@@ -80,13 +80,13 @@ class ViewReceipt extends Component {
                 value = { this.props.stateSale }
                 style = { selectStateStyle }
                 onChange = { e => {
-                    let status = false
-                    if (e.target.value === 'Credito') {
-                      status = true
-                    }
-                    this.props.visibleFormDebt(status, e.target.value)
-                    this.props.updateStateSale(this.props.saleSelected._id, e.target.value)
+                  let status = false
+                  if (e.target.value === 'Credito') {
+                    status = true
                   }
+                  this.props.visibleFormDebt(status, e.target.value)
+                  this.props.updateStateSale(this.props.saleSelected._id, e.target.value)
+                }
                 }
               >
                 <option value = 'Pendiente' key = 'Pendiente'>Pendiente</option>
@@ -102,7 +102,7 @@ class ViewReceipt extends Component {
                     <th>Monto</th>
                     <th className = 'red-color'>
                       <h4>
-                        { 
+                        {
                           _.round(parseFloat(this.props.saleSelected.total) -
                             this.props.sumCredits, 1)
                         }

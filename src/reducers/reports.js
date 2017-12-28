@@ -18,7 +18,7 @@ const clients = (
       // Information for graphic
       let labels = []
       let data = []
-      switch(action.typeBy) {
+      switch (action.typeBy) {
         case 'client':
           for (const earning of action.earningsBy) {
             labels.push(earning.client)
@@ -27,7 +27,7 @@ const clients = (
 
           break
         default:
-          for (const [index, value] of action.earningsBy.entries()) {
+          for (const [ index, value ] of action.earningsBy.entries()) {
             labels.push(index + 1)
             data.push(value.total)
           }

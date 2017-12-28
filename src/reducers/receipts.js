@@ -30,7 +30,7 @@ const receipts = ( state = {
         ...state,
         isVisibleCompleteReceipt: false
       }
-    case 'LOAD_RECEIPTS':
+    case 'LOAD_RECEIPTS': {
       // Calculate more info, TODO
       let numSaleDebts = 0
       let totalSaleDebts =  0
@@ -46,6 +46,7 @@ const receipts = ( state = {
         numSaleDebts: numSaleDebts,
         totalSaleDebts: totalSaleDebts
       }
+    }
     case 'LOAD_CREDITS': {
       let credits = []
       let sumCredits = 0
@@ -75,7 +76,7 @@ const receipts = ( state = {
       }
     }
     case 'VISIBLE_FORM_DEBT': {
-    return {
+      return {
         ...state,
         isVisibleFormDebt: action.isVisibleFormDebt,
         stateSale: action.optionState

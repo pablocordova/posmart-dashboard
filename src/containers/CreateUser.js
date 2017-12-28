@@ -146,10 +146,10 @@ class CreateUser extends Component {
             <FormGroup>
               <ControlLabel>Permisos</ControlLabel>
               <div>
-                <Checkbox 
+                <Checkbox
                   inline
                   defaultChecked={ this.props.user.permissions.customers }
-                  onClick = { e => 
+                  onClick = { e =>
                     this.props.user.permissions.customers = e.target.checked
                   }
                 >
@@ -159,7 +159,7 @@ class CreateUser extends Component {
                 <Checkbox
                   inline
                   defaultChecked={ this.props.user.permissions.products }
-                  onClick = { e => 
+                  onClick = { e =>
                     this.props.user.permissions.products = e.target.checked
                   }
                 >
@@ -169,7 +169,7 @@ class CreateUser extends Component {
                 <Checkbox
                   inline
                   defaultChecked={ this.props.user.permissions.sales }
-                  onClick = { e => 
+                  onClick = { e =>
                     this.props.user.permissions.sales = e.target.checked
                   }
                 >
@@ -179,7 +179,7 @@ class CreateUser extends Component {
                 <Checkbox
                   inline
                   defaultChecked={ this.props.user.permissions.settings }
-                  onClick = { e => 
+                  onClick = { e =>
                     this.props.user.permissions.settings = e.target.checked
                   }
                 >
@@ -189,7 +189,7 @@ class CreateUser extends Component {
                 <Checkbox
                   inline
                   defaultChecked={ this.props.user.permissions.users }
-                  onClick = { e => 
+                  onClick = { e =>
                     this.props.user.permissions.users = e.target.checked
                   }
                 >

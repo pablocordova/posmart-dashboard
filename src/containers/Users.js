@@ -49,73 +49,77 @@ class Users extends Component {
   render() {
     return (
       <MuiThemeProvider muiTheme={ muiTheme }>
-      <Grid>
-        <Row>
-          <div>
+        <Grid>
+          <Row>
             <div>
-              <TextField
-                hintText="Nombre del usuario"
-                floatingLabelText="FILTRAR USUARIO"
-                underlineFocusStyle = { underlineStyle }
-                floatingLabelStyle = { floatingLabelStyle }
-                onChange = { e => this.props.filterUsers(e.target.value) }
-              />
-            </div>
-            <RaisedButton
-              label = 'NUEVO'
-              secondary = { true }
-              onClick = { () =>
-                this.props.showCreateUser(true)
-              }
-            ></RaisedButton>
-            <Table responsive>
-              <thead>
-                <tr className = 'text-center-header-table'>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody className = 'row-table-selected'>
-                {
-                  this.props.usersFiltered.map(user => {
-                    return (
-                      <tr key = { user._id } className = 'text-center'>
-                        <td>{ user.username }</td>
-                        <td>{ user.email }</td>
-                        <td className = 'spread-two-icons'>
-                          <i className = 'fa fa-pencil fa-lg' id = { user._id } onClick = { (e) =>
-                            this.props.showModifyUser(e.target.id)
-                          }></i>
-                          <i className = 'fa fa-trash fa-lg' id = { user._id } onClick = { (e) => {
-                            let deleteUserMethod = this.props.deleteUser
-                            let idUser = e.target.id
-                            swal({
-                              title: 'Esta seguro de eliminar el usuario?',
-                              type: 'warning',
-                              showCancelButton: true,
-                              confirmButtonColor: '#3085d6',
-                              cancelButtonColor: '#d33',
-                              confirmButtonText: 'Si, borrarlo!',
-                              cancelButtonText: 'Cancelar'
-                            }).then(function (result) {
-                              if (result.value) {
-                                deleteUserMethod(idUser)
-                              }
-                            })
-                          }}
-                          ></i>
-                        </td>
-                      </tr>
-                    )
-                  })
+              <div>
+                <TextField
+                  hintText="Nombre del usuario"
+                  floatingLabelText="FILTRAR USUARIO"
+                  underlineFocusStyle = { underlineStyle }
+                  floatingLabelStyle = { floatingLabelStyle }
+                  onChange = { e => this.props.filterUsers(e.target.value) }
+                />
+              </div>
+              <RaisedButton
+                label = 'NUEVO'
+                secondary = { true }
+                onClick = { () =>
+                  this.props.showCreateUser(true)
                 }
-              </tbody>
-            </Table>
-            <CreateUser />
-          </div>
-        </Row>
-      </Grid>
+              ></RaisedButton>
+              <Table responsive>
+                <thead>
+                  <tr className = 'text-center-header-table'>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody className = 'row-table-selected'>
+                  {
+                    this.props.usersFiltered.map(user => {
+                      return (
+                        <tr key = { user._id } className = 'text-center'>
+                          <td>{ user.username }</td>
+                          <td>{ user.email }</td>
+                          <td className = 'spread-two-icons'>
+                            <i className = 'fa fa-pencil fa-lg' id = { user._id } onClick = { (e) =>
+                              this.props.showModifyUser(e.target.id)
+                            }></i>
+                            <i
+                              className = 'fa fa-trash fa-lg'
+                              id = { user._id }
+                              onClick = { (e) => {
+                                let deleteUserMethod = this.props.deleteUser
+                                let idUser = e.target.id
+                                swal({
+                                  title: 'Esta seguro de eliminar el usuario?',
+                                  type: 'warning',
+                                  showCancelButton: true,
+                                  confirmButtonColor: '#3085d6',
+                                  cancelButtonColor: '#d33',
+                                  confirmButtonText: 'Si, borrarlo!',
+                                  cancelButtonText: 'Cancelar'
+                                }).then(function (result) {
+                                  if (result.value) {
+                                    deleteUserMethod(idUser)
+                                  }
+                                })
+                              }}
+                            >
+                            </i>
+                          </td>
+                        </tr>
+                      )
+                    })
+                  }
+                </tbody>
+              </Table>
+              <CreateUser />
+            </div>
+          </Row>
+        </Grid>
       </MuiThemeProvider>
     )
   }

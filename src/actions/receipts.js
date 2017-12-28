@@ -23,7 +23,7 @@ switch (process.env.REACT_APP_ENV) {
 
 const addAdvancePay = (date, amount, idSale) => {
 
-  return dispatch => {
+  return () => {
     return axios.post(
       SERVER_PATH + SALES_PATH + '/' + idSale + CREDIT_PATH,
       {
@@ -48,7 +48,7 @@ const addAdvancePay = (date, amount, idSale) => {
 
 const deleteCredit = (idSale, index) => {
 
-  return dispatch => {
+  return () => {
     return axios.delete(
       SERVER_PATH + SALES_PATH + '/' + idSale + CREDIT_PATH + '/' + index,
       {
@@ -69,7 +69,7 @@ const deleteCredit = (idSale, index) => {
 
 const deleteReceipt = (idSale) => {
 
-  return dispatch => {
+  return () => {
     return axios.delete(
       SERVER_PATH + SALES_PATH + '/' + idSale,
       {

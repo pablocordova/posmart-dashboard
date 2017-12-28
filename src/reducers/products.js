@@ -42,7 +42,7 @@ const products = (
 ) => {
 
   switch (action.type) {
-    case 'CHANGE_VIEW_COST':
+    case 'CHANGE_VIEW_COST': {
       let cost = ''
       if (action.valueViewCost) {
         cost = parseFloat(action.valueViewCost)
@@ -51,11 +51,12 @@ const products = (
         ...state,
         pricesViewCost: state.pricesViewCost.map((price, index) => {
           return index === parseInt(action.indexViewCost, 10) ?
-          cost : cost !== '' ?
-          _.round((parseFloat(state.productSelected.prices[index].items) * cost) /
+            cost : cost !== '' ?
+              _.round((parseFloat(state.productSelected.prices[index].items) * cost) /
           parseFloat(state.productSelected.prices[action.indexViewCost].items), 10) : cost
         })
       }
+    }
     case 'LOAD_PRICES':
       return {
         ...state,
@@ -83,7 +84,7 @@ const products = (
         },
         isVisibleCreateProducts: action.isVisibleCreateProducts
       }
-    case 'FILTER_PRODUCTS':
+    case 'FILTER_PRODUCTS': {
       let productsCopy = state.products
       let wordsToSearch = action.string.toLowerCase().split(' ')
       for (let word of wordsToSearch) {
@@ -95,6 +96,7 @@ const products = (
         ...state,
         productsFiltered: productsCopy
       }
+    }
     case 'LOAD_MINIMUN_UNITS':
       return {
         ...state,
@@ -149,7 +151,7 @@ const products = (
           product._id === action.idProduct
         ).pop()
       }
-    case 'SHOW_COSTS':
+    case 'SHOW_COSTS': {
       let product = state.products.filter( product =>
         product._id === action.idProduct
       ).pop()
@@ -162,6 +164,7 @@ const products = (
         pricesViewCost: prices,
         productSelected: product
       }
+    }
     case 'HIDE_CREATE_PRICE':
       return {
         ...state,

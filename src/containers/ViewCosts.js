@@ -41,7 +41,7 @@ class ViewCosts extends Component {
           <Modal.Body>
             {
               this.props.pricesViewCost.map( (price, index) => {
-                return(
+                return (
                   <div id = { index } key = { index }>
                     { this.props.productSelected.prices.length > 0 ?
                       this.props.productSelected.prices[index].name : ''
@@ -57,20 +57,20 @@ class ViewCosts extends Component {
                 )
               })
             }
-          <RaisedButton
-            label = 'GRABAR'
-            secondary = { true }
-            onClick = { () => {
-              let unitCost = _.round(
-                this.props.pricesViewCost[0] / this.props.productSelected.prices[0].items,
-                10
-              )
-              this.props.updateUnitCost(
-                unitCost,
-                this.props.productSelected._id
-              )
-            }}
-          />
+            <RaisedButton
+              label = 'GRABAR'
+              secondary = { true }
+              onClick = { () => {
+                let unitCost = _.round(
+                  this.props.pricesViewCost[0] / this.props.productSelected.prices[0].items,
+                  10
+                )
+                this.props.updateUnitCost(
+                  unitCost,
+                  this.props.productSelected._id
+                )
+              }}
+            />
           </Modal.Body>
           <Modal.Footer>
             <RaisedButton

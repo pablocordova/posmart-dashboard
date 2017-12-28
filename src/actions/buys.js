@@ -83,7 +83,7 @@ const getBuys = (data) => {
 }
 
 const saveBuy = (id, date, company, total, products) => {
-  return dispatch => {
+  return () => {
     return axios.post(
       SERVER_PATH + BUYS_PATH,
       {

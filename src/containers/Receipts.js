@@ -154,7 +154,7 @@ class Receipts extends Component {
                     })
                   }}
                 />
-               </div>
+              </div>
               <div hidden = { !this.state.showMoreDetails }>
                 <div>
                   Nro. Ventas con deudas:
@@ -198,8 +198,8 @@ class Receipts extends Component {
                           <td className = {
                             (
                               sale.state === 'Pagado' ?
-                              'green-color-bold' :
-                              (sale.state === 'Credito' ? 'red-color-bold' : '')
+                                'green-color-bold' :
+                                (sale.state === 'Credito' ? 'red-color-bold' : '')
                             )
                           }>
                             { sale.state }</td>
@@ -209,26 +209,30 @@ class Receipts extends Component {
                             <i className = 'fa fa-eye fa-lg' id = { sale._id } onClick = { (e) =>
                               this.props.showCompleteReceipt(e.target.id)
                             }></i>
-                            <i className = 'fa fa-trash fa-lg' id = { sale._id } onClick = { (e) => {
-                              let deleteReceiptMethod = this.props.deleteReceipt
-                              let idSale = e.target.id
-                              let searchAfterDelete = this.props.searchData
-                              swal({
-                                title: 'Esta seguro de eliminar esta venta?',
-                                text: 'No será posible recuperarlo después!',
-                                type: 'warning',
-                                showCancelButton: true,
-                                confirmButtonColor: '#3085d6',
-                                cancelButtonColor: '#d33',
-                                confirmButtonText: 'Si, borrarlo!',
-                                cancelButtonText: 'Cancelar'
-                              }).then(function (result) {
-                                if (result.value) {
-                                  deleteReceiptMethod(idSale, searchAfterDelete)
-                                }
-                              })
-                            }}
-                            ></i>
+                            <i
+                              className = 'fa fa-trash fa-lg'
+                              id = { sale._id }
+                              onClick = { (e) => {
+                                let deleteReceiptMethod = this.props.deleteReceipt
+                                let idSale = e.target.id
+                                let searchAfterDelete = this.props.searchData
+                                swal({
+                                  title: 'Esta seguro de eliminar esta venta?',
+                                  text: 'No será posible recuperarlo después!',
+                                  type: 'warning',
+                                  showCancelButton: true,
+                                  confirmButtonColor: '#3085d6',
+                                  cancelButtonColor: '#d33',
+                                  confirmButtonText: 'Si, borrarlo!',
+                                  cancelButtonText: 'Cancelar'
+                                }).then(function (result) {
+                                  if (result.value) {
+                                    deleteReceiptMethod(idSale, searchAfterDelete)
+                                  }
+                                })
+                              }}
+                            >
+                            </i>
                           </td>
                         </tr>
                       )

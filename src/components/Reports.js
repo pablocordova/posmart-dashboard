@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Route } from 'react-router-dom'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -16,7 +15,7 @@ import {
   LinkContainer
 } from 'react-router-bootstrap'
 
-import Earnings from './Earnings'
+import Earnings from '../containers/Earnings'
 
 const paperStyle = {
   display: 'inline-block',
@@ -66,18 +65,4 @@ class Reports extends Component {
 
 }
 
-const mapStateToProps = state => {
-  return {
-    state
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Reports)
+export default Reports

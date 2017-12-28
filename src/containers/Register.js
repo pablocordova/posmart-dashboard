@@ -95,7 +95,7 @@ class Register extends Component {
                             this.state.email,
                             this.state.pass,
                             this.state.passRepeat
-                          ) 
+                          )
                         }
                       }}
                     />

@@ -33,7 +33,7 @@ const receipts = ( state = {
 }, action) => {
 
   switch (action.type) {
-    case 'ADD_PRODUCT_BUY':
+    case 'ADD_PRODUCT_BUY': {
       let product = {
         quantity: action.allForm.quantity,
         measure: action.allForm.measure,
@@ -48,6 +48,7 @@ const receipts = ( state = {
         productsBuy: state.productsBuy.concat(product),
         totalViewBuy: state.totalViewBuy + parseFloat(action.allForm.total)
       }
+    }
     case 'CHANGE_COMPANY_VIEW_BUY':
       return {
         ...state,
@@ -101,7 +102,7 @@ const receipts = ( state = {
       }
     }
     case 'SHOW_CREATE_BUY': {
-    return {
+      return {
         ...state,
         isVisibleFormBuy: true,
         allProducts: action.allProducts,
