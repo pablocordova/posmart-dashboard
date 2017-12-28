@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import _ from 'lodash'
-import { VictoryBar, VictoryChart, VictoryTheme } from 'victory';
+import { Bar } from 'react-chartjs-2';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -42,69 +42,68 @@ class Earnings extends Component {
     return (
       <MuiThemeProvider muiTheme={ muiTheme }>
         <div>
-
-          <ControlLabel>Desde:&ensp;</ControlLabel>
-          <label>
-            <FormControl
-              type = 'date'
-              defaultValue = { moment().format('YYYY-MM-DD')}
-              onChange = { e => {
-                this.setState({
-                  from: e.target.value
-                })
-              }}
-            />
-          </label>
-
-          <ControlLabel>Hasta:&ensp;</ControlLabel>
-          <label>
-            <FormControl
-              type = 'date'
-              defaultValue = { moment().format('YYYY-MM-DD')}
-              onChange = { e => {
-                this.setState({
-                  to: e.target.value
-                })
-              }}
-            />
-          </label>
-
-          <ControlLabel>Tipo:&ensp;</ControlLabel>
-          <label>
-            <FormControl
-              componentClass = 'select'
-              onChange = { e => {
-                this.setState({
-                  type: e.target.value
-                })
-              }}
-            >
-              <option value = 'client'>Cliente</option>
-              <option value = 'sale'>Venta</option>
-            </FormControl>
-          </label>
-
-          <RaisedButton
-            label = 'ANALIZAR'
-            secondary = { true }
-            onClick = { e => {
-              this.props.getAnalizeEarning(this.state.from, this.state.to, this.state.type)
+          <div className = 'text-center'>
+            <div className = 'options-reports'>
+              <ControlLabel>Desde:&ensp;</ControlLabel>
+              <label>
+                <FormControl
+                  type = 'date'
+                  defaultValue = { moment().format('YYYY-MM-DD')}
+                  onChange = { e => {
+                    this.setState({
+                      from: e.target.value
+                    })
+                  }}
+                />
+              </label>
+            </div>
+            <div className = 'options-reports'>
+              <ControlLabel>Hasta:&ensp;</ControlLabel>
+              <label>
+                <FormControl
+                  type = 'date'
+                  defaultValue = { moment().format('YYYY-MM-DD')}
+                  onChange = { e => {
+                    this.setState({
+                      to: e.target.value
+                    })
+                  }}
+                />
+              </label>
+            </div>
+            <div className = 'options-reports'>
+              <ControlLabel>Tipo:&ensp;</ControlLabel>
+              <label>
+                <FormControl
+                  componentClass = 'select'
+                  onChange = { e => {
+                    this.setState({
+                      type: e.target.value
+                    })
+                  }}
+                >
+                  <option value = 'client'>Cliente</option>
+                  <option value = 'sale'>Venta</option>
+                </FormControl>
+              </label>
+            </div>
+            <div className = 'options-reports'>
+              <RaisedButton
+                label = 'ANALIZAR'
+                secondary = { true }
+                onClick = { e => {
+                  this.props.getAnalizeEarning(this.state.from, this.state.to, this.state.type)
+                }}
+              />
+            </div>
+          </div>
+          <h2>TOTAL: { _.round(this.props.totalEarnBy, 2) }</h2>
+          <Bar
+            data = { this.props.dataGraph }
+            options = {{
+              maintainAspectRatio: false
             }}
           />
-
-          <h2>TOTAL: { _.round(this.props.totalEarnBy, 2) }</h2>
-          <VictoryChart
-            domainPadding = { 20 }
-            theme = { VictoryTheme.material }
-          >
-            <VictoryBar
-              data = { this.props.dataGraph }
-              // data accessor for x values
-              x = { this.props.nameTypeBy }
-              // data accessor for y values
-              y = 'Ganancia'
-            />
-          </VictoryChart>
           <Table responsive>
               <thead>
                 <tr className = 'text-center-header-table'>
@@ -151,7 +150,6 @@ const mapStateToProps = state => {
     earningsBy: state.reports.earningsBy,
     totalEarnBy: state.reports.totalEarnBy,
     typeBy: state.reports.typeBy,
-    nameTypeBy: state.reports.nameTypeBy,
     dataGraph: state.reports.dataGraph
   }
 }

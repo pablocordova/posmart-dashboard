@@ -3,8 +3,7 @@ const clients = (
     earningsBy: [],
     totalEarnBy: 0,
     typeBy: 'client',
-    nameTypeBy: '',
-    dataGraph: []
+    dataGraph: {}
   },
   action
 ) => {
@@ -17,40 +16,45 @@ const clients = (
         totalEarnBy += earn.total
       }
       // Information for graphic
-      let dataGraph = []
-      let nameTypeBy = ''
+      let labels = []
+      let data = []
       switch(action.typeBy) {
         case 'client':
-          nameTypeBy = 'Clientes'
           for (const earning of action.earningsBy) {
-            dataGraph.push({
-              Clientes: earning.client,
-              Ganancia: earning.total
-            })
+            labels.push(earning.client)
+            data.push(earning.total)
           }
 
           break
         default:
-          nameTypeBy = 'Ventas'
           for (const [index, value] of action.earningsBy.entries()) {
-            let obj = {
-              Ventas: index + 1,
-              Ganancia: value.total
-            }
-            dataGraph.push(obj)
+            labels.push(index + 1)
+            data.push(value.total)
           }
 
           break
       }
 
-      
+      let dataGraph = {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Ganancia',
+            backgroundColor: 'rgba(255,99,132,0.2)',
+            borderColor: 'rgba(255,99,132,1)',
+            borderWidth: 1,
+            hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+            hoverBorderColor: 'rgba(255,99,132,1)',
+            data: data
+          }
+        ]
+      };
 
       return {
         ...state,
         earningsBy: action.earningsBy,
         totalEarnBy: totalEarnBy,
         typeBy: action.typeBy === 'sale' ? 'sale' : 'client',
-        nameTypeBy: nameTypeBy,
         dataGraph: dataGraph
       }
     }

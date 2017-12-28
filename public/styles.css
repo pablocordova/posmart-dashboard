@@ -5,6 +5,7 @@
 .display-inline-block-top {
   display: inline-block;
   vertical-align: top;
+  width: 85%;
 }
 
 .green-color {
@@ -32,6 +33,11 @@
 .navbar-nav > .active > a:focus {
   color: white !important;
   background-color: #4caf50 !important;
+}
+
+.options-reports {
+  display: inline-block;
+  margin-left: 15px;
 }
 
 .red-color {
@@ -68,4 +74,3 @@
 .text-center-header-table > th {
   text-align: center !important;
 }
-
