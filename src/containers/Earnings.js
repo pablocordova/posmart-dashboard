@@ -100,8 +100,10 @@ class Earnings extends Component {
           <h2>TOTAL: { _.round(this.props.totalEarnBy, 2) }</h2>
           <Bar
             data = { this.props.dataGraph }
+            width = { 100 }
+            height = { 50 }
             options = {{
-              maintainAspectRatio: false
+              maintainAspectRatio: true
             }}
           />
           <Table responsive>
