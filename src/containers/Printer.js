@@ -73,6 +73,7 @@ class Printer extends Component {
             style = { idPrinterStyle }
             value = { this.props.printerId }
             placeholder = 'ID de impresora'
+            disabled = { !this.props.googleLog }
             onChange = { e => {
               this.props.updatePrinterId(e.target.value)
             }}
@@ -86,6 +87,7 @@ class Printer extends Component {
               style = { formLabelStyle }
               value = { this.props.ticketSetting.title }
               placeholder = 'Nombre de la empresa'
+              disabled = { !this.props.googleLog }
               onChange = { e => {
                 this.props.updateTicketSetting(
                   e.target.value,
@@ -105,6 +107,7 @@ class Printer extends Component {
               style = { formLabelStyle }
               value = { this.props.ticketSetting.head1Line }
               placeholder = 'Dirección'
+              disabled = { !this.props.googleLog }
               onChange = { e => {
                 this.props.updateTicketSetting(
                   this.props.ticketSetting.title,
@@ -123,6 +126,7 @@ class Printer extends Component {
               style = { formLabelStyle }
               value = { this.props.ticketSetting.head2Line }
               placeholder = 'Telefonos'
+              disabled = { !this.props.googleLog }
               onChange = { e => {
                 this.props.updateTicketSetting(
                   this.props.ticketSetting.title,
@@ -142,6 +146,7 @@ class Printer extends Component {
               style = { formLabelStyle }
               value = { this.props.ticketSetting.Foot1Line }
               placeholder = 'Mensaje'
+              disabled = { !this.props.googleLog }
               onChange = { e => {
                 this.props.updateTicketSetting(
                   this.props.ticketSetting.title,
@@ -160,6 +165,7 @@ class Printer extends Component {
               style = { formLabelStyle }
               value = { this.props.ticketSetting.Foot2Line }
               placeholder = 'Mensaje adicional'
+              disabled = { !this.props.googleLog }
               onChange = { e => {
                 this.props.updateTicketSetting(
                   this.props.ticketSetting.title,
@@ -174,6 +180,7 @@ class Printer extends Component {
           <RaisedButton
             label = 'GUARDAR'
             secondary = { true }
+            disabled = { !this.props.googleLog }
             onClick = { () => {
               this.props.saveSettingPrinter(this.props.printerId, this.props.ticketSetting)
             }}
@@ -187,6 +194,7 @@ class Printer extends Component {
 
 const mapStateToProps = state => {
   return {
+    googleLog: state.settings.googleLog,
     printerId: state.settings.printerId,
     ticketSetting: state.settings.ticketSetting
   }

@@ -16,6 +16,7 @@ const clients = (
     case 'LOAD_DATA_PRINTER': {
       return {
         ...state,
+        googleLog: action.dataPrinter.googleLog,
         printerId: action.dataPrinter.printerId,
         ticketSetting: action.dataPrinter.ticketSetting
       }
