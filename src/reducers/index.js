@@ -1,16 +1,19 @@
 import { combineReducers } from 'redux'
+
+import buys from './buys'
 import products from './products'
 import receipts from './receipts'
-import users from './users'
-import buys from './buys'
 import reports from './reports'
+import settings from './settings'
+import users from './users'
 
 const reducer = combineReducers({
   buys,
   products,
   receipts,
-  users,
-  reports
+  reports,
+  settings,
+  users
 })
 
 export default reducer

@@ -1,7 +1,9 @@
 import axios from 'axios'
 import open from 'oauth-open'
+import swal from 'sweetalert2'
 
 const GET_ACCESSTOKEN_PATH = '/googletoken'
+const DATA_PRINTER_PATH = '/printer'
 const GET_GOOGLE_URL_PATH = '/googleurl'
 const SETTINGS_PATH = '/settings'
 
@@ -18,11 +20,11 @@ switch (process.env.REACT_APP_ENV) {
     break;
 }
 
-const getUrlGoogleToken = () => {
+const getDataPrinter = () => {
 
-  return () => {
+  return dispatch => {
     return axios.get(
-      SERVER_PATH + SETTINGS_PATH + GET_GOOGLE_URL_PATH,
+      SERVER_PATH + SETTINGS_PATH + DATA_PRINTER_PATH,
       {
         headers: {
           'Authorization': 'JWT ' + localStorage.getItem('token')
@@ -30,9 +32,10 @@ const getUrlGoogleToken = () => {
       }
     )
       .then(response => {
-        console.log('response to obtains google url data')
-        console.log(response)
-        localStorage.setItem('googleURLToken', response.data.result.googleURLToken)
+        dispatch({
+          type: 'LOAD_DATA_PRINTER',
+          dataPrinter: response.data.result
+        })
       })
   }
 }
@@ -68,4 +71,71 @@ const getTokenGoogle = () => {
   }
 }
 
-export { getTokenGoogle, getUrlGoogleToken }
+const getUrlGoogleToken = () => {
+
+  return () => {
+    return axios.get(
+      SERVER_PATH + SETTINGS_PATH + GET_GOOGLE_URL_PATH,
+      {
+        headers: {
+          'Authorization': 'JWT ' + localStorage.getItem('token')
+        }
+      }
+    )
+      .then(response => {
+        localStorage.setItem('googleURLToken', response.data.result.googleURLToken)
+      })
+  }
+}
+
+const saveSettingPrinter = (printerId, ticketSetting) => {
+
+  return () => {
+    return axios.post(
+      SERVER_PATH + SETTINGS_PATH + DATA_PRINTER_PATH,
+      {
+        printerId: printerId,
+        ticketSetting: ticketSetting
+      },
+      {
+        headers: {
+          'Authorization': 'JWT ' + localStorage.getItem('token')
+        }
+      }
+    )
+      .then(response => {
+        swal(
+          'Excelente!',
+          response.data.message,
+          'success'
+        )
+      })
+  }
+}
+
+const updatePrinterId = (printerId) => {
+  return ({
+    type: 'UPDATE_PRINTER_ID',
+    printerId
+  })
+}
+
+const updateTicketSetting = (title, head1, head2, foot1, foot2) => {
+  return ({
+    type: 'UPDATE_TICKET_SETTING',
+    ticketTitle: title,
+    ticketHead1: head1,
+    ticketHead2: head2,
+    ticketFoot1: foot1,
+    ticketFoot2: foot2
+  })
+}
+
+export {
+  getDataPrinter,
+  getTokenGoogle,
+  getUrlGoogleToken,
+  saveSettingPrinter,
+  updatePrinterId,
+  updateTicketSetting
+}

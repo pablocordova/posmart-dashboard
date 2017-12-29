@@ -9,7 +9,7 @@ import Reports from '../components/Reports'
 import Receipts from './Receipts'
 import Buys from './Buys'
 import Users from './Users'
-import Setting from './Setting'
+import Setting from '../components/Settings'
 import Login from './Login'
 import Register from './Register'
 
@@ -82,7 +82,7 @@ class App extends Component {
               <i className = 'fa fa-users'></i>&ensp; Usuarios
             </NavItem>
           </LinkContainer>
-          <LinkContainer to = '/setting'>
+          <LinkContainer to = '/settings'>
             <NavItem eventKey = {5}>
               <i className = 'fa fa-cogs'></i>&ensp; Configuracion
             </NavItem>
@@ -111,7 +111,7 @@ class App extends Component {
 
           <Route path = '/login' component = { Login } />
           <Route path = '/register' component = { Register } />
-          <Route path = '/setting' component = { Setting } />
+          <Route path = '/settings' component = { Setting } />
           <Route path = '/reports' component = { Reports } />
           <Route path = '/products' component = { Products } />
           <Route path = '/receipts' component = { Receipts } />
