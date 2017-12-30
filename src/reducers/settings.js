@@ -7,7 +7,8 @@ const clients = (
       head2Line: '',
       Foot1Line: '',
       Foot2Line: ''
-    }
+    },
+    permissionPin: 0
   },
   action
 ) => {
@@ -21,10 +22,22 @@ const clients = (
         ticketSetting: action.dataPrinter.ticketSetting
       }
     }
+    case 'LOAD_PERMISSION_PIN': {
+      return {
+        ...state,
+        permissionPin: action.permissionPin
+      }
+    }
     case 'UPDATE_PRINTER_ID': {
       return {
         ...state,
         printerId: action.printerId
+      }
+    }
+    case 'UPDATE_PERMISSION_PIN': {
+      return {
+        ...state,
+        permissionPin: action.pin
       }
     }
     case 'UPDATE_TICKET_SETTING': {

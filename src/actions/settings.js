@@ -6,6 +6,7 @@ const GET_ACCESSTOKEN_PATH = '/googletoken'
 const DATA_PRINTER_PATH = '/printer'
 const GET_GOOGLE_URL_PATH = '/googleurl'
 const SETTINGS_PATH = '/settings'
+const PERMISSION_PIN_PATH = '/pin'
 
 let SERVER_PATH = ''
 
@@ -35,6 +36,26 @@ const getDataPrinter = () => {
         dispatch({
           type: 'LOAD_DATA_PRINTER',
           dataPrinter: response.data.result
+        })
+      })
+  }
+}
+
+const getPermissionPin = () => {
+
+  return dispatch => {
+    return axios.get(
+      SERVER_PATH + SETTINGS_PATH + PERMISSION_PIN_PATH,
+      {
+        headers: {
+          'Authorization': 'JWT ' + localStorage.getItem('token')
+        }
+      }
+    )
+      .then(response => {
+        dispatch({
+          type: 'LOAD_PERMISSION_PIN',
+          permissionPin: response.data.result
         })
       })
   }
@@ -113,10 +134,41 @@ const saveSettingPrinter = (printerId, ticketSetting) => {
   }
 }
 
+const savePermissionPin = (pin) => {
+
+  return () => {
+    return axios.put(
+      SERVER_PATH + SETTINGS_PATH + PERMISSION_PIN_PATH,
+      {
+        pin: pin
+      },
+      {
+        headers: {
+          'Authorization': 'JWT ' + localStorage.getItem('token')
+        }
+      }
+    )
+      .then(response => {
+        swal(
+          'Excelente!',
+          response.data.message,
+          'success'
+        )
+      })
+  }
+}
+
 const updatePrinterId = (printerId) => {
   return ({
     type: 'UPDATE_PRINTER_ID',
     printerId
+  })
+}
+
+const updatePermissionPin = (pin) => {
+  return ({
+    type: 'UPDATE_PERMISSION_PIN',
+    pin
   })
 }
 
@@ -133,9 +185,12 @@ const updateTicketSetting = (title, head1, head2, foot1, foot2) => {
 
 export {
   getDataPrinter,
+  getPermissionPin,
   getTokenGoogle,
   getUrlGoogleToken,
+  savePermissionPin,
   saveSettingPrinter,
+  updatePermissionPin,
   updatePrinterId,
   updateTicketSetting
 }

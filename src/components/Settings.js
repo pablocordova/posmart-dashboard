@@ -6,12 +6,14 @@ import Paper from 'material-ui/Paper';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Print from 'material-ui/svg-icons/action/print';
+import Https from 'material-ui/svg-icons/action/https';
 
 import {
   LinkContainer
 } from 'react-router-bootstrap'
 
 import Printer from '../containers/Printer'
+import Security from '../containers/Security'
 
 const paperStyle = {
   display: 'inline-block',
@@ -33,10 +35,17 @@ class Settings extends Component {
                   leftIcon = { <Print /> }
                 />
               </LinkContainer>
+              <LinkContainer to = '/settings/security'>
+                <MenuItem
+                  primaryText = 'Seguridad'
+                  leftIcon = { <Https /> }
+                />
+              </LinkContainer>
             </Menu>
           </Paper>
           <div className = 'display-inline-block-top'>
             <Route path = '/settings/printer' component = { Printer } />
+            <Route path = '/settings/security' component = { Security } />
           </div>
         </div>
       </MuiThemeProvider>
