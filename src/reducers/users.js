@@ -13,12 +13,13 @@ const users = (
         products: true,
         sales: true,
         settings: true,
-        users: false
+        users: true
       },
       username: ''
     },
     users: [],
-    usersFiltered: []
+    usersFiltered: [],
+    permissionDiscount: 'Permit'
   },
   action
 ) => {
@@ -58,10 +59,11 @@ const users = (
             products: true,
             sales: true,
             settings: true,
-            users: false
+            users: true
           }
         },
-        titleUser: 'CREAR'
+        titleUser: 'CREAR',
+        permissionDiscount: 'Permit'
       }
     case 'SHOW_MODIFY_USER': {
       let selected = state.users.filter(user =>
@@ -85,9 +87,15 @@ const users = (
             settings: selected.permissions.settings,
             users: selected.permissions.users
           }
-        }
+        },
+        permissionDiscount: selected.permissionDiscount
       }
     }
+    case 'UPDATE_PERMISSION_DISCOUNT':
+      return {
+        ...state,
+        permissionDiscount: action.typePermission
+      }
     default:
       return state
   }

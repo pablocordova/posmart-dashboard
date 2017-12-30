@@ -18,7 +18,8 @@ switch (process.env.REACT_APP_ENV) {
     break;
 }
 
-const createUser = (user) => {
+const createUser = (user, permissionDiscount) => {
+  user['permissionDiscount'] = permissionDiscount
   return () => {
     return axios.post(SERVER_PATH + USERS_PATH, user)
       .then(response => {
@@ -86,7 +87,8 @@ const showModifyUser = (idUser) => {
   })
 }
 
-const updateUser= user => {
+const updateUser = (user, permissionDiscount) => {
+  user['permissionDiscount'] = permissionDiscount
   return () => {
     return axios.put(
       SERVER_PATH + USERS_PATH + '/' + user.id, user
@@ -97,6 +99,13 @@ const updateUser= user => {
   }
 }
 
+const updatePermissionDiscount = (typePermission) => {
+  return ({
+    type: 'UPDATE_PERMISSION_DISCOUNT',
+    typePermission
+  })
+}
+
 export {
   createUser,
   deleteUser,
@@ -105,5 +114,6 @@ export {
   loadUsers,
   showCreateUser,
   showModifyUser,
-  updateUser
+  updateUser,
+  updatePermissionDiscount
 }

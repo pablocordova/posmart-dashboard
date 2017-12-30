@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Modal, FormGroup, FormControl, ControlLabel, Checkbox } from 'react-bootstrap'
+import { Modal, FormGroup, FormControl, ControlLabel, Checkbox, Radio } from 'react-bootstrap'
 import RaisedButton from 'material-ui/RaisedButton'
 import swal from 'sweetalert2'
 
@@ -8,7 +8,8 @@ import {
   createUser,
   hideCreateModifyUsers,
   loadUsers,
-  updateUser
+  updateUser,
+  updatePermissionDiscount
 } from '../actions/users'
 
 const headerModalStyle = {
@@ -144,8 +145,8 @@ class CreateUser extends Component {
               />
             </FormGroup>
             <FormGroup>
-              <ControlLabel>Permisos</ControlLabel>
-              <div>
+              <h4>PERMISOS</h4>
+              <div hidden>
                 <Checkbox
                   inline
                   defaultChecked={ this.props.user.permissions.customers }
@@ -196,6 +197,43 @@ class CreateUser extends Component {
                   Usuarios
                 </Checkbox>
               </div>
+              <h5>Descuentos</h5>
+              <p>Para cualquier opcion de descuentos, caso el descuento disminuya o
+              iguale el costo del producto, solo aparecerá una ventana de advertencia.</p>
+              <FormGroup className = 'text-center'>
+                <Radio
+                  name = 'radioGroup'
+                  inline
+                  defaultChecked = { this.props.permissionDiscount === 'NoPermit' }
+                  onClick = { () =>
+                    this.props.updatePermissionDiscount('NoPermit')
+                  }
+                >
+                  No permitir
+                </Radio>
+                {' '}
+                <Radio
+                  name = 'radioGroup'
+                  inline
+                  defaultChecked = { this.props.permissionDiscount === 'PermitPIN' }
+                  onClick = { () =>
+                    this.props.updatePermissionDiscount('PermitPIN')
+                  }
+                >
+                  Permitir con PIN de seguridad
+                </Radio>
+                {' '}
+                <Radio
+                  name = 'radioGroup'
+                  inline
+                  defaultChecked = { this.props.permissionDiscount === 'Permit' }
+                  onClick = { () =>
+                    this.props.updatePermissionDiscount('Permit')
+                  }
+                >
+                  Permitir
+                </Radio>
+              </FormGroup>
             </FormGroup>
           </Modal.Body>
           <Modal.Footer>
@@ -226,11 +264,11 @@ class CreateUser extends Component {
                         'error'
                       )
                     } else {
-                      this.props.createUser(this.props.user)
+                      this.props.createUser(this.props.user, this.props.permissionDiscount)
                       this.props.hideCreateModifyUsers(false)
                     }
                   } else {
-                    this.props.updateUser(this.props.user)
+                    this.props.updateUser(this.props.user, this.props.permissionDiscount)
                     this.props.hideCreateModifyUsers(false)
                   }
                 }
@@ -249,22 +287,26 @@ const mapStateToProps = state => {
     user: state.users.user,
     isVisibleCreateModifyUsers: state.users.isVisibleCreateModifyUsers,
     titleUser: state.users.titleUser,
-    buttonUser: state.users.buttonUser
+    buttonUser: state.users.buttonUser,
+    permissionDiscount: state.users.permissionDiscount
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    createUser(user) {
-      dispatch(createUser(user))
+    createUser(user, permissionDiscount) {
+      dispatch(createUser(user, permissionDiscount))
         .then(() =>dispatch(loadUsers()))
     },
     hideCreateModifyUsers() {
       dispatch(hideCreateModifyUsers())
     },
-    updateUser(user) {
-      dispatch(updateUser(user))
+    updateUser(user, permissionDiscount) {
+      dispatch(updateUser(user, permissionDiscount))
         .then(() =>dispatch(loadUsers()))
+    },
+    updatePermissionDiscount(typePermission) {
+      dispatch(updatePermissionDiscount(typePermission))
     }
   }
 }
