@@ -20,7 +20,7 @@ switch (process.env.REACT_APP_ENV) {
 
 const login = (email, pass) => {
 
-  return () => {
+  return dispatch => {
     return axios.post(SERVER_PATH + LOGIN_PATH, {
       email: email,
       password: pass
@@ -32,7 +32,10 @@ const login = (email, pass) => {
           localStorage.setItem('businessNameDashboard', response.data.businessName.toUpperCase())
           window.location = BASE_URL.concat('/products')
         } else {
-          console.log('Error login data')
+          dispatch({
+            type: 'SHOW_MESSAGE_ERROR',
+            errorMessage: response.data.message,
+          })
         }
       })
       .catch(error => {
@@ -42,4 +45,18 @@ const login = (email, pass) => {
 
 }
 
-export { login }
+const showError = (type) => {
+  return ({
+    type: 'SHOW_ERROR',
+    typeError: type
+  })
+}
+
+const removeError = (type) => {
+  return ({
+    type: 'REMOVE_ERROR',
+    typeErrorToRemove: type
+  })
+}
+
+export { login, showError, removeError }
