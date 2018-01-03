@@ -6,8 +6,7 @@ const POST_PRODUCTS_PATH = '/products'
 const GET_MIN_UNITS_PATH = '/products/all/min_units'
 const GET_CATEGORIES_PATH = '/products/all/categories'
 const PRODUCTS_PATH = '/products'
-const GET_PRICES_PATH_POST = '/prices'
-const POST_PRICE_PATH = '/price'
+const PRICES_PATH = '/prices'
 const POST_INVENTORY_PATH = '/entry'
 const UNIT_COST_PATH = '/cost'
 
@@ -29,7 +28,7 @@ switch (process.env.REACT_APP_ENV) {
 const loadPrices = (product) => {
   return dispatch => {
     return axios.get(
-      SERVER_PATH + PRODUCTS_PATH + '/' + product.id + GET_PRICES_PATH_POST
+      SERVER_PATH + PRODUCTS_PATH + '/' + product.id + PRICES_PATH
     )
       .then(response => {
         dispatch({
@@ -48,25 +47,35 @@ const changeViewCost = (index, value) => {
   })
 }
 
-const createPrice = (price) => {
-  return () => {
-    return axios.post(SERVER_PATH + PRODUCTS_PATH + POST_PRICE_PATH, price)
-      .then(response => {
-        console.log(response.data)
-      })
-      .catch(() => {
-        const message = 'Ya existe precio con cantidad: ' +
-            price.quantity +
-            ' y nombre: ' +
-            price.name
+const createPrices = (pricesTmp, idProduct) => {
 
-        swal(
-          'Oops...',
-          message,
-          'error'
-        )
+  return () => {
+    return axios.post(
+      SERVER_PATH + PRODUCTS_PATH + '/' + idProduct + PRICES_PATH,
+      {
+        pricesTmp
+      },
+      {
+        headers: {
+          'Authorization': 'JWT ' + localStorage.getItem('token')
+        }
+      }
+    )
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err=> {
+        console.log(err)
       })
   }
+
+}
+
+const addPrice = (price) => {
+  return ({
+    type: 'ADD_PRICE',
+    priceToAdd: price
+  })
 }
 
 const createInventory = (inventory) => {
@@ -220,19 +229,11 @@ const updateUnitCost = (unitCost, idProduct) => {
 
 }
 
-const deletePrice = (idProduct, indexPrice) => {
-  return () => {
-    return axios.delete(
-      SERVER_PATH +
-      PRODUCTS_PATH + '/' +
-      idProduct +
-      GET_PRICES_PATH_POST + '/' +
-      indexPrice
-    )
-      .then(response => {
-        console.log(response)
-      })
-  }
+const deletePrice = (indexPrice) => {
+  return ({
+    type: 'DELETE_PRICE',
+    indexPrice
+  })
 }
 
 const deleteProduct = (idProduct) => {
@@ -259,7 +260,8 @@ const deleteProduct = (idProduct) => {
 export {
   changeViewCost,
   createInventory,
-  createPrice,
+  createPrices,
+  addPrice,
   createProduct,
   deletePrice,
   deleteProduct,

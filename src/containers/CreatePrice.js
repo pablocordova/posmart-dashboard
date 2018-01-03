@@ -3,12 +3,15 @@ import { connect } from 'react-redux'
 import { Modal, FormGroup, FormControl, ControlLabel, Table } from 'react-bootstrap'
 import RaisedButton from 'material-ui/RaisedButton'
 import {
-  createPrice,
+  addPrice,
+  createPrices,
   deletePrice,
   hideCreatePrice,
   loadProducts,
   updateSelectedPrices
 } from '../actions/products'
+
+import swal from 'sweetalert2'
 
 const headerModalStyle = {
   textAlign: 'center',
@@ -59,10 +62,6 @@ class CreatePrice extends Component {
                 }
               >
                 <option value = '1' key = '1'>1</option>
-                <option value = '1/4' key = '3'>1/4</option>
-                <option value = '1/2' key = '6'>1/2</option>
-                <option value = '3/4' key = '9'>3/4</option>
-
               </FormControl>
             </FormGroup>
 
@@ -133,7 +132,7 @@ class CreatePrice extends Component {
             </FormGroup>
 
             <RaisedButton
-              label = 'CREAR'
+              label = 'AÑADIR'
               secondary = { true }
               onClick = { () => {
 
@@ -161,7 +160,27 @@ class CreatePrice extends Component {
                 }
 
                 if (unit !== 'error' && price !== 'error' && priceForm !== 0 && itemsForm !== 0) {
-                  this.props.createPrice(this.props.price, this.props.productSelected._id)
+                  // First verify is quantity and name not is repeated in at least two in array tmp
+                  let isPriceDuplicated = false
+                  for (let priceTmp of this.props.pricesTmp) {
+                    if (priceTmp.quantity === this.props.price.quantity &&
+                      priceTmp.name === this.props.price.name
+                    ) {
+                      isPriceDuplicated = true
+                      break
+                    }
+                  }
+
+                  if (!isPriceDuplicated) {
+                    // Add price to temporary array
+                    this.props.addPrice(this.props.price)
+                  } else {
+                    swal(
+                      'Oops...',
+                      'La cantidad y nombre ya existen',
+                      'error'
+                    )
+                  }
                 }
               }}
             />
@@ -178,7 +197,7 @@ class CreatePrice extends Component {
               </thead>
               <tbody>
                 {
-                  this.props.productSelected.prices.map((price, index) => {
+                  this.props.pricesTmp.map((price, index) => {
                     return (
                       <tr key = { index } >
                         <td>{ price.quantity }</td>
@@ -187,7 +206,7 @@ class CreatePrice extends Component {
                         <td>{ price.items }</td>
                         <td>
                           <i className = 'fa fa-trash' id = { index } onClick = { (e) =>
-                            this.props.deletePrice(this.props.productSelected._id, e.target.id)
+                            this.props.deletePrice(e.target.id)
                           }
                           ></i>
                         </td>
@@ -202,9 +221,18 @@ class CreatePrice extends Component {
           <Modal.Footer>
 
             <RaisedButton
-              label = 'CERRAR'
+              label = 'CANCELAR'
               onClick = { () => {
                 this.props.hideCreatePrice()
+                this.cleanValidations()
+              }}
+            />
+            <RaisedButton
+              label = 'GUARDAR'
+              secondary = { true }
+              onClick = { () => {
+                this.props.hideCreatePrice()
+                this.props.createPrices(this.props.pricesTmp, this.props.productSelected._id)
                 this.cleanValidations()
               }}
             />
@@ -221,26 +249,26 @@ const mapStateToProps = state => {
   return {
     isVisibleCreatePrice: state.products.isVisibleCreatePrice,
     price: state.products.price,
-    productSelected: state.products.productSelected
+    productSelected: state.products.productSelected,
+    pricesTmp: state.products.pricesTmp
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    deletePrice(idProduct, indexPrice) {
-      dispatch(deletePrice(idProduct, indexPrice))
+    createPrices(pricesTmp, idProduct) {
+      dispatch(createPrices(pricesTmp, idProduct))
         .then(() => dispatch(loadProducts())
-          .then(() =>dispatch(updateSelectedPrices(idProduct)))
         )
+    },
+    deletePrice(indexPrice) {
+      dispatch(deletePrice(indexPrice))
     },
     hideCreatePrice(state) {
       dispatch(hideCreatePrice(state))
     },
-    createPrice(price, idProduct) {
-      dispatch(createPrice(price))
-        .then(() => dispatch(loadProducts())
-          .then(() =>dispatch(updateSelectedPrices(idProduct)))
-        )
+    addPrice(price) {
+      dispatch(addPrice(price))
     },
     loadProducts() {
       dispatch(loadProducts())

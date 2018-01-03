@@ -23,8 +23,7 @@ const products = (
       quantity: '',
       name: '',
       items: 0,
-      price: 0,
-      product: ''
+      price: 0
     },
     productSelected: {
       prices: [],
@@ -36,12 +35,25 @@ const products = (
       product: ''
     },
     pricesViewCost: [],
-    stateLoader: true
+    stateLoader: true,
+    pricesTmp: []
   },
   action
 ) => {
 
   switch (action.type) {
+    case 'ADD_PRICE': {
+      let price = {
+        quantity: action.priceToAdd.quantity,
+        name: action.priceToAdd.name,
+        items: action.priceToAdd.items,
+        price: action.priceToAdd.price
+      }
+      return {
+        ...state,
+        pricesTmp: state.pricesTmp.concat(price)
+      }
+    }
     case 'CHANGE_VIEW_COST': {
       let cost = ''
       if (action.valueViewCost) {
@@ -57,6 +69,13 @@ const products = (
         })
       }
     }
+    case 'DELETE_PRICE':
+      return {
+        ...state,
+        pricesTmp: state.pricesTmp.filter((price, index) =>
+          index !== parseInt(action.indexPrice, 10)
+        )
+      }
     case 'LOAD_PRICES':
       return {
         ...state,
@@ -88,7 +107,7 @@ const products = (
       let productsCopy = state.products
       let wordsToSearch = action.string.toLowerCase().split(' ')
       for (let word of wordsToSearch) {
-        productsCopy = productsCopy.filter(e =>{
+        productsCopy = productsCopy.filter(e => {
           return e.name.toLowerCase().indexOf(word) !== -1
         })
       }
@@ -134,23 +153,25 @@ const products = (
       }
     }
 
-    case 'SHOW_CREATE_PRICES':
+    case 'SHOW_CREATE_PRICES': {
+      let productSelected = state.products.filter( product =>
+        product._id === action.idProduct
+      ).pop()
       return {
         ...state,
         isVisibleCreatePrice: true,
         price: {
           ...state.price,
-          product: action.idProduct,
           quantity: '1',
           name: 'unidad',
           items: 0,
           price: 0,
 
         },
-        productSelected: state.products.filter( product =>
-          product._id === action.idProduct
-        ).pop()
+        productSelected: productSelected,
+        pricesTmp: productSelected.prices
       }
+    }
     case 'SHOW_COSTS': {
       let product = state.products.filter( product =>
         product._id === action.idProduct
