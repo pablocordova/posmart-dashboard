@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import Paper from 'material-ui/Paper';
@@ -23,6 +23,10 @@ const paperStyle = {
 
 class Settings extends Component {
 
+  isUserLogin() {
+    return localStorage.getItem('token') ? true : false
+  }
+
   render() {
     return (
       <MuiThemeProvider>
@@ -44,8 +48,18 @@ class Settings extends Component {
             </Menu>
           </Paper>
           <div className = 'display-inline-block-top'>
-            <Route path = '/settings/printer' component = { Printer } />
-            <Route path = '/settings/security' component = { Security } />
+            <Route path = '/settings/printer' render = { () => (
+              this.isUserLogin() ? (
+                <Printer />
+              ) :
+                <Redirect to = '/login'/>
+            )} />
+            <Route path = '/settings/security' render = { () => (
+              this.isUserLogin() ? (
+                <Security />
+              ) :
+                <Redirect to = '/login'/>
+            )} />
           </div>
         </div>
       </MuiThemeProvider>

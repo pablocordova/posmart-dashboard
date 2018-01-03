@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route, Redirect } from 'react-router-dom'
 import { Nav, Navbar, NavItem } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { connect } from 'react-redux'
@@ -37,6 +37,10 @@ class App extends Component {
     localStorage.removeItem('token')
     localStorage.removeItem('businessNameDashboard')
     window.location = '/'
+  }
+
+  isUserLogin() {
+    return localStorage.getItem('token') ? true : false
   }
 
   render() {
@@ -111,12 +115,42 @@ class App extends Component {
 
           <Route path = '/login' component = { Login } />
           <Route path = '/register' component = { Register } />
-          <Route path = '/settings' component = { Setting } />
-          <Route path = '/reports' component = { Reports } />
-          <Route path = '/products' component = { Products } />
-          <Route path = '/receipts' component = { Receipts } />
-          <Route path = '/buys' component = { Buys } />
-          <Route path = '/users' component = { Users } />
+          <Route path = '/settings' render = { () => (
+            this.isUserLogin() ? (
+              <Setting />
+            ) :
+              <Redirect to = '/login'/>
+          )} />
+          <Route path = '/reports'  render = { () => (
+            this.isUserLogin() ? (
+              <Reports />
+            ) :
+              <Redirect to = '/login'/>
+          )} />
+          <Route path = '/products' render = { () => (
+            this.isUserLogin() ? (
+              <Products />
+            ) :
+              <Redirect to = '/login'/>
+          )} />
+          <Route path = '/receipts' render = { () => (
+            this.isUserLogin() ? (
+              <Receipts />
+            ) :
+              <Redirect to = '/login'/>
+          )} />
+          <Route path = '/buys' render = { () => (
+            this.isUserLogin() ? (
+              <Buys />
+            ) :
+              <Redirect to = '/login'/>
+          )} />
+          <Route path = '/users' render = { () => (
+            this.isUserLogin() ? (
+              <Users />
+            ) :
+              <Redirect to = '/login'/>
+          )} />
         </div>
       </BrowserRouter>
 

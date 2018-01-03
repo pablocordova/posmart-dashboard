@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import Paper from 'material-ui/Paper';
@@ -24,6 +24,10 @@ const paperStyle = {
 };
 
 class Reports extends Component {
+
+  isUserLogin() {
+    return localStorage.getItem('token') ? true : false
+  }
 
   render() {
     return (
@@ -58,7 +62,12 @@ class Reports extends Component {
             </Menu>
           </Paper>
           <div className = 'display-inline-block-top'>
-            <Route path = '/reports/earnings' component = { Earnings } />
+            <Route path = '/reports/earnings' render = { () => (
+              this.isUserLogin() ? (
+                <Earnings />
+              ) :
+                <Redirect to = '/login'/>
+            )} />
           </div>
         </div>
       </MuiThemeProvider>
