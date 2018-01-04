@@ -87,7 +87,8 @@ const products = (
         ...state,
         products: action.products,
         productsFiltered: action.products,
-        stateLoader: false
+        stateLoader: false,
+        stringToFilter: ''
       }
     case 'SHOW_CREATE_PRODUCT':
       return {
