@@ -132,6 +132,7 @@ class Products extends Component {
                                 id = { product._id }
                                 onClick = { (e) => {
                                   let deleteProductMethod = this.props.deleteProduct
+                                  let stringToFilter = this.props.stringToFilter
                                   let idProduct = e.target.id
                                   swal({
                                     title: 'Esta seguro de eliminar el producto?',
@@ -144,7 +145,7 @@ class Products extends Component {
                                     cancelButtonText: 'Cancelar'
                                   }).then(function (result) {
                                     if (result.value) {
-                                      deleteProductMethod(idProduct)
+                                      deleteProductMethod(idProduct, stringToFilter)
                                     }
                                   })
                                 }}
@@ -174,15 +175,17 @@ const mapStateToProps = state => {
   return {
     products: state.products.products,
     productsFiltered: state.products.productsFiltered,
-    stateLoader: state.products.stateLoader
+    stateLoader: state.products.stateLoader,
+    stringToFilter: state.products.stringToFilter
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    deleteProduct(idProduct) {
+    deleteProduct(idProduct, string) {
       dispatch(deleteProduct(idProduct))
         .then(() =>dispatch(loadProducts()))
+        .then(() =>dispatch(filterProducts(string)))
     },
     modifyProduct(idProduct) {
       dispatch(modifyProduct(idProduct))
