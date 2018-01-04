@@ -17,7 +17,9 @@ import {
 // -- Own Modules
 import {
   changeViewCost,
+  filterProducts,
   hideCosts,
+  loadProducts,
   updateUnitCost
 } from '../actions/products'
 
@@ -67,7 +69,8 @@ class ViewCosts extends Component {
                 )
                 this.props.updateUnitCost(
                   unitCost,
-                  this.props.productSelected._id
+                  this.props.productSelected._id,
+                  this.props.stringToFilter
                 )
               }}
             />
@@ -92,7 +95,8 @@ const mapStateToProps = state => {
     pricesViewCost: state.products.pricesViewCost,
     isVisibleViewCosts: state.products.isVisibleViewCosts,
     pricesViewCosts: state.products.pricesViewCosts,
-    productSelected: state.products.productSelected
+    productSelected: state.products.productSelected,
+    stringToFilter: state.products.stringToFilter
   }
 }
 
@@ -104,8 +108,10 @@ const mapDispatchToProps = dispatch => {
     hideCosts() {
       dispatch(hideCosts())
     },
-    updateUnitCost(unitCost, idProduct) {
+    updateUnitCost(unitCost, idProduct, string) {
       dispatch(updateUnitCost(unitCost, idProduct))
+        .then(() => dispatch(loadProducts()))
+        .then(() => dispatch(filterProducts(string)))
     }
   }
 }

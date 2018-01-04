@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Modal, FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import RaisedButton from 'material-ui/RaisedButton'
 import {
+  filterProducts,
   showCreateProduct,
   createProduct,
   loadMinimunUnits,
@@ -126,9 +127,9 @@ class CreateProduct extends Component {
                 const name = this.state.validation.name
                 if (name !== 'error' && this.props.product.name.trim() !== '') {
                   if (this.props.product.id === '') {
-                    this.props.createProduct(this.props.product)
+                    this.props.createProduct(this.props.product, this.props.stringToFilter)
                   } else {
-                    this.props.updateProduct(this.props.product)
+                    this.props.updateProduct(this.props.product, this.props.stringToFilter)
                   }
                   this.props.showCreateProduct(false)
                 } else {
@@ -156,15 +157,17 @@ const mapStateToProps = state => {
     minimumUnits: state.products.minimumUnits,
     categories: state.products.categories,
     titleProduct: state.products.titleProduct,
-    buttonProduct: state.products.buttonProduct
+    buttonProduct: state.products.buttonProduct,
+    stringToFilter: state.products.stringToFilter
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateProduct(product) {
+    updateProduct(product, string) {
       dispatch(updateProduct(product))
         .then(() =>dispatch(loadProducts()))
+        .then(() =>dispatch(filterProducts(string)))
     },
     loadMinimunUnits() {
       dispatch(loadMinimunUnits())
@@ -178,9 +181,10 @@ const mapDispatchToProps = dispatch => {
     showCreateProduct(state) {
       dispatch(showCreateProduct(state))
     },
-    createProduct(product) {
+    createProduct(product, string) {
       dispatch(createProduct(product))
         .then(() =>dispatch(loadProducts()))
+        .then(() =>dispatch(filterProducts(string)))
     }
   }
 }

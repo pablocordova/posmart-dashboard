@@ -6,6 +6,7 @@ import {
   addPrice,
   createPrices,
   deletePrice,
+  filterProducts,
   hideCreatePrice,
   loadProducts,
   updateSelectedPrices
@@ -232,7 +233,11 @@ class CreatePrice extends Component {
               secondary = { true }
               onClick = { () => {
                 this.props.hideCreatePrice()
-                this.props.createPrices(this.props.pricesTmp, this.props.productSelected._id)
+                this.props.createPrices(
+                  this.props.pricesTmp,
+                  this.props.productSelected._id,
+                  this.props.stringToFilter
+                )
                 this.cleanValidations()
               }}
             />
@@ -250,16 +255,17 @@ const mapStateToProps = state => {
     isVisibleCreatePrice: state.products.isVisibleCreatePrice,
     price: state.products.price,
     productSelected: state.products.productSelected,
-    pricesTmp: state.products.pricesTmp
+    pricesTmp: state.products.pricesTmp,
+    stringToFilter: state.products.stringToFilter
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    createPrices(pricesTmp, idProduct) {
+    createPrices(pricesTmp, idProduct, string) {
       dispatch(createPrices(pricesTmp, idProduct))
-        .then(() => dispatch(loadProducts())
-        )
+        .then(() => dispatch(loadProducts()))
+        .then(() => dispatch(filterProducts(string)))
     },
     deletePrice(indexPrice) {
       dispatch(deletePrice(indexPrice))

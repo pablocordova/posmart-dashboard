@@ -36,7 +36,8 @@ const products = (
     },
     pricesViewCost: [],
     stateLoader: true,
-    pricesTmp: []
+    pricesTmp: [],
+    stringToFilter: ''
   },
   action
 ) => {
@@ -113,7 +114,8 @@ const products = (
       }
       return {
         ...state,
-        productsFiltered: productsCopy
+        productsFiltered: productsCopy,
+        stringToFilter: action.string
       }
     }
     case 'LOAD_MINIMUN_UNITS':
