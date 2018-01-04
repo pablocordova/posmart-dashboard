@@ -116,6 +116,7 @@ const getReceipts = (data) => {
         dispatch({
           type: 'LOAD_RECEIPTS',
           receipts: response.data.result,
+          dataToSearch: data
         })
       })
   }

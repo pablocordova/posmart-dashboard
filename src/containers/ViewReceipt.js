@@ -20,6 +20,7 @@ import _ from 'lodash'
 import {
   addAdvancePay,
   deleteCredit,
+  getReceipts,
   hideCompleteReceipt,
   loadCredits,
   printSale,
@@ -205,6 +206,8 @@ class ViewReceipt extends Component {
                   datePay: moment().format('YYYY-MM-DD'),
                   amountPay: 0
                 })
+                // Make the search again
+                this.props.getReceipts(this.props.dataToSearch)
               }}
             />
           </Modal.Footer>
@@ -222,7 +225,8 @@ const mapStateToProps = state => {
     saleSelectedCredits: state.receipts.saleSelectedCredits,
     isVisibleFormDebt: state.receipts.isVisibleFormDebt,
     stateSale: state.receipts.stateSale,
-    sumCredits: state.receipts.sumCredits
+    sumCredits: state.receipts.sumCredits,
+    dataToSearch: state.receipts.dataToSearch
   }
 }
 
@@ -235,6 +239,9 @@ const mapDispatchToProps = dispatch => {
     deleteCredit(idSale, index) {
       dispatch(deleteCredit(idSale, index))
         .then(() => dispatch(loadCredits(idSale)))
+    },
+    getReceipts(data) {
+      dispatch(getReceipts(data))
     },
     hideCompleteReceipt() {
       dispatch(hideCompleteReceipt())

@@ -21,7 +21,8 @@ const receipts = ( state = {
   isVisibleCompleteReceipt: false,
   isVisibleFormDebt: false,
   stateSale: '',
-  sumCredits: 0
+  sumCredits: 0,
+  dataToSearch: null
 }, action) => {
 
   switch (action.type) {
@@ -44,7 +45,8 @@ const receipts = ( state = {
         ...state,
         sales: action.receipts,
         numSaleDebts: numSaleDebts,
-        totalSaleDebts: totalSaleDebts
+        totalSaleDebts: totalSaleDebts,
+        dataToSearch: action.dataToSearch
       }
     }
     case 'LOAD_CREDITS': {
