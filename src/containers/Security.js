@@ -10,7 +10,12 @@ import {
   FormControl
 } from 'react-bootstrap'
 
+// generate Earnings only is temporary, is to generate earnings in sales
+// Now each sale generated, have its own earning, but temporary I will have this method
+// Maybe I need to correct again
+
 import {
+  generateEarnings,
   getPermissionPin,
   updatePermissionPin,
   savePermissionPin
@@ -55,6 +60,15 @@ class Security extends Component {
               this.props.savePermissionPin(this.props.permissionPin)
             }
           ></RaisedButton>
+          <div hidden>
+            <RaisedButton
+              label = 'TMP'
+              secondary = { true }
+              onClick = { () =>
+                this.props.generateEarnings()
+              }
+            ></RaisedButton>
+          </div>
         </div>
       </MuiThemeProvider>
     )
@@ -70,6 +84,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    generateEarnings() {
+      dispatch(generateEarnings())
+    },
     getPermissionPin() {
       dispatch(getPermissionPin())
     },

@@ -183,6 +183,23 @@ const updateTicketSetting = (title, head1, head2, foot1, foot2) => {
   })
 }
 
+const generateEarnings = () => {
+
+  return () => {
+    return axios.post(
+      SERVER_PATH + '/sales/generate/earnings',
+      {
+        headers: {
+          'Authorization': 'JWT ' + localStorage.getItem('token')
+        }
+      }
+    )
+      .then(response => {
+        console.log(response.data)
+      })
+  }
+}
+
 export {
   getDataPrinter,
   getPermissionPin,
@@ -192,5 +209,6 @@ export {
   saveSettingPrinter,
   updatePermissionPin,
   updatePrinterId,
-  updateTicketSetting
+  updateTicketSetting,
+  generateEarnings
 }
