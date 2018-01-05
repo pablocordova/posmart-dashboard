@@ -30,7 +30,7 @@ import {
 
 import swal from 'sweetalert2'
 
-const mesureStyle = {
+const columnStyle = {
   width: '130px'
 }
 
@@ -68,7 +68,7 @@ class ViewBuy extends Component {
   render() {
     return (
       <div>
-        <Modal show = { this.props.isVisibleFormBuy }>
+        <Modal bsSize = 'large' show = { this.props.isVisibleFormBuy }>
           <Modal.Header style = { headerModalStyle}>
             <Modal.Title>COMPRA
             </Modal.Title>
@@ -117,9 +117,9 @@ class ViewBuy extends Component {
               <thead>
                 <tr className = 'text-center-header-table'>
                   <th>Descripcion</th>
-                  <th>Cantidad</th>
-                  <th style = { mesureStyle }>Medida</th>
-                  <th>Total</th>
+                  <th style = { columnStyle }>Cantidad</th>
+                  <th style = { columnStyle }>Medida</th>
+                  <th style = { columnStyle }>Total</th>
                   <th hidden = { this.props.onlyShowBuy } ></th>
                 </tr>
               </thead>
