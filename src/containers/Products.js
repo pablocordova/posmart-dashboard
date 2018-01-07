@@ -105,7 +105,11 @@ class Products extends Component {
                             <td>{ product.minimumUnit }</td>
                             <td>{ product.category }</td>
                             <td>{ product.name }</td>
-                            <td>{ _.round(product.unitCost, 2) }</td>
+                            <td className = {
+                              (product.unitCost > 0 ? 'green-color' : 'red-color')
+                            }>
+                              { _.round(product.unitCost, 2) }
+                            </td>
                             <td className = 'spread-four-icons'>
                               <i
                                 className = 'fa fa-pencil fa-lg'
