@@ -84,6 +84,7 @@ class Earnings extends Component {
                 >
                   <option value = 'client'>Cliente</option>
                   <option value = 'sale'>Venta</option>
+                  <option value = 'product'>Producto</option>
                 </FormControl>
               </label>
             </div>
@@ -110,9 +111,10 @@ class Earnings extends Component {
             <thead>
               <tr className = 'text-center-header-table'>
                 <th>Nro.</th>
-                <th hidden = { this.props.typeBy !== 'sale' } >Fecha</th>
-                <th hidden = { this.props.typeBy !== 'sale' }>Estado</th>
-                <th>Cliente</th>
+                <th hidden = { !(this.props.typeBy === 'sale') } >Fecha</th>
+                <th hidden = { !(this.props.typeBy === 'sale') }>Estado</th>
+                <th hidden = { this.props.typeBy === 'product' }>Cliente</th>
+                <th hidden = { !(this.props.typeBy === 'product') }>Producto</th>
                 <th>Ganancia</th>
               </tr>
             </thead>
@@ -123,16 +125,21 @@ class Earnings extends Component {
                     <tr key = { index } className = 'text-center'>
                       <td>{ index + 1 }</td>
                       <td
-                        hidden = { this.props.typeBy !== 'sale' }
+                        hidden = { !(this.props.typeBy === 'sale') }
                       >
                         { moment(earningBy.date).format('DD/MM/YY') }
                       </td>
                       <td
-                        hidden = { this.props.typeBy !== 'sale' }
+                        hidden = { !(this.props.typeBy === 'sale') }
                       >
                         { earningBy.state }
                       </td>
-                      <td>{ earningBy.client }</td>
+                      <td hidden = { this.props.typeBy === 'product' }>{ earningBy.client }</td>
+                      <td
+                        hidden = { !(this.props.typeBy === 'product') }
+                      >
+                        { earningBy.product }
+                      </td>
                       <td>{ earningBy.total }</td>
                     </tr>
                   )
@@ -152,7 +159,8 @@ const mapStateToProps = state => {
     earningsBy: state.reports.earningsBy,
     totalEarnBy: state.reports.totalEarnBy,
     typeBy: state.reports.typeBy,
-    dataGraph: state.reports.dataGraph
+    dataGraph: state.reports.dataGraph,
+    viewReport: state.reports.viewReport
   }
 }
 

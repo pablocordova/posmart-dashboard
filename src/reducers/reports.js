@@ -24,14 +24,20 @@ const clients = (
             labels.push(earning.client)
             data.push(earning.total)
           }
-
           break
-        default:
+        case 'product':
+          for (const earning of action.earningsBy) {
+            labels.push(earning.product)
+            data.push(earning.total)
+          }
+          break
+        case 'sale':
           for (const [ index, value ] of action.earningsBy.entries()) {
             labels.push(index + 1)
             data.push(value.total)
           }
-
+          break
+        default:
           break
       }
 
@@ -54,7 +60,8 @@ const clients = (
         ...state,
         earningsBy: action.earningsBy,
         totalEarnBy: totalEarnBy,
-        typeBy: action.typeBy === 'sale' ? 'sale' : 'client',
+        typeBy: action.typeBy === 'sale' ? 'sale' :
+          action.typeBy === 'client' ? 'client' : 'product',
         dataGraph: dataGraph
       }
     }
