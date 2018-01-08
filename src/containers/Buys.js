@@ -22,6 +22,7 @@ import 'font-awesome/css/font-awesome.min.css';
 // -- Own Modules
 import {
   getBuys,
+  loadCredits,
   showCompleteBuy,
   showCreateBuy
 } from '../actions/buys'
@@ -110,6 +111,7 @@ class Buys extends Component {
                     <th>ID</th>
                     <th>Dia</th>
                     <th>Total</th>
+                    <th>Estado</th>
                     <th>Empresa</th>
                     <th></th>
                   </tr>
@@ -122,11 +124,25 @@ class Buys extends Component {
                           <td>{ buy.id }</td>
                           <td>{ moment.utc(buy.date).format('DD/MM/YY') }</td>
                           <td>{ buy.total }</td>
+                          <td className = {
+                            (
+                              buy.state === 'Pagado' ?
+                                'green-color-bold' :
+                                (buy.state === 'Credito' ? 'red-color-bold' : '')
+                            )
+                          }>
+                            { buy.state }</td>
                           <td>{ buy.company }</td>
                           <td className = 'spread-two-icons'>
-                            <i className = 'fa fa-eye fa-lg' id = { index } onClick = { (e) =>
-                              this.props.showCompleteBuy(e.target.id)
-                            }></i>
+                            <i
+                              className = 'fa fa-eye fa-lg'
+                              id = { index }
+                              idbuy = { buy._id }
+                              onClick = { (e) => {
+                                this.props.showCompleteBuy(e.target.id)
+                                this.props.loadCredits(e.target.attributes.idbuy.value)
+                              }}
+                            ></i>
                           </td>
                         </tr>
                       )
@@ -155,6 +171,9 @@ const mapDispatchToProps = dispatch => {
   return {
     getBuys(data) {
       dispatch(getBuys(data))
+    },
+    loadCredits(idBuy) {
+      dispatch(loadCredits(idBuy))
     },
     showCompleteBuy(indexBuy) {
       dispatch(showCompleteBuy(indexBuy))

@@ -3,6 +3,8 @@ import axios from 'axios'
 const BUYS_PATH = '/buys'
 const PRODUCTS_PATH = '/products'
 const SEARCH_ADVANCED_PATH = 'search/advanced'
+const CREDIT_PATH = '/credits'
+const STATE_PATH = '/state'
 
 let SERVER_PATH = ''
 
@@ -15,6 +17,31 @@ switch (process.env.REACT_APP_ENV) {
     break;
   default:
     break;
+}
+
+const addAdvancePay = (date, amount, idBuy) => {
+
+  return () => {
+    return axios.post(
+      SERVER_PATH + BUYS_PATH + '/' + idBuy + CREDIT_PATH,
+      {
+        date: date,
+        amount: amount
+      },
+      {
+        headers: {
+          'Authorization': 'JWT ' + localStorage.getItem('token')
+        }
+      }
+    )
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err=> {
+        console.log(err)
+      })
+  }
+
 }
 
 const addProductBuy = (allForm) => {
@@ -45,6 +72,27 @@ const changeIdViewBuy = (idViewBuy) => {
   })
 }
 
+const deleteCredit = (idBuy, index) => {
+
+  return () => {
+    return axios.delete(
+      SERVER_PATH + BUYS_PATH + '/' + idBuy + CREDIT_PATH + '/' + index,
+      {
+        headers: {
+          'Authorization': 'JWT ' + localStorage.getItem('token')
+        }
+      }
+    )
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err=> {
+        console.log(err)
+      })
+  }
+
+}
+
 const deleteProductItem = (index) => {
   return ({
     type: 'DELETE_PRODUCT_ITEM',
@@ -56,6 +104,27 @@ const hideCompleteBuy = () => {
   return ({
     type: 'HIDE_COMPLETE_BUY'
   })
+}
+
+const loadCredits = (idBuy) => {
+
+  return dispatch => {
+    return axios.get(
+      SERVER_PATH + BUYS_PATH + '/' + idBuy + CREDIT_PATH,
+      {
+        headers: {
+          'Authorization': 'JWT ' + localStorage.getItem('token')
+        }
+      }
+    )
+      .then(response => {
+        dispatch({
+          type: 'LOAD_CREDITS',
+          credits: response.data.result,
+        })
+      })
+  }
+
 }
 
 const getBuys = (data) => {
@@ -143,16 +212,52 @@ const updatePrices = prices => {
     pricesFormView: prices
   })
 }
+
+const updateStateBuy = (idBuy, state) => {
+  return () => {
+    return axios.put(
+      SERVER_PATH + BUYS_PATH + '/' + idBuy + STATE_PATH,
+      {
+        state: state
+      },
+      {
+        headers: {
+          'Authorization': 'JWT ' + localStorage.getItem('token')
+        }
+      }
+    )
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err=> {
+        console.log(err)
+      })
+  }
+}
+
+const visibleFormDebt = (state, option) => {
+  return ({
+    type: 'VISIBLE_FORM_DEBT',
+    isVisibleFormDebt: state,
+    optionState: option
+  })
+}
+
 export {
+  addAdvancePay,
   addProductBuy,
   changeCompanyViewBuy,
   changeDateViewBuy,
   changeIdViewBuy,
+  deleteCredit,
   deleteProductItem,
   hideCompleteBuy,
+  loadCredits,
   getBuys,
   saveBuy,
   showCompleteBuy,
   showCreateBuy,
-  updatePrices
+  updatePrices,
+  updateStateBuy,
+  visibleFormDebt
 }

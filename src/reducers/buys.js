@@ -28,7 +28,12 @@ const receipts = ( state = {
     day: '',
     company: ''
   },
-  onlyShowBuy: false
+  onlyShowBuy: false,
+  buySelectedCredits: [],
+  sumCredits: 0,
+  isVisibleFormDebt: false,
+  stateBuy: '',
+  idBuySelected: ''
 
 }, action) => {
 
@@ -82,6 +87,21 @@ const receipts = ( state = {
         ...state,
         buys: action.buys
       }
+    case 'LOAD_CREDITS': {
+      let credits = []
+      let sumCredits = 0
+      if (action.credits) {
+        credits = action.credits
+      }
+      for (let credit of credits) {
+        sumCredits += parseFloat(credit.amount)
+      }
+      return {
+        ...state,
+        buySelectedCredits: credits,
+        sumCredits: sumCredits
+      }
+    }
     case 'SHOW_COMPLETE_BUY': {
       let date = ''
       if (state.buys[action.indexBuy].date) {
@@ -92,13 +112,20 @@ const receipts = ( state = {
         date: date,
         company: state.buys[action.indexBuy].company
       }
+      let showFormDebt = false
+      if (state.buys[action.indexBuy].state === 'Credito') {
+        showFormDebt = true
+      }
       return {
         ...state,
         isVisibleFormBuy: true,
         onlyShowBuy: true,
         productsBuy: state.buys[action.indexBuy].products,
         buySelected: buySelected,
-        totalViewBuy: state.buys[action.indexBuy].total
+        totalViewBuy: state.buys[action.indexBuy].total,
+        idBuySelected: state.buys[action.indexBuy]._id,
+        stateBuy: state.buys[action.indexBuy].state,
+        isVisibleFormDebt: showFormDebt
       }
     }
     case 'SHOW_CREATE_BUY': {
@@ -132,6 +159,13 @@ const receipts = ( state = {
           pricesProductChosen: action.pricesFormView
         }
       }
+    case 'VISIBLE_FORM_DEBT': {
+      return {
+        ...state,
+        isVisibleFormDebt: action.isVisibleFormDebt,
+        stateBuy: action.optionState
+      }
+    }
     default:
       return state
   }

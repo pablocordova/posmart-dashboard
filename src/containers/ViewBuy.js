@@ -12,20 +12,26 @@ import {
   ControlLabel
 } from 'react-bootstrap'
 
-//import moment from 'moment'
+import moment from 'moment'
 import RaisedButton from 'material-ui/RaisedButton'
-//import _ from 'lodash'
+import _ from 'lodash'
 
 // -- Own Modules
 import {
+  addAdvancePay,
   addProductBuy,
   changeCompanyViewBuy,
   changeDateViewBuy,
   changeIdViewBuy,
+  deleteCredit,
   deleteProductItem,
+  getBuys,
   hideCompleteBuy,
+  loadCredits,
   saveBuy,
-  updatePrices
+  updatePrices,
+  updateStateBuy,
+  visibleFormDebt
 } from '../actions/buys'
 
 import swal from 'sweetalert2'
@@ -42,6 +48,12 @@ const headerModalStyle = {
   paddingTop: '15px'
 }
 
+const selectStateStyle = {
+  width: '25%',
+  display: 'inline-block',
+  marginLeft: '20px'
+}
+
 class ViewBuy extends Component {
 
   constructor() {
@@ -51,7 +63,9 @@ class ViewBuy extends Component {
       validation: {
         quantity: null,
         total: null
-      }
+      },
+      datePay: moment().format('YYYY-MM-DD'),
+      amountPay: 0
     }
   }
 
@@ -113,6 +127,98 @@ class ViewBuy extends Component {
                 />
               </label>
             </FormGroup>
+            <FormGroup hidden = { !this.props.onlyShowBuy }>
+              <ControlLabel>Estado:</ControlLabel>
+              <FormControl
+                componentClass = 'select'
+                value = { this.props.stateBuy }
+                style = { selectStateStyle }
+                onChange = { e => {
+                  let status = false
+                  if (e.target.value === 'Credito') {
+                    status = true
+                  }
+                  this.props.visibleFormDebt(status, e.target.value)
+                  this.props.updateStateBuy(this.props.idBuySelected, e.target.value)
+                }}
+              >
+                <option value = 'Pagado' key = 'Pagado'>Pagado</option>
+                <option value = 'Credito' key = 'Credito'>Credito</option>
+              </FormControl>
+            </FormGroup>
+            <div hidden = { !this.props.isVisibleFormDebt }>
+              <Table responsive hidden = { !this.props.onlyShowBuy }>
+                <thead>
+                  <tr className = 'text-center-header-table'>
+                    <th>Fecha</th>
+                    <th>Monto</th>
+                    <th className = 'red-color'>
+                      <h4>
+                        {
+                          _.round(parseFloat(this.props.totalViewBuy) -
+                            this.props.sumCredits, 1)
+                        }
+                      </h4>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr key = { 1 }>
+                    <td>
+                      <FormControl
+                        type = 'date'
+                        defaultValue = { moment().format('YYYY-MM-DD') }
+                        onChange = { e => {
+                          this.setState({
+                            datePay: e.target.value
+                          })
+                        }}
+                      />
+                    </td>
+                    <td>
+                      <FormControl
+                        type = 'number'
+                        placeholder = 'Adelanto'
+                        onChange = { e =>
+                          this.setState({
+                            amountPay: e.target.value
+                          })
+                        }
+                      />
+                    </td>
+                    <td>
+                      <RaisedButton
+                        label = 'Agregar'
+                        secondary = { true }
+                        onClick = { () => {
+                          this.props.addAdvancePay(
+                            this.state.datePay,
+                            this.state.amountPay,
+                            this.props.idBuySelected
+                          )
+                        }}
+                      ></RaisedButton>
+                    </td>
+                  </tr>
+                  {
+                    this.props.buySelectedCredits.map((credit, index) => {
+                      return (
+                        <tr key = { index } className = 'text-center'>
+                          <td>{ credit.date.split('T')[0] }</td>
+                          <td>{ credit.amount }</td>
+                          <td>
+                            <i className = 'fa fa-trash fa-lg' id = { index } onClick = { e =>
+                              this.props.deleteCredit(this.props.idBuySelected, e.target.id)
+                            }
+                            ></i>
+                          </td>
+                        </tr>
+                      )
+                    })
+                  }
+                </tbody>
+              </Table>
+            </div>
             <Table responsive>
               <thead>
                 <tr className = 'text-center-header-table'>
@@ -344,13 +450,14 @@ class ViewBuy extends Component {
               />
             </label>
             <RaisedButton
-              label = 'CANCELAR'
+              label = 'CERRAR'
               onClick = { () => {
                 this.props.hideCompleteBuy()
                 this.cleanValidations()
                 this.setState({
                   MeasureRealIndex: 0
                 })
+                this.props.getBuys(this.props.searchData)
               }}
             />
           </Modal.Footer>
@@ -372,12 +479,22 @@ const mapStateToProps = state => {
     companyViewBuy: state.buys.companyViewBuy,
     onlyShowBuy: state.buys.onlyShowBuy,
     totalViewBuy: state.buys.totalViewBuy,
-    formChoseProduct: state.buys.formChoseProduct
+    formChoseProduct: state.buys.formChoseProduct,
+    stateBuy: state.buys.stateBuy,
+    isVisibleFormDebt: state.buys.isVisibleFormDebt,
+    sumCredits: state.buys.sumCredits,
+    buySelectedCredits: state.buys.buySelectedCredits,
+    idBuySelected: state.buys.idBuySelected,
+    searchData: state.buys.searchData
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
+    addAdvancePay(date, amount, idSale) {
+      dispatch(addAdvancePay(date, amount, idSale))
+        .then(() => dispatch(loadCredits(idSale)))
+    },
     addProductBuy(allForm) {
       dispatch(addProductBuy(allForm))
     },
@@ -390,8 +507,15 @@ const mapDispatchToProps = dispatch => {
     changeIdViewBuy(text) {
       dispatch(changeIdViewBuy(text))
     },
+    deleteCredit(idSale, index) {
+      dispatch(deleteCredit(idSale, index))
+        .then(() => dispatch(loadCredits(idSale)))
+    },
     deleteProductItem(index) {
       dispatch(deleteProductItem(index))
+    },
+    getBuys(data) {
+      dispatch(getBuys(data))
     },
     hideCompleteBuy() {
       dispatch(hideCompleteBuy())
@@ -401,6 +525,12 @@ const mapDispatchToProps = dispatch => {
     },
     updatePrices(prices) {
       dispatch(updatePrices(prices))
+    },
+    updateStateBuy(idBuy, state) {
+      dispatch(updateStateBuy(idBuy, state))
+    },
+    visibleFormDebt(state, option) {
+      dispatch(visibleFormDebt(state, option))
     }
   }
 }

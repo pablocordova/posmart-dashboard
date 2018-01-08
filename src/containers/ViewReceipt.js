@@ -87,8 +87,7 @@ class ViewReceipt extends Component {
                   }
                   this.props.visibleFormDebt(status, e.target.value)
                   this.props.updateStateSale(this.props.saleSelected._id, e.target.value)
-                }
-                }
+                }}
               >
                 <option value = 'Pendiente' key = 'Pendiente'>Pendiente</option>
                 <option value = 'Pagado' key = 'Pagado'>Pagado</option>
