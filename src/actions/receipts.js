@@ -7,6 +7,7 @@ const PRINT_PATH = '/print/sale'
 const PROCESSED_SALES_PATH = '/processed'
 const STATE_PATH = '/state'
 const CREDIT_PATH = '/credits'
+const JOIN_SALES_PATH = '/join/sales'
 
 let SERVER_PATH = ''
 
@@ -123,6 +124,30 @@ const getReceipts = (data) => {
 
 }
 
+const joinSales = (idsSalesToJoin) => {
+
+  return () => {
+    return axios.post(
+      SERVER_PATH + SALES_PATH + JOIN_SALES_PATH,
+      {
+        ids: idsSalesToJoin
+      },
+      {
+        headers: {
+          'Authorization': 'JWT ' + localStorage.getItem('token')
+        }
+      }
+    )
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err=> {
+        console.log(err)
+      })
+  }
+
+}
+
 const loadCredits = (idSale) => {
 
   return dispatch => {
@@ -227,6 +252,7 @@ export {
   deleteReceipt,
   hideCompleteReceipt,
   getReceipts,
+  joinSales,
   loadCredits,
   showCompleteReceipt,
   printSale,

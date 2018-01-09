@@ -10,6 +10,7 @@ import swal from 'sweetalert2'
 
 import {
   ControlLabel,
+  Checkbox,
   Table,
   FormGroup,
   FormControl,
@@ -24,6 +25,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import {
   deleteReceipt,
   getReceipts,
+  joinSales,
   loadCredits,
   showCompleteReceipt
 } from '../actions/receipts'
@@ -51,13 +53,48 @@ const detailsButtonStyle =  {
   marginTop: '10px'
 }
 
+const checkboxStyle = {
+  marginTop: '0px',
+  marginBottom: '0px'
+}
+
 class Receipts extends Component {
 
   constructor() {
     super()
     this.state = {
-      showMoreDetails: false
+      showMoreDetails: false,
+      idsSalesToJoin: []
     }
+  }
+
+  /**
+   * Generate array of ids of sales to join
+   *
+   * @param id { string } : id sale
+   * @param operation { bool } : if the id sale is added(true) or removed(false) of array
+   */
+
+  generateSalesToJoin(id, state) {
+
+    // Get current ids
+    let idsSalesToJoin = this.state.idsSalesToJoin
+
+    if (state) {
+      // Case add id
+      idsSalesToJoin.push(id)
+    } else {
+      // Case remove id
+      idsSalesToJoin = idsSalesToJoin.filter(idSale => {
+        return idSale !== id
+      })
+    }
+
+    // Save ids
+    this.setState({
+      idsSalesToJoin: idsSalesToJoin
+    })
+
   }
 
   render() {
@@ -169,9 +206,50 @@ class Receipts extends Component {
                   }
                 </div>
               </div>
+              <div hidden = { this.state.idsSalesToJoin.length < 2 }>
+                <RaisedButton
+                  label = 'Unir ventas'
+                  secondary = { true }
+                  onClick = { async () => {
+                    let joinSalesMethod = this.props.joinSales
+                    let idsSalesToJoin = this.state.idsSalesToJoin
+                    let searchData = this.props.searchData
+
+                    let result = await swal({
+                      title: 'LAS VENTAS SE UNIRÁN',
+                      html: '<div style="text-align:left">' +
+                      'Las ventas se uniran a la primera venta elegida,' +
+                      'esto significa que:<br>' +
+                      '- Se modificará a la fecha y hora actual<br>' +
+                      '- Se uniran todos los productos<br>' +
+                      '- Se sumara las cantidades de cada uno (total, saldo y deuda)<br>' +
+                      '- Se tomará los campos únicos de la primera venta ' +
+                      'seleccionada(Cliente, vendedor y estado)</div>',
+                      type: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#3085d6',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Unir',
+                      cancelButtonText: 'Cancelar'
+                    }).then(function (result) {
+                      if (result.value) {
+                        joinSalesMethod(idsSalesToJoin, searchData)
+                        return 'OK'
+                      }
+                    })
+                    // Case was OK then clean array
+                    if (result === 'OK') {
+                      this.setState({
+                        idsSalesToJoin: []
+                      })
+                    }
+                  }}
+                ></RaisedButton>
+              </div>
               <Table responsive>
                 <thead>
                   <tr className = 'text-center-header-table'>
+                    <th hidden = { !this.state.showMoreDetails }></th>
                     <th>ID</th>
                     <th>Fecha</th>
                     <th>Hora</th>
@@ -189,6 +267,16 @@ class Receipts extends Component {
                     this.props.sales.map(sale => {
                       return (
                         <tr key = { sale._id } className = 'text-center'>
+                          <td hidden = { !this.state.showMoreDetails }>
+                            <Checkbox
+                              id = { sale._id }
+                              checked = { this.state.idsSalesToJoin.includes(sale._id) }
+                              style = { checkboxStyle }
+                              onChange = { e => {
+                                this.generateSalesToJoin(e.target.id, e.target.checked);
+                              }}
+                            ></Checkbox>
+                          </td>
                           <td>{ String(sale._id).substring(0, 8) }</td>
                           <td>{ moment.utc(sale.date).format('DD/MM/YY') }</td>
                           <td>{ moment.utc(sale.date).format('hh:mm:ss a') }</td>
@@ -267,6 +355,10 @@ const mapDispatchToProps = dispatch => {
     },
     getReceipts(data) {
       dispatch(getReceipts(data))
+    },
+    joinSales(idsSalesToJoin, searchAfterJoin) {
+      dispatch(joinSales(idsSalesToJoin))
+        .then(() => dispatch(getReceipts(searchAfterJoin)))
     },
     showCompleteReceipt(idReceipt) {
       dispatch(showCompleteReceipt(idReceipt))
