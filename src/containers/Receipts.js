@@ -257,8 +257,8 @@ class Receipts extends Component {
                     <th>Vendedor</th>
                     <th>Total</th>
                     <th>Estado</th>
+                    <th hidden = { !this.state.showMoreDetails }>A cuenta</th>
                     <th hidden = { !this.state.showMoreDetails }>Saldo</th>
-                    <th hidden = { !this.state.showMoreDetails }>Deuda</th>
                     <th></th>
                   </tr>
                 </thead>
