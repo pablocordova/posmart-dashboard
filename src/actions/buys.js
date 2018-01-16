@@ -22,7 +22,7 @@ switch (process.env.REACT_APP_ENV) {
 const addAdvancePay = (date, amount, idBuy) => {
 
   return () => {
-    return axios.post(
+    return axios.patch(
       SERVER_PATH + BUYS_PATH + '/' + idBuy + CREDIT_PATH,
       {
         date: date,
@@ -75,7 +75,7 @@ const changeIdViewBuy = (idViewBuy) => {
 const deleteCredit = (idBuy, index) => {
 
   return () => {
-    return axios.delete(
+    return axios.patch(
       SERVER_PATH + BUYS_PATH + '/' + idBuy + CREDIT_PATH + '/' + index,
       {
         headers: {
@@ -129,13 +129,9 @@ const loadCredits = (idBuy) => {
 
 const getBuys = (data) => {
   return dispatch => {
-    return axios.post(
-      SERVER_PATH + BUYS_PATH + '/' + SEARCH_ADVANCED_PATH,
-      {
-        id: data.id,
-        day: data.day,
-        company: data.company,
-      },
+    return axios.get(
+      SERVER_PATH + BUYS_PATH + '/' + SEARCH_ADVANCED_PATH + '?id=' + data.id +
+      '&day=' + data.day + '&company=' + data.company,
       {
         headers: {
           'Authorization': 'JWT ' + localStorage.getItem('token')
@@ -215,7 +211,7 @@ const updatePrices = prices => {
 
 const updateStateBuy = (idBuy, state) => {
   return () => {
-    return axios.put(
+    return axios.patch(
       SERVER_PATH + BUYS_PATH + '/' + idBuy + STATE_PATH,
       {
         state: state
