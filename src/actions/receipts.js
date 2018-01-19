@@ -8,8 +8,10 @@ const PROCESSED_SALES_PATH = '/processed'
 const STATE_PATH = '/state'
 const CREDIT_PATH = '/credits'
 const JOIN_SALES_PATH = '/join/sales'
-
 let SERVER_PATH = ''
+
+axios.defaults.headers.common['Authorization'] =
+  'JWT ' + localStorage.getItem(process.env.REACT_APP_TOKEN_NAME)
 
 switch (process.env.REACT_APP_ENV) {
   case 'production':
@@ -30,11 +32,6 @@ const addAdvancePay = (date, amount, idSale) => {
       {
         date: date,
         amount: amount
-      },
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
       }
     )
       .then(res => {
@@ -50,14 +47,7 @@ const addAdvancePay = (date, amount, idSale) => {
 const deleteCredit = (idSale, index) => {
 
   return () => {
-    return axios.delete(
-      SERVER_PATH + SALES_PATH + '/' + idSale + CREDIT_PATH + '/' + index,
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
-      }
-    )
+    return axios.delete(SERVER_PATH + SALES_PATH + '/' + idSale + CREDIT_PATH + '/' + index)
       .then(res => {
         console.log(res)
       })
@@ -71,14 +61,7 @@ const deleteCredit = (idSale, index) => {
 const deleteReceipt = (idSale) => {
 
   return () => {
-    return axios.delete(
-      SERVER_PATH + SALES_PATH + '/' + idSale,
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
-      }
-    )
+    return axios.delete(SERVER_PATH + SALES_PATH + '/' + idSale)
       .then(res => {
         console.log(res)
       })
@@ -106,11 +89,6 @@ const getReceipts = (data) => {
         seller: data.seller,
         total: data.total,
         state: data.state
-      },
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
       }
     )
       .then(response => {
@@ -131,11 +109,6 @@ const joinSales = (idsSalesToJoin) => {
       SERVER_PATH + SALES_PATH + JOIN_SALES_PATH,
       {
         ids: idsSalesToJoin
-      },
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
       }
     )
       .then(res => {
@@ -151,14 +124,7 @@ const joinSales = (idsSalesToJoin) => {
 const loadCredits = (idSale) => {
 
   return dispatch => {
-    return axios.get(
-      SERVER_PATH + SALES_PATH + '/' + idSale + CREDIT_PATH,
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
-      }
-    )
+    return axios.get(SERVER_PATH + SALES_PATH + '/' + idSale + CREDIT_PATH)
       .then(response => {
         dispatch({
           type: 'LOAD_CREDITS',
@@ -172,14 +138,7 @@ const loadCredits = (idSale) => {
 const showCompleteReceipt = (idReceipt) => {
 
   return dispatch => {
-    return axios.get(
-      SERVER_PATH + SALES_PATH + PROCESSED_SALES_PATH + '/' + idReceipt,
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
-      }
-    )
+    return axios.get(SERVER_PATH + SALES_PATH + PROCESSED_SALES_PATH + '/' + idReceipt)
       .then(response => {
         dispatch({
           type: 'SHOW_COMPLETE_RECEIPT',
@@ -197,11 +156,6 @@ const printSale = (idReceipt) => {
       SERVER_PATH + SETTINGS_PATH + PRINT_PATH,
       {
         saleID: idReceipt
-      },
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
       }
     )
       .then(res => {
@@ -221,11 +175,6 @@ const updateStateSale = (idSale, state) => {
       SERVER_PATH + SALES_PATH + '/' + idSale + STATE_PATH,
       {
         state: state
-      },
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
       }
     )
       .then(res => {

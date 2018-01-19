@@ -5,8 +5,10 @@ const PRODUCTS_PATH = '/products'
 const SEARCH_ADVANCED_PATH = 'search/advanced'
 const CREDIT_PATH = '/credits'
 const STATE_PATH = '/state'
-
 let SERVER_PATH = ''
+
+axios.defaults.headers.common['Authorization'] =
+  'JWT ' + localStorage.getItem(process.env.REACT_APP_TOKEN_NAME)
 
 switch (process.env.REACT_APP_ENV) {
   case 'production':
@@ -27,11 +29,6 @@ const addAdvancePay = (date, amount, idBuy) => {
       {
         date: date,
         amount: amount
-      },
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
       }
     )
       .then(res => {
@@ -77,11 +74,6 @@ const deleteCredit = (idBuy, index) => {
   return () => {
     return axios.patch(
       SERVER_PATH + BUYS_PATH + '/' + idBuy + CREDIT_PATH + '/' + index,
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
-      }
     )
       .then(res => {
         console.log(res)
@@ -111,11 +103,6 @@ const loadCredits = (idBuy) => {
   return dispatch => {
     return axios.get(
       SERVER_PATH + BUYS_PATH + '/' + idBuy + CREDIT_PATH,
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
-      }
     )
       .then(response => {
         dispatch({
@@ -131,12 +118,7 @@ const getBuys = (data) => {
   return dispatch => {
     return axios.get(
       SERVER_PATH + BUYS_PATH + '/' + SEARCH_ADVANCED_PATH + '?id=' + data.id +
-      '&day=' + data.day + '&company=' + data.company,
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
-      }
+      '&day=' + data.day + '&company=' + data.company
     )
       .then(response => {
         dispatch({
@@ -157,11 +139,6 @@ const saveBuy = (id, date, company, total, products) => {
         company: company,
         total: total,
         products: products
-      },
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
       }
     )
       .then(response => {
@@ -180,14 +157,7 @@ const showCompleteBuy = (indexBuy) => {
 const showCreateBuy = () => {
 
   return dispatch => {
-    return axios.get(
-      SERVER_PATH + PRODUCTS_PATH,
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
-      }
-    )
+    return axios.get(SERVER_PATH + PRODUCTS_PATH)
       .then(response => {
         // Filter only that have prices
         let productsWithPrices = response.data.result.filter(product => {
@@ -215,11 +185,6 @@ const updateStateBuy = (idBuy, state) => {
       SERVER_PATH + BUYS_PATH + '/' + idBuy + STATE_PATH,
       {
         state: state
-      },
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
       }
     )
       .then(res => {

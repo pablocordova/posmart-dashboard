@@ -9,10 +9,10 @@ const PRODUCTS_PATH = '/products'
 const PRICES_PATH = '/prices'
 const POST_INVENTORY_PATH = '/entry'
 const UNIT_COST_PATH = '/cost'
-
-axios.defaults.headers.common['Authorization'] = 'JWT ' + localStorage.getItem('token')
-
 let SERVER_PATH = ''
+
+axios.defaults.headers.common['Authorization'] =
+  'JWT ' + localStorage.getItem(process.env.REACT_APP_TOKEN_NAME)
 
 switch (process.env.REACT_APP_ENV) {
   case 'production':
@@ -54,11 +54,6 @@ const createPrices = (pricesTmp, idProduct) => {
       SERVER_PATH + PRODUCTS_PATH + '/' + idProduct + PRICES_PATH,
       {
         pricesTmp
-      },
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
       }
     )
       .then(res => {
@@ -212,11 +207,6 @@ const updateUnitCost = (unitCost, idProduct) => {
       SERVER_PATH + PRODUCTS_PATH + '/' + idProduct + UNIT_COST_PATH,
       {
         unitCost: unitCost
-      },
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
       }
     )
       .then(res => {

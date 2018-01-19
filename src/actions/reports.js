@@ -4,6 +4,9 @@ const REPORTS_PATH = '/reports'
 const EARNINGS_PATH = '/earnings'
 let SERVER_PATH = ''
 
+axios.defaults.headers.common['Authorization'] =
+  'JWT ' + localStorage.getItem(process.env.REACT_APP_TOKEN_NAME)
+
 switch (process.env.REACT_APP_ENV) {
   case 'production':
     SERVER_PATH = process.env.REACT_APP_SERVER_PATH_PRODUCTION;
@@ -22,11 +25,6 @@ const getAnalizeEarning = (dateFrom, dateTo, type) => {
       {
         from: dateFrom,
         to: dateTo
-      },
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
       }
     )
       .then(response => {

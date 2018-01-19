@@ -27,7 +27,7 @@ const login = (email, pass) => {
     })
       .then(response => {
         if (typeof response.data.token !== 'undefined') {
-          localStorage.setItem('token', response.data.token)
+          localStorage.setItem(process.env.REACT_APP_TOKEN_NAME, response.data.token)
           localStorage.setItem('username', response.data.username)
           localStorage.setItem('businessNameDashboard', response.data.businessName.toUpperCase())
           window.location = BASE_URL.concat('/products')

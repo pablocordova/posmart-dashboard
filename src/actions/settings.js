@@ -7,8 +7,10 @@ const DATA_PRINTER_PATH = '/printer'
 const GET_GOOGLE_URL_PATH = '/googleurl'
 const SETTINGS_PATH = '/settings'
 const PERMISSION_PIN_PATH = '/pin'
-
 let SERVER_PATH = ''
+
+axios.defaults.headers.common['Authorization'] =
+  'JWT ' + localStorage.getItem(process.env.REACT_APP_TOKEN_NAME)
 
 switch (process.env.REACT_APP_ENV) {
   case 'production':
@@ -24,14 +26,7 @@ switch (process.env.REACT_APP_ENV) {
 const getDataPrinter = () => {
 
   return dispatch => {
-    return axios.get(
-      SERVER_PATH + SETTINGS_PATH + DATA_PRINTER_PATH,
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
-      }
-    )
+    return axios.get(SERVER_PATH + SETTINGS_PATH + DATA_PRINTER_PATH)
       .then(response => {
         dispatch({
           type: 'LOAD_DATA_PRINTER',
@@ -44,14 +39,7 @@ const getDataPrinter = () => {
 const getPermissionPin = () => {
 
   return dispatch => {
-    return axios.get(
-      SERVER_PATH + SETTINGS_PATH + PERMISSION_PIN_PATH,
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
-      }
-    )
+    return axios.get(SERVER_PATH + SETTINGS_PATH + PERMISSION_PIN_PATH)
       .then(response => {
         dispatch({
           type: 'LOAD_PERMISSION_PIN',
@@ -75,17 +63,11 @@ const getTokenGoogle = () => {
         SERVER_PATH + SETTINGS_PATH + GET_ACCESSTOKEN_PATH,
         {
           code: data.code
-        },
-        {
-          headers: {
-            'Authorization': 'JWT ' + localStorage.getItem('token')
-          }
         }
       )
         .then(response => {
           console.log('response to obtains real token to comunicate with google, for 1 hour')
           console.log(response)
-          //localStorage.setItem('googleToken', response.data.result.googleToken)
         })
     });
 
@@ -95,14 +77,7 @@ const getTokenGoogle = () => {
 const getUrlGoogleToken = () => {
 
   return () => {
-    return axios.get(
-      SERVER_PATH + SETTINGS_PATH + GET_GOOGLE_URL_PATH,
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
-      }
-    )
+    return axios.get(SERVER_PATH + SETTINGS_PATH + GET_GOOGLE_URL_PATH)
       .then(response => {
         localStorage.setItem('googleURLToken', response.data.result.googleURLToken)
       })
@@ -117,11 +92,6 @@ const saveSettingPrinter = (printerId, ticketSetting) => {
       {
         printerId: printerId,
         ticketSetting: ticketSetting
-      },
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
       }
     )
       .then(response => {
@@ -141,11 +111,6 @@ const savePermissionPin = (pin) => {
       SERVER_PATH + SETTINGS_PATH + PERMISSION_PIN_PATH,
       {
         pin: pin
-      },
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
       }
     )
       .then(response => {
@@ -186,14 +151,7 @@ const updateTicketSetting = (title, head1, head2, foot1, foot2) => {
 const generateEarnings = () => {
 
   return () => {
-    return axios.post(
-      SERVER_PATH + '/sales/generate/earnings',
-      {
-        headers: {
-          'Authorization': 'JWT ' + localStorage.getItem('token')
-        }
-      }
-    )
+    return axios.post(SERVER_PATH + '/sales/generate/earnings')
       .then(response => {
         console.log(response.data)
       })

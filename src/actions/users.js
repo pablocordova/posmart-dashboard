@@ -2,10 +2,10 @@ import axios from 'axios'
 import swal from 'sweetalert2'
 
 const USERS_PATH = '/users'
-
-axios.defaults.headers.common['Authorization'] = 'JWT ' + localStorage.getItem('token')
-
 let SERVER_PATH = ''
+
+axios.defaults.headers.common['Authorization'] =
+  'JWT ' + localStorage.getItem(process.env.REACT_APP_TOKEN_NAME)
 
 switch (process.env.REACT_APP_ENV) {
   case 'production':

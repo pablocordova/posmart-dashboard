@@ -26,7 +26,7 @@ const paperStyle = {
 class Reports extends Component {
 
   isUserLogin() {
-    return localStorage.getItem('token') ? true : false
+    return localStorage.getItem(process.env.REACT_APP_TOKEN_NAME) ? true : false
   }
 
   render() {
