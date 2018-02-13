@@ -107,7 +107,7 @@ const getReceipts = (data) => {
 const joinSales = (idsSalesToJoin) => {
 
   return () => {
-    return axios.post(
+    return axios.put(
       SERVER_PATH + SALES_PATH + JOIN_SALES_PATH,
       {
         ids: idsSalesToJoin
