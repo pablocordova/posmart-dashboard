@@ -80,15 +80,17 @@ const hideCompleteReceipt = () => {
 
 const getReceipts = (data) => {
   return dispatch => {
-    return axios.post(
+    return axios.get(
       SERVER_PATH + SALES_PATH + ADVANCED_SEARCH,
       {
-        id: data.id,
-        day: data.day,
-        client: data.client,
-        seller: data.seller,
-        total: data.total,
-        state: data.state
+        params: {
+          id: data.id,
+          day: data.day,
+          client: data.client,
+          seller: data.seller,
+          total: data.total,
+          state: data.state
+        }
       }
     )
       .then(response => {

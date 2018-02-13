@@ -50,7 +50,7 @@ const changeViewCost = (index, value) => {
 const createPrices = (pricesTmp, idProduct) => {
 
   return () => {
-    return axios.post(
+    return axios.put(
       SERVER_PATH + PRODUCTS_PATH + '/' + idProduct + PRICES_PATH,
       {
         pricesTmp
