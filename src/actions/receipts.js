@@ -7,7 +7,7 @@ const PRINT_PATH = '/print/sale'
 const PROCESSED_SALES_PATH = '/processed'
 const STATE_PATH = '/state'
 const CREDIT_PATH = '/credits'
-const JOIN_SALES_PATH = '/join/sales'
+const JOIN_SALES_PATH = '/join'
 let SERVER_PATH = ''
 
 axios.defaults.headers.common['Authorization'] =
